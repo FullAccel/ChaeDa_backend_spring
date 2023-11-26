@@ -29,6 +29,8 @@ public class HwNotificationResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
+
+
     @Builder
     public HwNotificationResponseDto(HomeworkNotification entity) {
         this.id = entity.getId();
