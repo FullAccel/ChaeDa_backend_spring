@@ -1,16 +1,19 @@
 package Chaeda_spring.domain.member.entity;
 
+import Chaeda_spring.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
-public abstract class Member {
+public abstract class Member extends BaseTimeEntity {
 
     @Id
     @Column(name = "MEMBER_ID")
@@ -33,7 +36,6 @@ public abstract class Member {
 
     private String profileUrl;
 
-    @Builder
     public Member(String name, String email, String gender, String phoneNumber, String address, String profileUrl) {
         this.name = name;
         this.email = email;

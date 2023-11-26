@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
+@SuperBuilder
 @NoArgsConstructor
 @DiscriminatorValue("Student")
 public class Student extends Member{
@@ -23,7 +25,6 @@ public class Student extends Member{
 
     private String notes;
 
-    @Builder
     public Student(String name, String email, String gender, String phoneNumber, String address, String profileUrl, String schoolName, String parentPhoneNum, String homePhoneNum, String subject, String notes) {
         super(name, email, gender, phoneNumber, address, profileUrl);
         this.schoolName = schoolName;

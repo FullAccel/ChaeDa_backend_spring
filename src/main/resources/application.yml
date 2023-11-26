@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://114.70.23.79:5432/test?user=postgres&password=1234
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+  profiles:
+#    include: oauth
+    include: swagger
+  sql:
+    init:
+      mode: always
+
+#cloud:
+#  aws:
+#    credentials:
+#      access-key: AKIAZHDPNXPSL6JM266I
+#      secret-key: 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
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false
+#
+#server:
+#  servlet:
+#    encoding:
+#      force-response: true
