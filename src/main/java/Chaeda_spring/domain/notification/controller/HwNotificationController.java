@@ -15,9 +15,9 @@ import java.net.URI;
 public class HwNotificationController {
 
     private final HwNotificationService hwNotificationService;
-    @PostMapping("")
-    public ResponseEntity<?> postHomework(@RequestBody HwNotificationRequestDto requestDto) {
-        Long id = hwNotificationService.uploadHomeworkNotification(requestDto);
+    @PostMapping("/{classId}/{memberId}")
+    public ResponseEntity<?> postHomework(@PathVariable Long classId, @PathVariable Long memberId, @RequestBody HwNotificationRequestDto requestDto) {
+        Long id = hwNotificationService.uploadHomeworkNotification(classId, memberId,requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 }

@@ -1,5 +1,6 @@
 package Chaeda_spring.domain.notification.entity;
 
+import Chaeda_spring.domain.BaseTimeEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
-public class Notification {
+public class Notification extends BaseTimeEntity {
 
     @Id
     @Column(name = "NOTIFICATION_ID")
