@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,9 +22,15 @@ public class HwNotificationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    @GetMapping("/{memberId}")
-    public ResponseEntity<List<HwNotificationResponseDto>> getHomeworkNotificationList(@PathVariable Long memberId){
-        List<HwNotificationResponseDto> hwNotificationList = hwNotificationService.getHwNotificationList(memberId);
+    @GetMapping("/teacher/{memberId}")
+    public ResponseEntity<List<HwNotificationResponseDto>> getHomeworkToTeacher(@PathVariable Long memberId){
+        List<HwNotificationResponseDto> hwNotificationList = hwNotificationService.getHwToTeacher(memberId);
+        return ResponseEntity.ok(hwNotificationList);
+    }
+
+    @GetMapping("/student/{memberId}")
+    public ResponseEntity<List<HwNotificationResponseDto>> getHomeworkToStudent(@PathVariable Long memberId){
+        List<HwNotificationResponseDto> hwNotificationList = hwNotificationService.getHwToStudent(memberId);
         return ResponseEntity.ok(hwNotificationList);
     }
 }

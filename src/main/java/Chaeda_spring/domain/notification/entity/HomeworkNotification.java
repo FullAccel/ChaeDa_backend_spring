@@ -40,4 +40,8 @@ public class HomeworkNotification extends Notification{
     public void setTargetClassGroup(ClassGroup classGroup) {
         this.classGroup = classGroup;
     }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 }
