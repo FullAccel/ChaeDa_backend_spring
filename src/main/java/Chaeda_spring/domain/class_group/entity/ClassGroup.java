@@ -2,10 +2,14 @@ package Chaeda_spring.domain.class_group.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.domain.notification.entity.HomeworkNotification;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +36,8 @@ public class ClassGroup extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
+    @OneToMany(mappedBy = "classGroup")
+    private List<HomeworkNotification> homeworkNotificationList = new ArrayList<>();
 
     @Builder
     public ClassGroup(String name, String grade, String lessonDays, String profileUrl) {
