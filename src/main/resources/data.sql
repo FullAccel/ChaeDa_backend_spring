@@ -1,11 +1,11 @@
 INSERT INTO textbook (textbook_id, name, image_url, last_page_num, target_grade)
 VALUES
-    (1, '쎈 고등 수학 1-1"', 'https://www.OO.com/data/file/~.webp', 256, '고1'),
-    (2, '쎈 고등 수학 1-2"', 'https://www.OO.com/data/file/~.webp', 300, '고1'),
-    (3, '쎈 고등 수학 2-1"', 'https://www.OO.com/data/file/~.webp', 256, '고2'),
-    (4, '쎈 고등 수학 2-2"', 'https://www.OO.com/data/file/~.webp', 300, '고2'),
-    (5, '쎈 고등 수학 3-1"', 'https://www.OO.com/data/file/~.webp', 256, '고3'),
-    (6, '쎈 고등 수학 3-2"', 'https://www.OO.com/data/file/~.webp', 300, '고3')
+    (1, '쎈 고등 수학 1-1"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 256, '고1'),
+    (2, '쎈 고등 수학 1-2"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 300, '고1'),
+    (3, '쎈 고등 수학 2-1"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 256, '고2'),
+    (4, '쎈 고등 수학 2-2"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 300, '고2'),
+    (5, '쎈 고등 수학 3-1"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 256, '고3'),
+    (6, '쎈 고등 수학 3-2"', 'https://chaeda-s3.s3.ap-northeast-2.amazonaws.com/Ssen_high_1_1.jpg', 300, '고3')
 ;
 
 INSERT INTO member (member_id, address, email, gender, name, phone_number, profile_url, dtype)

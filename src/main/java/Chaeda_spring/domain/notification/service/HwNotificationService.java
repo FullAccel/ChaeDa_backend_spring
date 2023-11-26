@@ -7,15 +7,18 @@ import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.member.entity.Teacher;
 import Chaeda_spring.domain.notification.dto.HwNotificationRequestDto;
-import Chaeda_spring.domain.notification.dto.HwNotificationResponseDto;
+import Chaeda_spring.domain.notification.dto.HwNotificationSimpleResponseDto;
 import Chaeda_spring.domain.notification.entity.HomeworkNotification;
 import Chaeda_spring.domain.notification.entity.HwNotificationRepository;
+import Chaeda_spring.domain.textbook.entity.Textbook;
+import Chaeda_spring.domain.textbook.entity.TextbookRespository;
 import Chaeda_spring.global.exception.NotEqualsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,7 @@ public class HwNotificationService {
     private final ClassGroupRepository classGroupRepository;
     private final MemberRepository memberRepository;
     private final ClassGroupService classGroupService;
+    private final TextbookRespository textbookRespository;
 
     @Transactional
     public Long uploadHomeworkNotification(Long classId, Long memberId, HwNotificationRequestDto dto) {
@@ -41,7 +45,11 @@ public class HwNotificationService {
             throw new NotEqualsException("해당 클래스 담당 선생님만 숙제를 공지할 수 있습니다");
         }
 
+        Textbook textbook = textbookRespository.findById(dto.getTextBookId())
+                .orElseThrow(() -> new NotFoundException("해당 Id의 교재가 존재하지 않습니다."));
+
         HomeworkNotification hwNotification = dto.toEntity();
+        hwNotification.setTextbookImageUrl(textbook.getImageUrl());
         //선생님에 숙제공지 연결
         hwNotification.setTargetClassGroup(classGroup);
         hwNotification.setTeacher(teacher);
@@ -51,21 +59,22 @@ public class HwNotificationService {
         return hwNotificationRepository.save(hwNotification).getId();
     }
 
-    public List<HwNotificationResponseDto> getHwToTeacher(Long memberId) {
+    public List<HwNotificationSimpleResponseDto> getHwToTeacher(Long memberId) {
         Teacher teacher = (Teacher) memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
 
         return teacher.getHomeworkNotificationList().stream()
-                .map(HwNotificationResponseDto::new)
+                .map(HwNotificationSimpleResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<HwNotificationResponseDto> getHwToStudent(Long memberId) {
+    public List<HwNotificationSimpleResponseDto> getHwToStudent(Long memberId, LocalDate date) {
         Student student = (Student) memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
 
         return student.getSubmissionList().stream()
-                .map(submission -> new HwNotificationResponseDto(submission.getHomeworkNotification()))
+                .map(submission -> new HwNotificationSimpleResponseDto(submission.getHomeworkNotification()))
+                .filter(res -> res.getDeadLine().toLocalDate().isEqual(date))
                 .collect(Collectors.toList());
     }
 }

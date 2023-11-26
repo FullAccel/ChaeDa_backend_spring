@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,9 +22,14 @@ public class HomeworkNotification extends Notification{
     private int endPage;
 
     @Column(nullable = false)
-    private LocalDateTime deadLine;
+    private LocalDateTime deadLineDateTime;
+
+    @Column(nullable = false)
+    private LocalDate deadLineDate;
 
     private int submissionNum = 0;
+
+    private String textbookImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ClassGroup classGroup;
@@ -30,12 +37,6 @@ public class HomeworkNotification extends Notification{
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    public HomeworkNotification(Long id, String content, int startPage, int endPage, LocalDateTime deadLine) {
-        super(id, content);
-        this.startPage = startPage;
-        this.endPage = endPage;
-        this.deadLine = deadLine;
-    }
 
     public void setTargetClassGroup(ClassGroup classGroup) {
         this.classGroup = classGroup;
@@ -43,5 +44,9 @@ public class HomeworkNotification extends Notification{
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    public void setTextbookImageUrl(String textbookImageUrl) {
+        this.textbookImageUrl = textbookImageUrl;
     }
 }

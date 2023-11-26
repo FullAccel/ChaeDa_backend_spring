@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class HwNotificationResponseDto {
+public class HwNotificationSimpleResponseDto {
 
     private Long id;
-
-    private String content;
 
     private int startPage;
 
@@ -25,20 +23,20 @@ public class HwNotificationResponseDto {
 
     private int classStudentNum;
 
+    private String bookImageUrl;
+
     @Schema(description = "기간 시작일", example = "2023-11-26 00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
-
-
     @Builder
-    public HwNotificationResponseDto(HomeworkNotification entity) {
+    public HwNotificationSimpleResponseDto(HomeworkNotification entity) {
         this.id = entity.getId();
-        this.content = entity.getContent();
         this.startPage = entity.getStartPage();
         this.endPage = entity.getEndPage();
         this.submissionNum = entity.getSubmissionNum();
         this.classStudentNum = entity.getSubmissionNum();
-        this.deadLine = entity.getDeadLine();
+        this.deadLine = entity.getDeadLineDateTime();
+        this.bookImageUrl = entity.getTextbookImageUrl();
     }
 }

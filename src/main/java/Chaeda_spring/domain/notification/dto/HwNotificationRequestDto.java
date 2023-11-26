@@ -23,12 +23,15 @@ public class HwNotificationRequestDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
+    private Long textBookId;
+
     public HomeworkNotification toEntity(){
         return HomeworkNotification.builder()
                 .content(this.content)
                 .startPage(this.startPage)
                 .endPage(this.endPage)
-                .deadLine(this.deadLine)
+                .deadLineDateTime(this.deadLine)
+                .deadLineDate(this.deadLine.toLocalDate())
                 .build();
     }
 }

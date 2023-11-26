@@ -14,22 +14,13 @@ spring:
       ddl-auto: create
     defer-datasource-initialization: true
   profiles:
-#    include: oauth
-    include: swagger
+    include: aws, swagger
   sql:
     init:
       mode: always
 
-#cloud:
-#  aws:
-#    credentials:
-#      access-key: AKIAZHDPNXPSL6JM266I
-#      secret-key: 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
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
-#
+
+
 #server:
 #  servlet:
 #    encoding:
