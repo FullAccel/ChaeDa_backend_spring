@@ -1,6 +1,7 @@
 package Chaeda_spring.domain.notification.entity;
 
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
+import Chaeda_spring.domain.member.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,9 @@ public class HomeworkNotification extends Notification{
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ClassGroup classGroup;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Teacher teacher;
 
     public HomeworkNotification(Long id, String content, int startPage, int endPage, LocalDateTime deadLine) {
         super(id, content);
