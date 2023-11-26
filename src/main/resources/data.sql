@@ -20,7 +20,7 @@ VALUES
 
 INSERT INTO class_group (class_group_id, name, teacher_member_id, grade, lesson_days, profile_url)
 VALUES
-    (1, '고등 월수금반 3시', 1, '고3', 'MWF', 'https://www.OO.com/data/file/~.webp')
+    (1, '고등 월수금반 3시', 1, '고3', 'MWF', 'https://www.OO.com/data/file/~.webp'),
     (2, '고등 월수금반 3시', 1, '고3', 'MWF', 'https://www.OO.com/data/file/~.webp'),
     (3, '고등 월수금반 3시', 1, '고3', 'MWF', 'https://www.OO.com/data/file/~.webp'),
     (4, '고등 월수금반 3시', 1, '고3', 'MWF', 'https://www.OO.com/data/file/~.webp'),
