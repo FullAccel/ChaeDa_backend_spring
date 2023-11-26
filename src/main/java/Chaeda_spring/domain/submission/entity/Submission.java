@@ -2,7 +2,7 @@ package Chaeda_spring.domain.submission.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.notification.entity.HomeworkNotification;
+import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,16 +19,19 @@ public class Submission extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean status = false;
+    //완료여부
+    private boolean completeStatus = false;
+
+    private long dDay;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hw_notification_id")
-    private HomeworkNotification homeworkNotification;
+    private HomeworkAnnouncement homeworkNotification;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    public void setHomeworkNotification(HomeworkNotification homeworkNotification) {
+    public void setHomeworkNotification(HomeworkAnnouncement homeworkNotification) {
         this.homeworkNotification = homeworkNotification;
     }
 

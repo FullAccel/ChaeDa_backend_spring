@@ -4,7 +4,7 @@ import Chaeda_spring.domain.class_group.dto.ClassGroupResponseDto;
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Teacher;
-import Chaeda_spring.domain.notification.entity.HomeworkNotification;
+import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import Chaeda_spring.domain.submission.entity.Submission;
 import Chaeda_spring.domain.submission.entity.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ClassGroupService {
                 .collect(Collectors.toList());
     }
 
-    public void connectHomeworkToStudent(ClassGroup classGroup, HomeworkNotification hwNotification){
+    public void connectHomeworkToStudent(ClassGroup classGroup, HomeworkAnnouncement hwNotification){
         classGroup.getCourseList().stream()
                 .forEach(course->{
                     Submission submission = new Submission();

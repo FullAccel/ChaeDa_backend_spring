@@ -3,6 +3,7 @@ package Chaeda_spring.domain.textbook.controller;
 import Chaeda_spring.domain.class_group.dto.ClassGroupResponseDto;
 import Chaeda_spring.domain.textbook.dto.TextbookResponseDto;
 import Chaeda_spring.domain.textbook.service.TextbookService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class TextbookController {
     private final TextbookService textbookService;
 
     @GetMapping("/list")
+    @Operation(summary = "DB에 등록된 교재 목록 가져오기")
     public ResponseEntity<List<TextbookResponseDto>> getClassGroupList() {
         return ResponseEntity.ok().body(textbookService.getTextbookList());
     }

@@ -1,6 +1,6 @@
-package Chaeda_spring.domain.notification.dto;
+package Chaeda_spring.domain.announcement.dto;
 
-import Chaeda_spring.domain.notification.entity.HomeworkNotification;
+import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class HwNotificationRequestDto {
+public class HwAnnouncementRequestDto {
+
+    private String title;
 
     @Schema(description = "공지 본문 내용", example = "500자를 넘으면 에러납니다", type = "string")
     private String content;
@@ -25,8 +27,9 @@ public class HwNotificationRequestDto {
 
     private Long textBookId;
 
-    public HomeworkNotification toEntity(){
-        return HomeworkNotification.builder()
+    public HomeworkAnnouncement toEntity(){
+        return HomeworkAnnouncement.builder()
+                .title(this.title)
                 .content(this.content)
                 .startPage(this.startPage)
                 .endPage(this.endPage)

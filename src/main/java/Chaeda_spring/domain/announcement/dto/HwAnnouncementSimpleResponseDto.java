@@ -1,6 +1,6 @@
-package Chaeda_spring.domain.notification.dto;
+package Chaeda_spring.domain.announcement.dto;
 
-import Chaeda_spring.domain.notification.entity.HomeworkNotification;
+import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class HwNotificationSimpleResponseDto {
+public class HwAnnouncementSimpleResponseDto {
 
     private Long id;
+
+    private String title;
 
     private int startPage;
 
@@ -29,9 +31,9 @@ public class HwNotificationSimpleResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
-    @Builder
-    public HwNotificationSimpleResponseDto(HomeworkNotification entity) {
+    public HwAnnouncementSimpleResponseDto(HomeworkAnnouncement entity) {
         this.id = entity.getId();
+        this.title = entity.getTitle();
         this.startPage = entity.getStartPage();
         this.endPage = entity.getEndPage();
         this.submissionNum = entity.getSubmissionNum();

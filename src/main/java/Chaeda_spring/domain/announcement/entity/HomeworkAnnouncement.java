@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.notification.entity;
+package Chaeda_spring.domain.announcement.entity;
 
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.member.entity.Teacher;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-public class HomeworkNotification extends Notification{
+public class HomeworkAnnouncement extends Announcement {
 
     @Column(nullable = false)
     private int startPage;
