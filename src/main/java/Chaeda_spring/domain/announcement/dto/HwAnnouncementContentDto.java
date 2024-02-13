@@ -13,7 +13,7 @@ public class HwAnnouncementContentDto {
     private String content;
 
     public HwAnnouncementContentDto(HomeworkAnnouncement entity) {
-        this.imgUrl = entity.getTextbookImageUrl();
+        this.imgUrl = entity.getTextbook().getImageUrl();
         this.content = entity.getContent();
     }
 }

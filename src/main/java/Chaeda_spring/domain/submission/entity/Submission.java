@@ -1,12 +1,16 @@
 package Chaeda_spring.domain.submission.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +34,12 @@ public class Submission extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
+
+    @OneToMany(mappedBy = "submission")
+    private List<SubmissionImage> submissionImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "submission")
+    private List<SlicingImage> slicingImageList = new ArrayList<>();
 
     public void setHomeworkNotification(HomeworkAnnouncement homeworkNotification) {
         this.homeworkNotification = homeworkNotification;

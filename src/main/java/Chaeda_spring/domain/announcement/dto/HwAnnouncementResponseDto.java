@@ -3,7 +3,6 @@ package Chaeda_spring.domain.announcement.dto;
 import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class HwAnnouncementSimpleResponseDto {
+public class HwAnnouncementResponseDto {
 
     private Long id;
 
@@ -31,7 +30,7 @@ public class HwAnnouncementSimpleResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
-    public HwAnnouncementSimpleResponseDto(HomeworkAnnouncement entity) {
+    public HwAnnouncementResponseDto(HomeworkAnnouncement entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.startPage = entity.getStartPage();
@@ -39,6 +38,6 @@ public class HwAnnouncementSimpleResponseDto {
         this.submissionNum = entity.getSubmissionNum();
         this.classStudentNum = entity.getSubmissionNum();
         this.deadLine = entity.getDeadLineDateTime();
-        this.bookImageUrl = entity.getTextbookImageUrl();
+        this.bookImageUrl = entity.getTextbook().getImageUrl();
     }
 }

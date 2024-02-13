@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://114.70.23.79:5432/test?user=postgres&password=1234
+    url: jdbc:postgresql://localhost:5432/spring?user=chaeda&password=chaeda
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

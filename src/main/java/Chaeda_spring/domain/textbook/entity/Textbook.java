@@ -1,11 +1,15 @@
 package Chaeda_spring.domain.textbook.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @SuperBuilder
@@ -29,6 +33,9 @@ public class Textbook extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String targetGrade;
+
+    @OneToMany(mappedBy = "textbook")
+    private List<HomeworkAnnouncement> homeworkNotificationList = new ArrayList<>();
 
     @Builder
     public Textbook(String name, String imageUrl, int lastPageNum, String targetGrade) {

@@ -2,11 +2,11 @@ package Chaeda_spring.domain.announcement.entity;
 
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.domain.textbook.entity.Textbook;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,6 +22,7 @@ public class HomeworkAnnouncement extends Announcement {
     private int endPage;
 
     @Column(nullable = false)
+
     private LocalDateTime deadLineDateTime;
 
     @Column(nullable = false)
@@ -29,24 +30,13 @@ public class HomeworkAnnouncement extends Announcement {
 
     private int submissionNum = 0;
 
-    private String textbookImageUrl;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    private ClassGroup classGroup;
+    private Textbook textbook;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-
-    public void setTargetClassGroup(ClassGroup classGroup) {
-        this.classGroup = classGroup;
-    }
-
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
-    }
-
-    public void setTextbookImageUrl(String textbookImageUrl) {
-        this.textbookImageUrl = textbookImageUrl;
     }
 }

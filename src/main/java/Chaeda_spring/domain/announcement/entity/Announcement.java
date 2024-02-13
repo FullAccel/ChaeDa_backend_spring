@@ -1,6 +1,7 @@
 package Chaeda_spring.domain.announcement.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
-public class Announcement extends BaseTimeEntity {
+public abstract class Announcement extends BaseTimeEntity {
 
     @Id
-    @Column(name = "NOTIFICATION_ID")
+    @Column(name = "announcement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,8 +26,10 @@ public class Announcement extends BaseTimeEntity {
     @Column(nullable = false, length = 500)
     private String content;
 
-    public Announcement(Long id, String content) {
-        this.id = id;
-        this.content = content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ClassGroup classGroup;
+
+    public void setTargetClassGroup(ClassGroup classGroup) {
+        this.classGroup = classGroup;
     }
 }

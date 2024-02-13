@@ -7,7 +7,7 @@ import Chaeda_spring.domain.class_group.service.ClassGroupService;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Teacher;
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementRequestDto;
-import Chaeda_spring.domain.announcement.dto.HwAnnouncementSimpleResponseDto;
+import Chaeda_spring.domain.announcement.dto.HwAnnouncementResponseDto;
 import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
 import Chaeda_spring.domain.textbook.entity.Textbook;
@@ -47,27 +47,24 @@ public class HwAnnouncementService {
         Textbook textbook = textbookRespository.findById(dto.getTextBookId())
                 .orElseThrow(() -> new NotFoundException("해당 Id의 교재가 존재하지 않습니다."));
 
-        HomeworkAnnouncement hwNotification = dto.toEntity();
-        hwNotification.setTextbookImageUrl(textbook.getImageUrl());
+        HomeworkAnnouncement hwAnnouncement = dto.toEntity();
         //선생님에 숙제공지 연결
-        hwNotification.setTargetClassGroup(classGroup);
-        hwNotification.setTeacher(teacher);
+        hwAnnouncement.setTargetClassGroup(classGroup);
+        hwAnnouncement.setTeacher(teacher);
         //클래스 소속 학생들이게 숙제공지 연결
-        classGroupService.connectHomeworkToStudent(classGroup, hwNotification);
+        classGroupService.connectHomeworkToStudent(classGroup, hwAnnouncement);
 
-        return hwAnnouncementRepository.save(hwNotification).getId();
+        return hwAnnouncementRepository.save(hwAnnouncement).getId();
     }
 
-    public List<HwAnnouncementSimpleResponseDto> getHwToTeacher(Long memberId) {
+    public List<HwAnnouncementResponseDto> getHwToTeacher(Long memberId) {
         Teacher teacher = (Teacher) memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
 
         return teacher.getHomeworkNotificationList().stream()
-                .map(HwAnnouncementSimpleResponseDto::new)
+                .map(HwAnnouncementResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-
 
     public HwAnnouncementContentDto getHwContent(Long hwAnnouncementId) {
         HomeworkAnnouncement hwAnnouncement = hwAnnouncementRepository.findById(hwAnnouncementId)

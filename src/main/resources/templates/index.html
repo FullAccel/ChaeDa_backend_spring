@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>File Upload</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .drag-area {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-8">
+    <div class="drag-area bg-white p-6 rounded-md shadow-lg flex flex-col justify-center items-center">
+        <p class="mb-3">여기에 파일을 드래그 앤 드롭 하거나 클릭하여 선택하세요</p>
+        <button class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">파일 선택</button>
+        <input hidden id="fileInput" type="file">
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dragArea = document.querySelector('.drag-area');
+        const fileInput = document.getElementById('fileInput');
+        const button = dragArea.querySelector('button');
+
+        button.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function () {
+            // You can add the file to a FormData object if you want to send it to the server
+            const formData = new FormData();
+            formData.append('file', this.files[0]);
+
+            // You can send the formData to the server here using fetch or axios
+            // For now, let's just log the name of the uploaded file
+            console.log('Selected file:', this.files[0].name);
+        });
+
+        dragArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dragArea.classList.add('active');
+        });
+
+        dragArea.addEventListener('dragleave', () => {
+            dragArea.classList.remove('active');
+        });
+
+        dragArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dragArea.classList.remove('active');
+
+            const files = event.dataTransfer.files;
+            fileInput.files = files;
+
+            // Log the name of the dropped file
+            console.log('Dropped file:', files[0].name);
+        });
+    });
+
+</script>
+</body>
+</html>

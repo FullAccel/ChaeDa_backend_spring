@@ -14,8 +14,9 @@ public class HwAnnouncementRequestDto {
 
     private String title;
 
-    @Schema(description = "공지 본문 내용", example = "500자를 넘으면 에러납니다", type = "string")
+    @Schema(description = "공지 본문 내용", example = "1000자를 넘으면 에러납니다", type = "string")
     private String content;
+
 
     private int startPage;
 
@@ -25,9 +26,12 @@ public class HwAnnouncementRequestDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadLine;
 
+    @Schema(example = "1", type = "long")
     private Long textBookId;
 
-    public HomeworkAnnouncement toEntity(){
+    private Long classGroupId;
+
+    public HomeworkAnnouncement toEntity() {
         return HomeworkAnnouncement.builder()
                 .title(this.title)
                 .content(this.content)
@@ -35,6 +39,7 @@ public class HwAnnouncementRequestDto {
                 .endPage(this.endPage)
                 .deadLineDateTime(this.deadLine)
                 .deadLineDate(this.deadLine.toLocalDate())
+//                .textBookId(textBookId)
                 .build();
     }
 }

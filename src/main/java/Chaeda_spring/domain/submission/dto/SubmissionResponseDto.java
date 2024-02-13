@@ -1,6 +1,5 @@
 package Chaeda_spring.domain.submission.dto;
 
-import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import Chaeda_spring.domain.submission.entity.Submission;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,7 +33,7 @@ public class SubmissionResponseDto {
     @Builder
     public SubmissionResponseDto(Submission submission) {
         this.announcementName = submission.getHomeworkNotification().getTitle();
-        this.bookImageUrl = submission.getHomeworkNotification().getTextbookImageUrl();
+//        this.bookImageUrl = submission.getHomeworkNotification().getTextbookImageUrl();
         this.completeStatus = submission.isCompleteStatus();
         this.deadLine = submission.getHomeworkNotification().getDeadLineDateTime();
         this.createdTime = submission.getHomeworkNotification().getCreatedDate();
