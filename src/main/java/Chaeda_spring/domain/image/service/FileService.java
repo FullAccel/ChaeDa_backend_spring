@@ -1,8 +1,12 @@
 package Chaeda_spring.domain.image.service;
 
-import Chaeda_spring.domain.image.domain.ImageFileExtension;
-import Chaeda_spring.domain.image.domain.ImageType;
 import Chaeda_spring.domain.image.dto.PresignedUrlRequest;
+import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
+import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
+import Chaeda_spring.domain.image.entity.Image;
+import Chaeda_spring.domain.image.entity.ImageFileExtension;
+import Chaeda_spring.domain.image.entity.ImageRepository;
+import Chaeda_spring.domain.image.entity.ImageType;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import com.amazonaws.HttpMethod;
@@ -19,7 +23,9 @@ import org.webjars.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,16 +36,21 @@ public class FileService {
 
     private final MemberRepository memberRepository;
 
+    private final ImageRepository imageRepository;
+
+    private final int PRESIGNED_EXPIRATION = 1000 * 60 * 30; //30분
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    public String generatePresignedUrl(Long memberId, PresignedUrlRequest request) {
+    public PresignedUrlResponse generatePresignedUrl(Long memberId, PresignedUrlRequest request) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
 
         String imageKey = generateUUID();
         String fileName = createFileName(
+                memberId,
                 ImageType.HOMEWORK_THUMBNAIL,
                 imageKey,
                 request.imageFileExtension());
@@ -52,7 +63,42 @@ public class FileService {
 
         String presignedUrl = amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
 
-        return presignedUrl;
+        return PresignedUrlResponse.builder()
+                .imageKey(imageKey)
+                .presigendUrl(presignedUrl)
+                .build();
+    }
+
+    public boolean uploadImageComplete(Long memberId, UploadCompleteRequest request) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
+
+        Image image = Image.builder()
+                .imageType(request.imageType())
+                .imageKey(request.imageKey())
+                .imageFileExtension(request.imageFileExtension())
+                .memberId(memberId)
+                .build();
+        imageRepository.save(image);
+
+        return true;
+    }
+
+    public List<String> getFileUrl(String[] filenames) {
+
+        List<String> urls = new ArrayList<>();
+        Date preSignedUrlExpiration = getPreSignedUrlExpiration();
+
+        for (String filename : filenames) {
+            System.out.println("넘어오는 파일명 : " + filename);
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucketName, (filename).replace(File.separatorChar, '/'))
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(preSignedUrlExpiration);
+            urls.add(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString());
+        }
+        return urls;
     }
 
     public void uploadFile(MultipartFile file) throws IOException {
@@ -81,11 +127,14 @@ public class FileService {
     }
 
     private String createFileName(
+            Long memberId,
             ImageType imageType,
             String imageKey,
             ImageFileExtension imageFileExtension
     ) {
         return imageType.getValue()
+                + "/"
+                + memberId
                 + "/"
                 + imageKey
                 + "."
@@ -109,7 +158,7 @@ public class FileService {
     private Date getPreSignedUrlExpiration() {
         Date expiration = new Date();
         var expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 30;
+        expTimeMillis += PRESIGNED_EXPIRATION;
         expiration.setTime(expTimeMillis);
         return expiration;
     }

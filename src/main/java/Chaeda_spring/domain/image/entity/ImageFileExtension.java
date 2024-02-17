@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.image.domain;
+package Chaeda_spring.domain.image.entity;
 
 import Chaeda_spring.global.exception.CustomException;
 import Chaeda_spring.global.exception.ErrorCode;
