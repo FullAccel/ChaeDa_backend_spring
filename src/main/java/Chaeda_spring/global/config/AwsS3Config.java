@@ -1,5 +1,6 @@
 package Chaeda_spring.global.config;
 
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -22,11 +23,36 @@ public class AwsS3Config {
 
     @Bean
     public AmazonS3 amazonS3() {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        AWSCredentials credentials =
+                new BasicAWSCredentials(
+                        accessKey, secretKey);
+
         return AmazonS3ClientBuilder.standard()
                 .withRegion(region)
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
+
     }
+
+//    @Bean
+//    public AwsCredentials basicAWSCredentials() {
+//        return AwsBasicCredentials.create(accessKey, secretKey);
+//    }
+//
+//    @Bean
+//    public S3Presigner s3Presigner(AwsCredentials awsCredentials) {
+//        return S3Presigner.builder()
+//                .region(Region.AP_NORTHEAST_2)
+//                .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
+//                .build();
+//    }
+//
+//    @Bean
+//    public S3Client s3Client(AwsCredentials awsCredentials) {
+//        return S3Client.builder()
+//                .region(Region.AP_NORTHEAST_2)
+//                .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
+//                .build();
+//    }
 }
 

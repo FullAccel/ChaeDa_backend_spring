@@ -51,7 +51,7 @@ public class FileService {
         String imageKey = generateUUID();
         String fileName = createFileName(
                 memberId,
-                ImageType.HOMEWORK_THUMBNAIL,
+                request.imageType(),
                 imageKey,
                 request.imageFileExtension());
 
@@ -65,7 +65,7 @@ public class FileService {
 
         return PresignedUrlResponse.builder()
                 .imageKey(imageKey)
-                .presigendUrl(presignedUrl)
+                .presignedUrl(presignedUrl)
                 .build();
     }
 
@@ -85,20 +85,42 @@ public class FileService {
         return true;
     }
 
-    public List<String> getFileUrl(String[] filenames) {
+    public List<String> getFileUrl(Long memberId, List<UploadCompleteRequest> requests) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
 
         List<String> urls = new ArrayList<>();
         Date preSignedUrlExpiration = getPreSignedUrlExpiration();
 
-        for (String filename : filenames) {
-            System.out.println("넘어오는 파일명 : " + filename);
+        for (UploadCompleteRequest request : requests) {
+            String filename = createFileName(
+                    memberId,
+                    request.imageType(),
+                    request.imageKey(),
+                    request.imageFileExtension()
+            );
             GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                    new GeneratePresignedUrlRequest(bucketName, (filename).replace(File.separatorChar, '/'))
+                    new GeneratePresignedUrlRequest(bucketName, filename)
                             .withMethod(HttpMethod.GET)
                             .withExpiration(preSignedUrlExpiration);
             urls.add(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString());
         }
         return urls;
+    }
+
+    private GeneratePresignedUrlRequest createGeneratePreSignedUrlRequest(
+            String bucket, String fileName, String fileExtension) {
+        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                new GeneratePresignedUrlRequest(bucket, fileName)
+                        .withMethod(HttpMethod.PUT)
+//                        .withKey(fileName)
+//                        .withContentType("image/" + fileExtension)
+                        .withExpiration(getPreSignedUrlExpiration());
+
+        generatePresignedUrlRequest.addRequestParameter(
+                Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
+
+        return generatePresignedUrlRequest;
     }
 
     public void uploadFile(MultipartFile file) throws IOException {
@@ -133,27 +155,18 @@ public class FileService {
             ImageFileExtension imageFileExtension
     ) {
         return imageType.getValue()
-                + "/"
-                + memberId
-                + "/"
-                + imageKey
+                +
+                "/"
+                +
+                memberId
+                +
+                "/"
+                +
+                imageKey
                 + "."
                 + imageFileExtension.getUploadExtension();
     }
 
-    private GeneratePresignedUrlRequest createGeneratePreSignedUrlRequest(
-            String bucket, String fileName, String fileExtension) {
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucket, fileName, HttpMethod.PUT)
-                        .withKey(fileName)
-                        .withContentType("image/" + fileExtension)
-                        .withExpiration(getPreSignedUrlExpiration());
-
-        generatePresignedUrlRequest.addRequestParameter(
-                Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
-
-        return generatePresignedUrlRequest;
-    }
 
     private Date getPreSignedUrlExpiration() {
         Date expiration = new Date();

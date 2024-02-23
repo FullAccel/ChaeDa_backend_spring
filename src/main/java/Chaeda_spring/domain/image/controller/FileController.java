@@ -23,7 +23,7 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("/upload")
-    @Operation(summary = "이미지 여러장 보내기")
+//    @Operation(summary = "이미지 여러장 보내기")
     public ResponseEntity<String> uploadFiles(@RequestParam("files") MultipartFile[] files) {
         for (MultipartFile file : files) {
             try {
@@ -49,10 +49,10 @@ public class FileController {
         return ResponseEntity.ok(isSaveComplete);
     }
 
-    @GetMapping("/display")
+    @PostMapping("/display/{memberId}")
     @Operation(summary = "이미지 파일 읽어올 url 요청")
-    public ResponseEntity<List<String>> getDisplayUrl(@RequestParam("filenames") String[] filenames) {
-        return ResponseEntity.ok(fileService.getFileUrl(filenames));
+    public ResponseEntity<List<String>> getDisplayUrl(@PathVariable Long memberId, @RequestBody List<UploadCompleteRequest> requests) {
+        return ResponseEntity.ok(fileService.getFileUrl(memberId, requests));
     }
 
 }

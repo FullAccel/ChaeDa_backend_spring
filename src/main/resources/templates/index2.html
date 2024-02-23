@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="fileInput" type="file">
+<p>Upload percentage: <span id="uploadPercent"></span></p>
+<img id="imgPreview" src=""/>
+<script>
+    document.addEventListener("load", () => {
+        document.getElementById("fileInput").addEventListner('change', handleFileChange);
+
+        console.log("hehe");
+
+        async function handleFileChange(e) {
+            console.log(e);
+            try {
+                const file = e.target.files[0];
+                const {type, name} = file;
+
+                // 1. Get upload URL
+                let resp = await axios.post(
+                    "http://114.70.23.79:8080/api/images/presigned-url/1",
+                    {
+                        imageType: "ANNOUNCEMENT_THUMBNAIL",
+                        imageFileExtension: name.split(".").pop(),
+                    }
+                );
+
+                // 2. Upload at URL
+                const {persigendUrl, imageKey} = resp.data;
+                await axios.put(persigendUrl, file, {
+                    headers: {"Content-Type": file.type},
+                    onUploadProgress: (e) => {
+                        //  progress
+                        var percentCompleted = Math.round((e.loaded * 100) / e.total);
+                        document.getElementById("uploadPercent").innerHTML = percentCompleted;
+                    },
+                });
+                document.getElementById("uploadPercent").innerHTML = "Uploaded at" + imageKey;
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

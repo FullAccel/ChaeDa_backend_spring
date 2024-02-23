@@ -28,17 +28,76 @@
         const dragArea = document.querySelector('.drag-area');
         const fileInput = document.getElementById('fileInput');
         const button = dragArea.querySelector('button');
+        const memberId = 'yourMemberId'; // memberId 값을 설정하세요.
 
         button.addEventListener('click', () => fileInput.click());
 
-        fileInput.addEventListener('change', function () {
-            // You can add the file to a FormData object if you want to send it to the server
-            const formData = new FormData();
-            formData.append('file', this.files[0]);
+        const uploadToS3 = async (file, presignedUrl) => {
+            // // URL 객체를 사용하여 presignedUrl의 프로토콜을 http로 변경
+            // let url = new URL(presignedUrl);
+            // url.protocol = 'http:';
+            //
+            // // 변경된 URL을 문자열로 다시 변환
+            // let httpUrl = url.toString();
+            // console.log(httpUrl)
 
-            // You can send the formData to the server here using fetch or axios
-            // For now, let's just log the name of the uploaded file
-            console.log('Selected file:', this.files[0].name);
+            const response = await fetch(presignedUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': file.type
+                },
+                body: file
+            });
+
+            if (response.ok) {
+                console.log('File uploaded successfully to S3');
+            } else {
+                console.error('Failed to upload file to S3');
+            }
+        };
+
+        const getPresignedUrlAndUpload = async (file) => {
+            try {
+                const memberId = 1; // memberId 값을 1로 설정
+                const requestBody = {
+                    imageType: "ANNOUNCEMENT_THUMBNAIL",
+                    imageFileExtension: "PNG",
+                    imageKey: "asdfadsf"
+                };
+
+                const response = await fetch(`http://localhost:8080/api/images/presigned-url/${memberId}`, {
+                    method: 'POST', // 백엔드 요구에 따라 'GET'에서 'POST'로 변경
+                    headers: {
+                        'Content-Type': 'application/json' // 요청 본문 타입을 JSON으로 설정
+                    },
+                    body: JSON.stringify(requestBody) // 요청 본문에 JSON 형태로 정보 포함
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const presignedUrl = data.presignedUrl; // API 응답 구조에 맞게 조정
+                    console.log(presignedUrl)
+                    if (presignedUrl) {
+                        // 프로토콜 변경을 위해 문자열로 처리
+                        // let httpUrl = presignedUrl.replace(/^https:/, 'http:');
+
+                        // 변경된 URL을 사용하여 파일을 S3에 업로드
+                        await uploadToS3(file, presignedUrl);
+                    } else {
+                        console.error('Presigned URL is undefined');
+                    }
+                } else {
+                    console.error('Failed to get presigned URL');
+                }
+            } catch (error) {
+                console.error('Error fetching presigned URL:', error);
+            }
+        };
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            console.log('Selected file:', file.name);
+            getPresignedUrlAndUpload(file);
         });
 
         dragArea.addEventListener('dragover', (event) => {
@@ -57,11 +116,10 @@
             const files = event.dataTransfer.files;
             fileInput.files = files;
 
-            // Log the name of the dropped file
             console.log('Dropped file:', files[0].name);
+            getPresignedUrlAndUpload(files[0]);
         });
     });
-
 </script>
 </body>
 </html>

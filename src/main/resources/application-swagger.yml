@@ -3,3 +3,27 @@ springdoc:
     path: /docs.html
   api-docs:
     path: /api-docs
+
+paths:
+  /api/images/upload:
+    post:
+      summary: 이미지 여러장 업로드
+      tags:
+        - file-controller
+      operationId: uploadFiles
+      parameters:
+        - name: files
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string

@@ -10,7 +10,7 @@ public record PresignedUrlRequest(
         @Schema(description = "이미지 파일의 타입", defaultValue = "ANNOUNCEMENT_THUMBNAIL")
         ImageType imageType,
         @NotNull(message = "이미지 파일의 확장자는 비워둘 수 없습니다.")
-        @Schema(description = "이미지 파일의 확장자", defaultValue = "JPEG")
+        @Schema(description = "이미지 파일의 확장자", defaultValue = "PNG")
         ImageFileExtension imageFileExtension
 ) {
 }

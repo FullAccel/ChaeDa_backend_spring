@@ -11,6 +11,6 @@ public record PresignedUrlResponse(
         String imageKey,
         @NotNull(message = "Presigned Url입니다. 해당 url을 통해 객체를 업로드해주세요")
         @Schema(description = "이미지 파일의 업로드 경로 url")
-        String presigendUrl
+        String presignedUrl
 ) {
 }
