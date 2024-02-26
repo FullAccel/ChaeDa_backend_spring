@@ -1,18 +1,19 @@
 package Chaeda_spring.domain.image.controller;
 
-import Chaeda_spring.domain.image.dto.PresignedUrlRequest;
+import Chaeda_spring.domain.image.dto.ImageUploadRequest;
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
 import Chaeda_spring.domain.image.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,23 +23,18 @@ public class FileController {
 
     private final FileService fileService;
 
-    @PostMapping("/upload")
-//    @Operation(summary = "이미지 여러장 보내기")
-    public ResponseEntity<String> uploadFiles(@RequestParam("files") MultipartFile[] files) {
-        for (MultipartFile file : files) {
-            try {
-                fileService.uploadFile(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-            }
-        }
-        return ResponseEntity.ok("Files uploaded successfully");
+    @PostMapping(value = "/upload/{memberId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "이미지 직접 서버로 보내서 저장하기")
+    public ResponseEntity<ArrayList<String>> uploadFiles(
+            @Parameter(description = "압로드할 이미지 파일 이름은 'homework_thumbnail-1' 같이 {이미지타입}-{순서}로 해주세요")
+            @RequestPart("files") MultipartFile[] files,
+            @RequestParam Long memberId) {
+        return ResponseEntity.ok(fileService.uploadFile(files, memberId));
     }
 
     @PostMapping("/presigned-url/{memberId}")
     @Operation(summary = "파일을 업로드할 presigned-url 요청")
-    public ResponseEntity<PresignedUrlResponse> createPresignedUrl(@PathVariable Long memberId, @Valid @RequestBody PresignedUrlRequest request) {
+    public ResponseEntity<PresignedUrlResponse> createPresignedUrl(@PathVariable Long memberId, @Valid @RequestBody ImageUploadRequest request) {
         return ResponseEntity.ok(fileService.generatePresignedUrl(memberId, request));
     }
 

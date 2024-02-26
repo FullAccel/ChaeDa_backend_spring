@@ -33,9 +33,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.2.18'
 
     //swagger
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     //db
     runtimeOnly 'org.postgresql:postgresql'

@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.image.entity;
 
-import Chaeda_spring.global.exception.CustomException;
 import Chaeda_spring.global.exception.ErrorCode;
+import Chaeda_spring.global.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,6 +23,6 @@ public enum ImageFileExtension {
                         imageFileExtension ->
                                 imageFileExtension.uploadExtension.equals(uploadExtension))
                 .findFirst()
-                .orElseThrow(() -> new CustomException(ErrorCode.IMAGE_FILE_EXTENSION_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.IMAGE_FILE_EXTENSION_NOT_FOUND));
     }
 }

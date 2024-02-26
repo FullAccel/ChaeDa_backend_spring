@@ -11,4 +11,13 @@ public enum ImageType {
     MEMBER_PROFILE("member_profile"),
     ;
     private final String value;
+
+    public static ImageType from(String value) {
+        for (ImageType type : values()) {
+            if (type.getValue().equals(value)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
 }

@@ -5,9 +5,10 @@ import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.submission.dto.SubmissionImageRequestDto;
 import Chaeda_spring.domain.submission.dto.SubmissionResponseDto;
 import Chaeda_spring.domain.submission.entity.*;
+import Chaeda_spring.global.exception.ErrorCode;
+import Chaeda_spring.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +26,7 @@ public class SubmissionService {
 
     public List<SubmissionResponseDto> getHwToStudent(Long memberId, LocalDate date) {
         Student student = (Student) memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
         return student.getSubmissionList().stream()
                 .map(SubmissionResponseDto::new)
@@ -35,7 +36,7 @@ public class SubmissionService {
 
     public void storeS3Url(Long memberId, Long homeworkId, SubmissionImageRequestDto dto) {
         List<String> urlList = dto.getImage_urls();
-        for (int i = 0; i < urlList.size(); i+=ONE_IMAGE_PLUS_SLICING_NUM) {
+        for (int i = 0; i < urlList.size(); i += ONE_IMAGE_PLUS_SLICING_NUM) {
             String beforeSlicingUrl = urlList.get(i);
             Submission submission = submissionRepository.findByHomeworkNotificationIdAndStudentId(homeworkId, memberId);
 

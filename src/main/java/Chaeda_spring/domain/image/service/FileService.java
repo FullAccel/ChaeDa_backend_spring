@@ -1,6 +1,6 @@
 package Chaeda_spring.domain.image.service;
 
-import Chaeda_spring.domain.image.dto.PresignedUrlRequest;
+import Chaeda_spring.domain.image.dto.ImageUploadRequest;
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
 import Chaeda_spring.domain.image.entity.Image;
@@ -9,6 +9,8 @@ import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.MemberRepository;
+import Chaeda_spring.global.exception.ErrorCode;
+import Chaeda_spring.global.exception.NotFoundException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.Headers;
@@ -19,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.webjars.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,15 +39,15 @@ public class FileService {
 
     private final ImageRepository imageRepository;
 
-    private final int PRESIGNED_EXPIRATION = 1000 * 60 * 30; //30분
+    private final int PRESIGNED_EXPIRATION = 1000 * 30; //30분
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    public PresignedUrlResponse generatePresignedUrl(Long memberId, PresignedUrlRequest request) {
+    public PresignedUrlResponse generatePresignedUrl(Long memberId, ImageUploadRequest request) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
         String imageKey = generateUUID();
         String fileName = createFileName(
@@ -72,7 +73,7 @@ public class FileService {
     public boolean uploadImageComplete(Long memberId, UploadCompleteRequest request) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
         Image image = Image.builder()
                 .imageType(request.imageType())
@@ -87,7 +88,7 @@ public class FileService {
 
     public List<String> getFileUrl(Long memberId, List<UploadCompleteRequest> requests) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("해당 Id의 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
         List<String> urls = new ArrayList<>();
         Date preSignedUrlExpiration = getPreSignedUrlExpiration();
@@ -103,6 +104,8 @@ public class FileService {
                     new GeneratePresignedUrlRequest(bucketName, filename)
                             .withMethod(HttpMethod.GET)
                             .withExpiration(preSignedUrlExpiration);
+            generatePresignedUrlRequest.addRequestParameter(
+                    Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
             urls.add(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString());
         }
         return urls;
@@ -117,17 +120,39 @@ public class FileService {
 //                        .withContentType("image/" + fileExtension)
                         .withExpiration(getPreSignedUrlExpiration());
 
-        generatePresignedUrlRequest.addRequestParameter(
-                Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
+//        generatePresignedUrlRequest.addRequestParameter(
+//                Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
 
         return generatePresignedUrlRequest;
     }
 
-    public void uploadFile(MultipartFile file) throws IOException {
-        File fileObj = convertMultiPartFileToFile(file);
-        // 파일을 amazonS3에 업로드합니다.
-        amazonS3.putObject(new PutObjectRequest(bucketName, file.getOriginalFilename(), fileObj));
-        fileObj.delete(); // To clean up the temporary file
+    public ArrayList<String> uploadFile(MultipartFile[] files, Long memberId) {
+
+        ArrayList<String> fileNames = new ArrayList<>();
+
+        for (int i = 0; i < files.length; i++) {
+            try {
+                File fileObj = convertMultiPartFileToFile(files[i]);
+                String originalFilename = files[i].getOriginalFilename();
+                String imageType = originalFilename.split("-")[0];
+                String imageFileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
+                String imageKey = generateUUID();
+                String fileName = createFileName(
+                        memberId,
+                        ImageType.from(imageType),
+                        imageKey,
+                        ImageFileExtension.from(imageFileExtension));
+
+                // 파일을 Amazon S3에 업로드합니다.
+                amazonS3.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+                fileObj.delete(); // 임시 파일 정리
+                fileNames.add(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return fileNames;
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) throws IOException {
