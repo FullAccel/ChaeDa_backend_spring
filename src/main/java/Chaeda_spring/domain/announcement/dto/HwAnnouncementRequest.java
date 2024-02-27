@@ -19,6 +19,7 @@ public record HwAnnouncementRequest(
         LocalDateTime deadLine,
         @Schema(example = "1", type = "long")
         Long textBookId,
+        @Schema(example = "1", type = "long")
         Long classGroupId
 ) {
 }

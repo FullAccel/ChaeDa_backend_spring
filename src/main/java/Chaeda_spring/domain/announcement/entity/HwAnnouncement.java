@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-public class HomeworkAnnouncement extends Announcement {
+public class HwAnnouncement extends Announcement {
 
     @Column(nullable = false)
     private int startPage;
@@ -40,8 +40,8 @@ public class HomeworkAnnouncement extends Announcement {
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    public static HomeworkAnnouncement from(HwAnnouncementRequest request, Textbook textbook, Teacher teacher, ClassGroup classGroup) {
-        return HomeworkAnnouncement.builder()
+    public static HwAnnouncement from(HwAnnouncementRequest request, Textbook textbook, Teacher teacher, ClassGroup classGroup) {
+        return HwAnnouncement.builder()
                 .title(request.title())
                 .content(request.content())
                 .startPage(request.startPage())

@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.textbook.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
+import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class Textbook extends BaseTimeEntity {
     private String targetGrade;
 
     @OneToMany(mappedBy = "textbook")
-    private List<HomeworkAnnouncement> homeworkNotificationList = new ArrayList<>();
+    private List<HwAnnouncement> homeworkNotificationList = new ArrayList<>();
 
     @Builder
     public Textbook(String name, String imageUrl, int lastPageNum, String targetGrade) {

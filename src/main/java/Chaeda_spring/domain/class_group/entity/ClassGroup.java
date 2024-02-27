@@ -1,9 +1,9 @@
 package Chaeda_spring.domain.class_group.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
 import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.member.entity.Teacher;
-import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class ClassGroup extends BaseTimeEntity {
     private Teacher teacher;
 
     @OneToMany(mappedBy = "classGroup")
-    private List<HomeworkAnnouncement> homeworkNotificationList = new ArrayList<>();
+    private List<HwAnnouncement> homeworkNotificationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "classGroup")
     private List<Course> courseList = new ArrayList<>();

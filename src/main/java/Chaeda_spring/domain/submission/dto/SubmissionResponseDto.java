@@ -32,11 +32,11 @@ public class SubmissionResponseDto {
 
     @Builder
     public SubmissionResponseDto(Submission submission) {
-        this.announcementName = submission.getHomeworkNotification().getTitle();
+        this.announcementName = submission.getHwAnnouncement().getTitle();
 //        this.bookImageUrl = submission.getHomeworkNotification().getTextbookImageUrl();
         this.completeStatus = submission.isCompleteStatus();
-        this.deadLine = submission.getHomeworkNotification().getDeadLineDateTime();
-        this.createdTime = submission.getHomeworkNotification().getCreatedDate();
+        this.deadLine = submission.getHwAnnouncement().getDeadLineDateTime();
+        this.createdTime = submission.getHwAnnouncement().getCreatedDate();
         this.dDay = Duration.between(LocalDateTime.now(), deadLine).toDays();
 
     }

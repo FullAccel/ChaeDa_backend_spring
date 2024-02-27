@@ -1,5 +1,7 @@
 package Chaeda_spring.domain.submission.service;
 
+import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
+import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.submission.dto.SubmissionImageRequestDto;
@@ -34,11 +36,21 @@ public class SubmissionService {
                 .collect(Collectors.toList());
     }
 
+    public void assignHomeworkToStudentsInClassGroup(ClassGroup classGroup, HwAnnouncement hwAnnouncement) {
+        classGroup.getCourseList().stream()
+                .forEach(course -> {
+                    Submission submission = new Submission();
+                    submission.setStudent(course.getStudent());
+                    submission.setHwAnnouncement(hwAnnouncement);
+                    submissionRepository.save(submission);
+                });
+    }
+
     public void storeS3Url(Long memberId, Long homeworkId, SubmissionImageRequestDto dto) {
         List<String> urlList = dto.getImage_urls();
         for (int i = 0; i < urlList.size(); i += ONE_IMAGE_PLUS_SLICING_NUM) {
             String beforeSlicingUrl = urlList.get(i);
-            Submission submission = submissionRepository.findByHomeworkNotificationIdAndStudentId(homeworkId, memberId);
+            Submission submission = submissionRepository.findByHwAnnouncementIdAndStudentId(homeworkId, memberId);
 
             SubmissionImage beforeSlicing = SubmissionImage.builder()
                     .imageUrl(beforeSlicingUrl)

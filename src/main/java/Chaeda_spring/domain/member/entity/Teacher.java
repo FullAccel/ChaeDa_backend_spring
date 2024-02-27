@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.member.entity;
 
+import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
-import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorValue("Teacher")
-public class Teacher extends Member{
+public class Teacher extends Member {
 
     private String subject;
 
@@ -26,7 +26,7 @@ public class Teacher extends Member{
     private List<ClassGroup> classGroupList = new ArrayList<>();
 
     @OneToMany(mappedBy = "teacher")
-    private List<HomeworkAnnouncement> homeworkNotificationList = new ArrayList<>();
+    private List<HwAnnouncement> homeworkNotificationList = new ArrayList<>();
 
     public Teacher(String name, String email, String gender, String phoneNumber, String address, String profileUrl, String subject, String notes) {
         super(name, email, gender, phoneNumber, address, profileUrl);
