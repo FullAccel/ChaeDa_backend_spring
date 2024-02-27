@@ -20,7 +20,7 @@ public abstract class Announcement extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 200)
     private String title;
 
     @Column(nullable = false, length = 500)
@@ -28,8 +28,4 @@ public abstract class Announcement extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ClassGroup classGroup;
-
-    public void setTargetClassGroup(ClassGroup classGroup) {
-        this.classGroup = classGroup;
-    }
 }

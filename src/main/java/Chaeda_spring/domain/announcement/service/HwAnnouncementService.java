@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.announcement.service;
 
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementContentDto;
-import Chaeda_spring.domain.announcement.dto.HwAnnouncementRequestDto;
+import Chaeda_spring.domain.announcement.dto.HwAnnouncementRequest;
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementResponseDto;
 import Chaeda_spring.domain.announcement.entity.HomeworkAnnouncement;
 import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
@@ -33,26 +33,22 @@ public class HwAnnouncementService {
     private final TextbookRespository textbookRespository;
 
     @Transactional
-    public Long uploadHomeworkNotification(Long classId, Long memberId, HwAnnouncementRequestDto dto) {
+    public Long uploadHomeworkNotification(Long classId, Long teacherId, HwAnnouncementRequest request) {
 
         ClassGroup classGroup = classGroupRepository.findById(classId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "해당 Id의 클래스가 존재하지 않습니다."));
 
-        Teacher teacher = (Teacher) memberRepository.findById(memberId)
+        Teacher teacher = (Teacher) memberRepository.findById(teacherId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
         if (teacher.getId() != classGroup.getId()) {
             throw new NotEqualsException(ErrorCode.MEMBER_NOT_AUTHORIZED_TO_ANNOUNCE);
         }
 
-        Textbook textbook = textbookRespository.findById(dto.getTextBookId())
+        Textbook textbook = textbookRespository.findById(request.textBookId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TEXTBOOK_NOT_FOUND, "해당 Id의 교재가 존재하지 않습니다."));
 
-        HomeworkAnnouncement hwAnnouncement = dto.toEntity();
-        //선생님에 숙제공지 연결
-        hwAnnouncement.setTargetClassGroup(classGroup);
-        hwAnnouncement.setTeacher(teacher);
-        //클래스 소속 학생들이게 숙제공지 연결
+        HomeworkAnnouncement hwAnnouncement = HomeworkAnnouncement.from(request, textbook, teacher, classGroup);
         classGroupService.connectHomeworkToStudent(classGroup, hwAnnouncement);
 
         return hwAnnouncementRepository.save(hwAnnouncement).getId();
