@@ -58,11 +58,10 @@
 
         const getPresignedUrlAndUpload = async (file) => {
             try {
-                const memberId = 1; // memberId 값을 1로 설정
+                const memberId = 4; // memberId 값을 1로 설정
                 const requestBody = {
-                    imageType: "ANNOUNCEMENT_THUMBNAIL",
+                    imageType: "HOMEWORK_SUBMISSION",
                     imageFileExtension: "PNG",
-                    imageKey: "asdfadsf"
                 };
 
                 const response = await fetch(`http://localhost:8080/api/images/presigned-url/${memberId}`, {

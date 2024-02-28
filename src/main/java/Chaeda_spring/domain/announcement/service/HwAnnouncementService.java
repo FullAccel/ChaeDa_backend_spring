@@ -11,6 +11,7 @@ import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.member.entity.Teacher;
 import Chaeda_spring.domain.submission.entity.Submission;
+import Chaeda_spring.domain.submission.entity.SubmissionRepository;
 import Chaeda_spring.domain.submission.service.SubmissionService;
 import Chaeda_spring.domain.textbook.entity.Textbook;
 import Chaeda_spring.domain.textbook.entity.TextbookRespository;
@@ -35,6 +36,7 @@ public class HwAnnouncementService {
     private final MemberRepository memberRepository;
     private final SubmissionService submissionService;
     private final TextbookRespository textbookRespository;
+    private final SubmissionRepository submissionRepository;
 
     @Transactional
     public Long uploadHwAnnouncement(Long classId, Long teacherId, HwAnnouncementRequest request) {
@@ -58,9 +60,19 @@ public class HwAnnouncementService {
 
         HwAnnouncement hwAnnouncement = HwAnnouncement.from(request, textbook, teacher, classGroup);
         hwAnnouncementRepository.save(hwAnnouncement);
-        submissionService.assignHomeworkToStudentsInClassGroup(classGroup, hwAnnouncement);
+        assignHomeworkToStudentsInClassGroup(classGroup, hwAnnouncement);
 
         return hwAnnouncement.getId();
+    }
+
+    private void assignHomeworkToStudentsInClassGroup(ClassGroup classGroup, HwAnnouncement hwAnnouncement) {
+        classGroup.getCourseList().stream()
+                .forEach(course -> {
+                    Submission submission = new Submission();
+                    submission.setStudent(course.getStudent());
+                    submission.setHwAnnouncement(hwAnnouncement);
+                    submissionRepository.save(submission);
+                });
     }
 
     public List<HwAnnouncementResponse> getHwToTeacher(Long teacherId) {

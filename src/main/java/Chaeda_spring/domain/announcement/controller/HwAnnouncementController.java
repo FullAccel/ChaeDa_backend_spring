@@ -42,7 +42,7 @@ public class HwAnnouncementController {
     }
 
     @GetMapping("student/{memberId}")
-    @Operation(summary = "(공용) 마감 날짜 기준 숙제 리스트를 가져오기", description = "해당 날짜의 숙제 리스트만 가져옵니다")
+    @Operation(summary = "(학생용) 마감 날짜 기준 숙제 리스트를 가져오기", description = "해당 날짜의 숙제 리스트만 가져옵니다")
     public ResponseEntity<List<HwAnnounceSummaryResponse>> getHomeworkSummaryListByDate(
             @PathVariable Long memberId,
             @Parameter(description = "날짜 형식은 'yyyy-mm-dd'로 해주세요")

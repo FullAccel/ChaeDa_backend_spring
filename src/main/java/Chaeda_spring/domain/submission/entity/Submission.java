@@ -2,6 +2,7 @@ package Chaeda_spring.domain.submission.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
+import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.member.entity.Student;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Submission extends BaseTimeEntity {
     private Student student;
 
     @OneToMany(mappedBy = "submission")
-    private List<SubmissionImage> submissionImageList = new ArrayList<>();
+    private List<Image> imageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "submission")
     private List<SlicingImage> slicingImageList = new ArrayList<>();

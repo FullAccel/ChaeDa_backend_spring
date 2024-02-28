@@ -23,6 +23,9 @@ public enum ErrorCode {
     // Class
     CLASS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 클래스를 찾을 수 없습니다."),
 
+    // Submission
+    HOMEWORK_NOT_COMPLETE(HttpStatus.BAD_REQUEST, "숙제를 아직 완료하지 않았습니다"),
+
 
     // TextBook
     TEXTBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 교재를 찾을 수 없습니다"),
