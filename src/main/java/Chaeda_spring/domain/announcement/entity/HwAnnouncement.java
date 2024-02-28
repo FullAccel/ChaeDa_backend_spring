@@ -3,17 +3,17 @@ package Chaeda_spring.domain.announcement.entity;
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementRequest;
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.domain.submission.entity.Submission;
 import Chaeda_spring.domain.textbook.entity.Textbook;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +33,9 @@ public class HwAnnouncement extends Announcement {
     private LocalDate deadLineDate;
 
     private int submissionNum = 0;
+
+    @OneToMany(mappedBy = "hwAnnouncement")
+    private List<Submission> submissionList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Textbook textbook;

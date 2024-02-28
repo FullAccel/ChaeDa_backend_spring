@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ImageType {
     HOMEWORK_THUMBNAIL("homework_thumbnail"),
     ANNOUNCEMENT_THUMBNAIL("announcement_thumbnail"),
+    HOMEWORK_SUBMISSION("homework_submission"),
     MEMBER_PROFILE("member_profile"),
     ;
     private final String value;

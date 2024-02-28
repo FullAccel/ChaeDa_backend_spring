@@ -17,6 +17,8 @@ public enum ErrorCode {
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
     MEMBER_NOT_AUTHORIZED_TO_ANNOUNCE(HttpStatus.BAD_REQUEST, "이 회원은 해당 공지를 할 권한이 없습니다."),
+    IS_NOT_TEACHER(HttpStatus.BAD_REQUEST, "해당 회원은 선생님 회원이 아닙니다"),
+    IS_NOT_STUDENT(HttpStatus.BAD_REQUEST, "해당 회원은 학생 회원이 아닙니다"),
 
     // Class
     CLASS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 클래스를 찾을 수 없습니다."),
@@ -24,6 +26,9 @@ public enum ErrorCode {
 
     // TextBook
     TEXTBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 교재를 찾을 수 없습니다"),
+
+    //Announcement
+    ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 공지를 찾을 수 없습니다."),
 
     // Security
     AUTH_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "시큐리티 인증 정보를 찾을 수 없습니다."),
@@ -38,6 +43,7 @@ public enum ErrorCode {
     // Image
     IMAGE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지 키를 찾을 수 없습니다."),
     IMAGE_FILE_EXTENSION_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지 파일 형식을 찾을 수 없습니다."),
+    IMAGE_TYPE_INCORRECT(HttpStatus.BAD_REQUEST, "해당 이미지 타입을 받을 수 없습니다."),
     IMAGEFILE_AND_REQUESTBODY_COUNT_NOT_EQUALS(HttpStatus.BAD_REQUEST, "파일 개수와 요청 body의 개수가 맞지 않습니다."),
 
     // Notification

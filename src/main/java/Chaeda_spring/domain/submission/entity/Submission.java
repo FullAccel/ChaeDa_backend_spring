@@ -25,10 +25,8 @@ public class Submission extends BaseTimeEntity {
     //완료여부
     private boolean completeStatus = false;
 
-    private long dDay;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hw_notification_id")
+    @JoinColumn(name = "hw_announcement_id")
     private HwAnnouncement hwAnnouncement;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,5 +44,10 @@ public class Submission extends BaseTimeEntity {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+
+    public void completeHomework() {
+        this.completeStatus = true;
     }
 }

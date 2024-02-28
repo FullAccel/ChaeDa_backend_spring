@@ -1,17 +1,16 @@
 package Chaeda_spring.domain.announcement.service;
 
 import Chaeda_spring.domain.announcement.dto.HwAnnounceSummaryResponse;
-import Chaeda_spring.domain.announcement.dto.HwAnnouncementContentDto;
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementRequest;
 import Chaeda_spring.domain.announcement.dto.HwAnnouncementResponse;
 import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
 import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.class_group.entity.ClassGroupRepository;
-import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.domain.submission.entity.Submission;
 import Chaeda_spring.domain.submission.service.SubmissionService;
 import Chaeda_spring.domain.textbook.entity.Textbook;
 import Chaeda_spring.domain.textbook.entity.TextbookRespository;
@@ -42,9 +41,13 @@ public class HwAnnouncementService {
 
         ClassGroup classGroup = classGroupRepository.findById(classId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "해당 Id의 클래스가 존재하지 않습니다."));
-
-        Teacher teacher = (Teacher) memberRepository.findById(teacherId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
+        Teacher teacher;
+        try {
+            teacher = (Teacher) memberRepository.findById(teacherId)
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
+        } catch (ClassCastException e) {
+            throw new NotEqualsException(ErrorCode.IS_NOT_TEACHER);
+        }
 
         if (teacher.getId() != classGroup.getId()) {
             throw new NotEqualsException(ErrorCode.MEMBER_NOT_AUTHORIZED_TO_ANNOUNCE);
@@ -60,35 +63,43 @@ public class HwAnnouncementService {
         return hwAnnouncement.getId();
     }
 
-    public List<HwAnnouncementResponse> getHwToTeacher(Long memberId) {
-        Teacher teacher = (Teacher) memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
+    public List<HwAnnouncementResponse> getHwToTeacher(Long teacherId) {
+        Teacher teacher;
+        try {
+            teacher = (Teacher) memberRepository.findById(teacherId)
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
+        } catch (ClassCastException e) {
+            throw new NotEqualsException(ErrorCode.IS_NOT_TEACHER);
+        }
 
         return teacher.getHomeworkNotificationList().stream()
                 .map(HwAnnouncementResponse::of)
                 .collect(Collectors.toList());
     }
 
-    public HwAnnouncementContentDto getHwContent(Long hwAnnouncementId) {
+    public HwAnnouncementResponse getHwContent(Long hwAnnouncementId) {
         HwAnnouncement hwAnnouncement = hwAnnouncementRepository.findById(hwAnnouncementId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ANNOUNCEMENT_NOT_FOUND, "해당 Id의 숙제 공지가 존재하지 않습니다."));
 
-        return new HwAnnouncementContentDto(hwAnnouncement);
+        return HwAnnouncementResponse.of(hwAnnouncement);
     }
 
-    public List<HwAnnounceSummaryResponse> getHomeworkSummaryListByDate(Long studentId, LocalDate date) {
-        Student student = (Student) memberRepository.findById(studentId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 학생이 존재하지 않습니다."));
+    public List<HwAnnounceSummaryResponse> getHomeworkSummaryListByDate(Long studentId, LocalDate targetDate) {
+        Student student;
+
+        try {
+            student = (Student) memberRepository.findById(studentId)
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 학생이 존재하지 않습니다."));
+        } catch (ClassCastException e) {
+            throw new NotEqualsException(ErrorCode.IS_NOT_STUDENT);
+        }
 
         List<HwAnnounceSummaryResponse> responseList = new ArrayList<>();
 
-        //학생과 classGroup은
-        for (Course course : student.getCourseList()) {
-            ClassGroup classGroup = course.getClassGroup();
-
-            hwAnnouncementRepository.findAllByDeadLineDateAndClassGroup(date, classGroup)
-                    .stream().map(HwAnnounceSummaryResponse::of)
-                    .forEach(e -> responseList.add(e));
+        for (Submission submission : student.getSubmissionList()) {
+            HwAnnouncement announcement = submission.getHwAnnouncement();
+            if (announcement.getDeadLineDate().isEqual(targetDate))
+                responseList.add(HwAnnounceSummaryResponse.of(announcement));
         }
 
         return responseList;
