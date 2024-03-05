@@ -2,7 +2,8 @@ package Chaeda_spring.domain.image.service;
 
 import Chaeda_spring.domain.image.dto.ImageUploadRequest;
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
+import Chaeda_spring.domain.image.dto.UploadReadRequest;
+import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageFileExtension;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
@@ -100,7 +101,7 @@ public class ImageService {
      * @return {@link PresignedUrlResponse}
      * @throws NotFoundException 해당 멤버가 존재하지 않을 시 발생합니다.
      **/
-    public List<PresignedUrlResponse> getFileReadUrl(Long memberId, List<UploadCompleteRequest> requests) {
+    public List<PresignedUrlResponse> getFileReadUrl(Long memberId, List<UploadReadRequest> requests) {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
@@ -110,7 +111,7 @@ public class ImageService {
                         request.imageType(),
                         request.imageFileExtension(),
                         generateUUID(),
-                        HttpMethod.PUT))
+                        HttpMethod.GET))
                 .collect(Collectors.toList());
     }
 
@@ -177,6 +178,17 @@ public class ImageService {
                 .imageKey(imageKey)
                 .presignedUrl(presignedUrl)
                 .build();
+    }
+
+    public String getPresignedUrlByImage(Image image) {
+
+        return getPresignedUrlResponse(
+                image.getMemberId(),
+                image.getImageType(),
+                image.getImageFileExtension(),
+                image.getImageKey(),
+                HttpMethod.GET
+        ).presignedUrl();
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) throws IOException {

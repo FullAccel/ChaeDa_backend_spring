@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 application-aws.yml
+application-auth.yml
 
 ### STS ###
 .apt_generated

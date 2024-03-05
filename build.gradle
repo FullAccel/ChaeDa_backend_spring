@@ -48,6 +48,20 @@ dependencies {
     // Activation API
     implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
     runtimeOnly 'com.sun.activation:jakarta.activation:2.0.1'
+
+//    //auth
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//
+//    // Spring Security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.security:spring-security-test'
+//    implementation 'org.springframework.security:spring-security-oauth2-client'
+//    implementation 'org.springframework.security:spring-security-oauth2-jose'
+//
+//    // JWT
+//    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+//    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+//    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
 tasks.named('test') {

@@ -2,7 +2,7 @@ package Chaeda_spring.domain.image.controller;
 
 import Chaeda_spring.domain.image.dto.ImageUploadRequest;
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
+import Chaeda_spring.domain.image.dto.UploadReadRequest;
 import Chaeda_spring.domain.image.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,7 +44,7 @@ public class ImageController {
 
     @PostMapping("/presigned-url/submission/{memberId}")
     @Operation(summary = "여러 장의 이미지를 업로드할 presigned-url 요청")
-    public ResponseEntity<List<PresignedUrlResponse>> createPresignedUrl(
+    public ResponseEntity<List<PresignedUrlResponse>> createPresignedUrlList(
             @PathVariable Long memberId,
             @Valid @RequestBody List<ImageUploadRequest> requests) {
         return ResponseEntity.ok(imageService.createFileUploadUrlList(memberId, requests));
@@ -52,7 +52,7 @@ public class ImageController {
 
     @PostMapping("/display/{memberId}")
     @Operation(summary = "이미지 파일 읽어올 url 요청")
-    public ResponseEntity<List<PresignedUrlResponse>> getDisplayUrl(@PathVariable Long memberId, @RequestBody List<UploadCompleteRequest> requests) {
+    public ResponseEntity<List<PresignedUrlResponse>> getDisplayUrl(@PathVariable Long memberId, @RequestBody List<UploadReadRequest> requests) {
         return ResponseEntity.ok(imageService.getFileReadUrl(memberId, requests));
     }
 

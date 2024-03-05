@@ -57,4 +57,7 @@ public class HwAnnouncement extends Announcement {
                 .build();
     }
 
+    public void plusSubmissionNum() {
+        this.submissionNum += 1;
+    }
 }

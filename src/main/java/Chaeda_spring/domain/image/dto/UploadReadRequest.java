@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UploadCompleteRequest(
+public record UploadReadRequest(
 
         @NotNull(message = "어떤 용도로 업로드한 이미지 타입인지 알려주세요.")
         @Schema(description = "이미지 파일의 타입", defaultValue = "ANNOUNCEMENT_THUMBNAIL")

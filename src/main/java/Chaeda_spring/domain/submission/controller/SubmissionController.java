@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.submission.controller;
 
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
+import Chaeda_spring.domain.image.dto.UploadReadRequest;
 import Chaeda_spring.domain.image.service.ImageService;
 import Chaeda_spring.domain.submission.service.SubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +26,7 @@ public class SubmissionController {
     public ResponseEntity<List<PresignedUrlResponse>> uploadImageComplete(
             @PathVariable Long memberId,
             @PathVariable Long HwAnnouncementId,
-            @Valid @RequestBody List<UploadCompleteRequest> requests) {
+            @Valid @RequestBody List<UploadReadRequest> requests) {
         return ResponseEntity.ok(submissionService.uploadImageCompleteForSubmission(memberId, HwAnnouncementId, requests));
     }
 

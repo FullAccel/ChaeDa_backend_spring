@@ -2,7 +2,7 @@ package Chaeda_spring.domain.submission.service;
 
 import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
 import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadCompleteRequest;
+import Chaeda_spring.domain.image.dto.UploadReadRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
@@ -33,18 +33,18 @@ public class SubmissionService {
     private final ImageRepository imageRepository;
 
     /**
-     * 이 함수는 클라이언트가 숙제 이미지를 S3에 모두 업로드한 후
-     * 이미지가 완료되었다고 알려주는 요청을 받고 이미지 정보를 DB에 저장합니다.
-     * 이후 Submission의 상태를 제출 완료로 변경합니다.
+     * 이 함수는 클라이언트가 보낸 이미지 업로드 완료되었다고 알려주는 요청을 받고 이미지 정보를 DB에 저장합니다.
+     * 이 함수가 호출이되면 숙제를 제출한 것이며 이후 Submission의 상태를 제출 완료로 변경합니다.
      * 실제로 S3에 저장된 이미지만 DB에 기록하기 위한 함수입니다.
      *
      * @param studentId 해당 이미지를 업로드한 멤버의 Id입니다.
-     * @param requests  이미지의 타입, 키, 파일 확장자 정보를 담고 있는 {@link UploadCompleteRequest} 객체
+     * @param requests  이미지의 타입, 키, 파일 확장자 정보를 담고 있는 {@link UploadReadRequest} 객체
      * @return 이미지 정보 저장 성공 여부를 나타내는 boolean 값. 현재 구현에서는 항상 {@code true}를 반환합니다.
-     * @throws NotFoundException 해당 멤버가 존재하지 않을 시 발생합니다.
+     * @throws NotFoundException  해당 멤버가 존재하지 않을 시 발생합니다.
+     * @throws NotEqualsException ErrorCode : IS_NOT_STUDENT, 학생 회원만 숙제를 제출할 수 있습니다
      */
     @Transactional
-    public List<PresignedUrlResponse> uploadImageCompleteForSubmission(Long studentId, Long HwAnnouncementId, List<UploadCompleteRequest> requests) {
+    public List<PresignedUrlResponse> uploadImageCompleteForSubmission(Long studentId, Long HwAnnouncementId, List<UploadReadRequest> requests) {
 
         Student student;
         try {
@@ -55,7 +55,7 @@ public class SubmissionService {
             throw new NotEqualsException(ErrorCode.IS_NOT_STUDENT);
         }
 
-        for (UploadCompleteRequest request : requests) {
+        for (UploadReadRequest request : requests) {
             Image image = Image.builder()
                     .imageType(request.imageType())
                     .imageKey(request.imageKey())
@@ -67,6 +67,7 @@ public class SubmissionService {
             if (request.imageType().equals(ImageType.HOMEWORK_SUBMISSION)) {
                 Submission submission = submissionRepository.findByHwAnnouncementIdAndStudentId(HwAnnouncementId, studentId);
                 submission.completeHomework();
+                submission.getHwAnnouncement().plusSubmissionNum();
                 savedImage.setSubmission(submission);
             } else
                 throw new NotEqualsException(ErrorCode.IMAGE_TYPE_INCORRECT, "해당 요청은 HOMEWORK_SUBMISSION 타입 이미지만 받을 수 있습니다");
@@ -89,6 +90,9 @@ public class SubmissionService {
      * @param studentId        해당 이미지를 전송하는 멤버의 Id입니다.
      * @param hwAnnouncementId 제출 이미지를 확인하고 싶은 숙제 공지 Id입니다.
      * @return 자신이 제출한 숙제사진을 조회할 수 있는 presigned url list
+     * @throws NotFoundException  case 1 : 해당 멤버가 존재하지 않을 시 발생합니다.
+     *                            case 2 : 해당 회원이 숙제 제출을 하지 않았을 시 발생합니다.
+     * @throws NotEqualsException ErrorCode : IS_NOT_STUDENT, 학생 회원만 숙제를 제출할 수 있습니다
      */
     public List<PresignedUrlResponse> getSubmissionImages(Long studentId, Long hwAnnouncementId) {
         Student student;
