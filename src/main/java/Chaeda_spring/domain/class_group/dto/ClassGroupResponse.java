@@ -32,7 +32,7 @@ public record ClassGroupResponse(
                 .lessonDays(classGroup.getLessonDays())
                 .presignedUrl(presignedUrl)
                 .studentSummaryResponseList(studentSummaryResponseList)
-                .imageId(classGroup.getImage().getId())
+                .imageId(classGroup.getImage() != null ? classGroup.getImage().getId() : null)
                 .build();
     }
 }

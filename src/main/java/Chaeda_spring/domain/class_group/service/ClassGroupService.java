@@ -139,7 +139,7 @@ public class ClassGroupService {
         memberService.getMemberByIdIfTeacher(makerId);
 
         //클래스 이미지 DB 저장, 이미지 없으면 null 값 저장
-        Image profileImage = request.imageKey() != null || !request.imageKey().equals("") ?
+        Image profileImage = !request.imageKey().equals("") ?
                 imageRepository.save(Image.builder()
                         .imageKey(request.imageKey())
                         .imageFileExtension(request.imageFileExtension())
