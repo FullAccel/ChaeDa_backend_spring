@@ -22,19 +22,13 @@ VALUES (1, '쎈_고등수학상_2024',
         120, '고3')
 ;
 
-INSERT INTO member (member_id, address, email, gender, name, phone_number, profile_url, dtype)
-VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Teacher'),
-       (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Teacher'),
-       (3, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Teacher'),
-       (4, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Student'),
-       (5, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Student'),
-       (6, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'https://www.OO.com/data/file/~.webp',
-        'Student')
+INSERT INTO member (member_id, address, email, gender, name, phone_number, dtype)
+VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
+       (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
+       (3, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
+       (4, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student'),
+       (5, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student'),
+       (6, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student')
 ;
 
 INSERT INTO teacher (member_id, subject, notes)
@@ -43,10 +37,10 @@ VALUES (1, '수학', null),
        (3, '수학', null)
 ;
 
-INSERT INTO student (member_id, home_phone_num, parent_phone_num, school_name, subject, notes)
-VALUES (4, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null),
-       (5, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null),
-       (6, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null)
+INSERT INTO student (member_id, home_phone_num, parent_phone_num, school_name, subject, notes, grade)
+VALUES (4, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_1'),
+       (5, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_2'),
+       (6, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_3')
 ;
 
 
@@ -134,7 +128,13 @@ VALUES (19, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
        (21, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
        (22, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
        (23, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
-       (24, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE')
+       (24, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
+       (25, 1, 'member1', 'PNG', 'MEMBER_PROFILE'),
+       (26, 2, 'member2', 'PNG', 'MEMBER_PROFILE'),
+       (27, 3, 'member3', 'PNG', 'MEMBER_PROFILE'),
+       (28, 4, 'member4', 'PNG', 'MEMBER_PROFILE'),
+       (29, 5, 'member5', 'PNG', 'MEMBER_PROFILE'),
+       (30, 6, 'member6', 'PNG', 'MEMBER_PROFILE')
 ;
 
 UPDATE class_group
@@ -155,3 +155,22 @@ WHERE class_group_id = 5;
 UPDATE class_group
 SET image_id = 24
 WHERE class_group_id = 6;
+
+UPDATE member
+SET image_id = 25
+WHERE member_id = 1;
+UPDATE member
+SET image_id = 26
+WHERE member_id = 2;
+UPDATE member
+SET image_id = 27
+WHERE member_id = 3;
+UPDATE member
+SET image_id = 28
+WHERE member_id = 4;
+UPDATE member
+SET image_id = 29
+WHERE member_id = 5;
+UPDATE member
+SET image_id = 30
+WHERE member_id = 6;
