@@ -7,6 +7,7 @@ import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.class_group.entity.ClassGroupRepository;
 import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.course.entity.CourseRepository;
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.service.ImageService;
@@ -49,7 +50,7 @@ public class ClassGroupService {
         return teacher.getClassGroupList().stream()
                 .map(classGroup -> {
                     Image classProfile = classGroup.getImage();
-                    String presignedUrl = imageService.getPresignedUrlByImage(classProfile);
+                    String presignedUrl = classProfile != null ? imageService.getPresignedUrlByImage(classProfile) : "no-image";
                     return ClassGroupSummaryResponse.from(classGroup, presignedUrl);
                 })
                 .collect(Collectors.toList());
@@ -65,14 +66,13 @@ public class ClassGroupService {
      */
     public ClassGroupResponse getClassGroup(Long classGroupId) {
 
-        ClassGroup classGroup = classGroupRepository.findById(classGroupId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "id : " + classGroupId + ", 해당 Id의 클래스가 존재하지 않습니다."));
+        ClassGroup classGroup = findClassGroupById(classGroupId);
 
         List<StudentSummaryResponse> collect = classGroup.getCourseList().stream()
                 .map(course -> StudentSummaryResponse.of(course.getStudent()))
                 .collect(Collectors.toList());
 
-        String presignedUrl = imageService.getPresignedUrlByImage(classGroup.getImage());
+        String presignedUrl = classGroup.getImage() != null ? imageService.getPresignedUrlByImage(classGroup.getImage()) : "no-image";
 
         return ClassGroupResponse.from(classGroup, presignedUrl, collect);
     }
@@ -86,8 +86,7 @@ public class ClassGroupService {
     @Transactional
     public void addStudentListInClass(Long classGroupId, List<Long> memberIdList) {
 
-        ClassGroup classGroup = classGroupRepository.findById(classGroupId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "id : " + classGroupId + ", 해당 Id의 클래스가 존재하지 않습니다."));
+        ClassGroup classGroup = findClassGroupById(classGroupId);
 
         memberIdList.stream()
                 .map(id -> (Student) memberRepository.findById(id)
@@ -96,6 +95,12 @@ public class ClassGroupService {
                         .student(student)
                         .classGroup(classGroup)
                         .build()));
+    }
+
+    private ClassGroup findClassGroupById(Long classGroupId) {
+        ClassGroup classGroup = classGroupRepository.findById(classGroupId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "id : " + classGroupId + ", 해당 Id의 클래스가 존재하지 않습니다."));
+        return classGroup;
     }
 
 
@@ -108,8 +113,7 @@ public class ClassGroupService {
     @Transactional
     public void deleteStudentListInClass(Long classGroupId, List<Long> memberIdList) {
 
-        ClassGroup classGroup = classGroupRepository.findById(classGroupId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND, "id : " + classGroupId + ", 해당 Id의 클래스가 존재하지 않습니다."));
+        findClassGroupById(classGroupId);
 
         memberIdList.stream()
                 .map(id -> (Student) memberRepository.findById(id)
@@ -134,12 +138,14 @@ public class ClassGroupService {
         }
         memberService.getMemberByIdIfTeacher(makerId);
 
-        //클래스 이미지 DB 저장
-        Image profileImage = imageRepository.save(Image.builder()
-                .imageKey(request.imageKey())
-                .imageFileExtension(request.imageFileExtension())
-                .imageType(request.imageType())
-                .build());
+        //클래스 이미지 DB 저장, 이미지 없으면 null 값 저장
+        Image profileImage = request.imageKey() != null || !request.imageKey().equals("") ?
+                imageRepository.save(Image.builder()
+                        .imageKey(request.imageKey())
+                        .imageFileExtension(request.imageFileExtension())
+                        .imageType(request.imageType())
+                        .build())
+                : null;
 
         //클래스 담당 선생님 조회
         Teacher teacher = memberService.getMemberByIdIfTeacher(request.teacherId());
@@ -149,6 +155,7 @@ public class ClassGroupService {
                 .grade(request.grade())
                 .name(request.name())
                 .image(profileImage)
+                .lessonDays(request.lessonDays())
                 .teacher(teacher)
                 .build());
 
@@ -161,5 +168,22 @@ public class ClassGroupService {
                         .build()));
 
         return classGroup.getId();
+    }
+
+    @Transactional
+    public void updateClassGroupProfileImage(Long classGroupId, UploadImageCompleteRequest request) {
+        ClassGroup classGroup = findClassGroupById(classGroupId);
+        Image profile = classGroup.getImage();
+        profile.updateImageKey(request.imageKey());
+
+        imageService.deleteImageInS3(profile);
+    }
+
+    @Transactional
+    public void deleteClassGroupProfileImage(Long classGroupId) {
+        ClassGroup classGroup = findClassGroupById(classGroupId);
+        Image profile = classGroup.getImage();
+        imageService.deleteImageInDB(profile);
+        imageService.deleteImageInS3(profile);
     }
 }

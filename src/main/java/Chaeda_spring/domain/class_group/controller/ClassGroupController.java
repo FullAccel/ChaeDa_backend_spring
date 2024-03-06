@@ -4,6 +4,7 @@ import Chaeda_spring.domain.class_group.dto.ClassGroupRequest;
 import Chaeda_spring.domain.class_group.dto.ClassGroupResponse;
 import Chaeda_spring.domain.class_group.dto.ClassGroupSummaryResponse;
 import Chaeda_spring.domain.class_group.service.ClassGroupService;
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -64,4 +65,24 @@ public class ClassGroupController {
         classGroupService.deleteStudentListInClass(classGroupId, memberIdList);
         return ResponseEntity.ok().body(null);
     }
+
+    @PutMapping("profile-image/{classGroupId}")
+    @Operation(summary = "(선생님용) 클래스 프로필 이미지 수정")
+    public ResponseEntity<Void> updateClassProfileImage(
+            @PathVariable Long classGroupId,
+            @RequestBody UploadImageCompleteRequest request
+    ) {
+        classGroupService.updateClassGroupProfileImage(classGroupId, request);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @DeleteMapping("profile-image/{classGroupId}")
+    @Operation(summary = "(선생님용) 클래스 프로필 이미지 삭제")
+    public ResponseEntity<Void> deleteClassProfileImage(
+            @PathVariable Long classGroupId
+    ) {
+        classGroupService.deleteClassGroupProfileImage(classGroupId);
+        return ResponseEntity.ok().body(null);
+    }
+
 }

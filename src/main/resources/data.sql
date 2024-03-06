@@ -174,3 +174,10 @@ WHERE member_id = 5;
 UPDATE member
 SET image_id = 30
 WHERE member_id = 6;
+
+SELECT SETVAL('class_group_class_group_id_seq', (SELECT MAX(class_group_id) FROM class_group));
+SELECT SETVAL('image_image_id_seq', (SELECT MAX(image_id) FROM image));
+SELECT SETVAL('course_course_id_seq', (SELECT MAX(course_id) FROM course));
+SELECT SETVAL('submission_submission_id_seq', (SELECT MAX(submission_id) FROM submission));
+SELECT SETVAL('member_member_id_seq', (SELECT MAX(member_id) FROM member));
+SELECT SETVAL('announcement_announcement_id_seq', (SELECT MAX(announcement_id) FROM announcement));

@@ -1,18 +1,18 @@
 package Chaeda_spring.domain.image.service;
 
-import Chaeda_spring.domain.image.dto.ImageUploadRequest;
-import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadReadRequest;
+import Chaeda_spring.domain.image.dto.ImageResponse;
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.image.dto.UploadImageRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageFileExtension;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
 import Chaeda_spring.domain.member.entity.MemberRepository;
-import Chaeda_spring.domain.submission.entity.SubmissionRepository;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotFoundException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +35,7 @@ public class ImageService {
     private final AmazonS3 amazonS3;
 
     private final MemberRepository memberRepository;
-
     private final ImageRepository imageRepository;
-
-    private final SubmissionRepository submissionRepository;
 
     /**
      * 현재 persigned url의 만료기간은 30분입니다.
@@ -52,11 +49,11 @@ public class ImageService {
      * 이 함수는 S3에 이미지 파일을 업로드 하기 위한 PUT용 presigned url을 한 개 생성합니다.
      *
      * @param memberId 해당 이미지를 업로드하는 멤버의 Id입니다.
-     * @param request  ImageType과 ImageFileExtension을 담고 있는 {@link ImageUploadRequest} 객체
-     * @return {@link PresignedUrlResponse}
+     * @param request  ImageType과 ImageFileExtension을 담고 있는 {@link UploadImageRequest} 객체
+     * @return {@link ImageResponse}
      * @throws NotFoundException 해당 멤버가 존재하지 않을 시 발생합니다.
      **/
-    public PresignedUrlResponse createFileUploadUrl(Long memberId, ImageUploadRequest request) {
+    public ImageResponse createFileUploadUrl(Long memberId, UploadImageRequest request) {
 
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
@@ -75,10 +72,10 @@ public class ImageService {
      * 이 함수는 S3에 이미지 파일을 업로드 하기 위한 PUT용 presigned url을 여러개 생성합니다.
      *
      * @param memberId 해당 이미지를 업로드하는 멤버의 Id입니다.
-     * @param requests ImageType과 ImageFileExtension을 담고 있는 {@link ImageUploadRequest} List
+     * @param requests ImageType과 ImageFileExtension을 담고 있는 {@link UploadImageRequest} List
      * @return
      */
-    public List<PresignedUrlResponse> createFileUploadUrlList(Long memberId, List<ImageUploadRequest> requests) {
+    public List<ImageResponse> createFileUploadUrlList(Long memberId, List<UploadImageRequest> requests) {
 
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
@@ -98,10 +95,10 @@ public class ImageService {
      *
      * @param memberId 해당 이미지를 업로드하는 멤버의 Id입니다.
      * @param requests ImageType과 ImageFileExtension을 담고 있습니다.
-     * @return {@link PresignedUrlResponse}
+     * @return {@link ImageResponse}
      * @throws NotFoundException 해당 멤버가 존재하지 않을 시 발생합니다.
      **/
-    public List<PresignedUrlResponse> getFileReadUrl(Long memberId, List<UploadReadRequest> requests) {
+    public List<ImageResponse> getFileReadUrl(Long memberId, List<UploadImageCompleteRequest> requests) {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "해당 Id의 멤버가 존재하지 않습니다."));
 
@@ -152,9 +149,29 @@ public class ImageService {
     }
 
     /**
+     * AWS S3에 해당 회원의 특정 이미지를 삭제합니다.
+     *
+     * @param image
+     */
+    public void deleteImageInS3(Image image) {
+        String fileName = createFileName(
+                image.getMemberId(),
+                image.getImageType(),
+                image.getImageKey(),
+                image.getImageFileExtension()
+        );
+        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+    }
+
+    public void deleteImageInDB(Image image) {
+        imageRepository.deleteById(image.getId());
+    }
+
+
+    /**
      * 여기서부터는 재활용성을 위한 클래스 내에서 활용하는 메서드들 입니다.
      */
-    public PresignedUrlResponse getPresignedUrlResponse(Long memberId, ImageType imageType, ImageFileExtension extension, String imageKey, HttpMethod httpMethod) {
+    public ImageResponse getPresignedUrlResponse(Long memberId, ImageType imageType, ImageFileExtension extension, String imageKey, HttpMethod httpMethod) {
         String fileName = createFileName(
                 memberId,
                 imageType,
@@ -174,7 +191,7 @@ public class ImageService {
 
         String presignedUrl = amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
 
-        return PresignedUrlResponse.builder()
+        return ImageResponse.builder()
                 .imageKey(imageKey)
                 .presignedUrl(presignedUrl)
                 .build();

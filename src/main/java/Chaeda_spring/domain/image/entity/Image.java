@@ -38,7 +38,6 @@ public class Image extends BaseTimeEntity {
             Long memberId,
             String imageKey,
             ImageFileExtension imageFileExtension) {
-        this.id = id;
         this.imageType = imageType;
         this.memberId = memberId;
         this.imageKey = imageKey;
@@ -47,5 +46,9 @@ public class Image extends BaseTimeEntity {
 
     public void setSubmission(Submission submission) {
         this.submission = submission;
+    }
+
+    public void updateImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 }

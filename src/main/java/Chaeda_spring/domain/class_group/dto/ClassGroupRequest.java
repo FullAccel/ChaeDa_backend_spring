@@ -21,7 +21,7 @@ public record ClassGroupRequest(
         @NotNull @Schema(description = "수업 날짜", defaultValue = "고등 월수금반 3시")
         String lessonDays,
 
-        @Schema(description = "학년", defaultValue = "high_1")
+        @Schema(description = "학년", defaultValue = "HIGH_1")
         Grade grade,
         @Schema(description = "학생 목록")
         List<Long> studentIdList,

@@ -5,7 +5,7 @@ import Chaeda_spring.domain.image.entity.ImageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
-public record ImageUploadRequest(
+public record UploadImageRequest(
         @NotNull(message = "어떤 용도로 업로드한 이미지 타입인지 알려주세요. 타입은 'HOMEWORK_THUMBNAIL', 'ANNOUNCEMENT_THUMBNAIL', 'HOMEWORK_SUBMISSION', 'MEMBER_PROFILE', 'CLASS_GROUP_PROFILE'이 있습니다.")
         @Schema(description = "이미지 파일의 타입", defaultValue = "HOMEWORK_SUBMISSION")
         ImageType imageType,

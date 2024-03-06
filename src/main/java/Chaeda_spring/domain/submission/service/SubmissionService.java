@@ -1,8 +1,8 @@
 package Chaeda_spring.domain.submission.service;
 
 import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
-import Chaeda_spring.domain.image.dto.PresignedUrlResponse;
-import Chaeda_spring.domain.image.dto.UploadReadRequest;
+import Chaeda_spring.domain.image.dto.ImageResponse;
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
@@ -38,13 +38,13 @@ public class SubmissionService {
      * 실제로 S3에 저장된 이미지만 DB에 기록하기 위한 함수입니다.
      *
      * @param studentId 해당 이미지를 업로드한 멤버의 Id입니다.
-     * @param requests  이미지의 타입, 키, 파일 확장자 정보를 담고 있는 {@link UploadReadRequest} 객체
+     * @param requests  이미지의 타입, 키, 파일 확장자 정보를 담고 있는 {@link UploadImageCompleteRequest} 객체
      * @return 이미지 정보 저장 성공 여부를 나타내는 boolean 값. 현재 구현에서는 항상 {@code true}를 반환합니다.
      * @throws NotFoundException  해당 멤버가 존재하지 않을 시 발생합니다.
      * @throws NotEqualsException ErrorCode : IS_NOT_STUDENT, 학생 회원만 숙제를 제출할 수 있습니다
      */
     @Transactional
-    public List<PresignedUrlResponse> uploadImageCompleteForSubmission(Long studentId, Long HwAnnouncementId, List<UploadReadRequest> requests) {
+    public List<ImageResponse> uploadImageCompleteForSubmission(Long studentId, Long HwAnnouncementId, List<UploadImageCompleteRequest> requests) {
 
         Student student;
         try {
@@ -55,7 +55,7 @@ public class SubmissionService {
             throw new NotEqualsException(ErrorCode.IS_NOT_STUDENT);
         }
 
-        for (UploadReadRequest request : requests) {
+        for (UploadImageCompleteRequest request : requests) {
             Image image = Image.builder()
                     .imageType(request.imageType())
                     .imageKey(request.imageKey())
@@ -94,7 +94,7 @@ public class SubmissionService {
      *                            case 2 : 해당 회원이 숙제 제출을 하지 않았을 시 발생합니다.
      * @throws NotEqualsException ErrorCode : IS_NOT_STUDENT, 학생 회원만 숙제를 제출할 수 있습니다
      */
-    public List<PresignedUrlResponse> getSubmissionImages(Long studentId, Long hwAnnouncementId) {
+    public List<ImageResponse> getSubmissionImages(Long studentId, Long hwAnnouncementId) {
         Student student;
         try {
             student = (Student) memberRepository.findById(studentId)
