@@ -14,7 +14,8 @@ public record TeacherResponse(
         String address,
         String profileUrl,
         String notes,
-        String subject
+        String subject,
+        Long imageId
 ) implements MemberResponse {
     public static TeacherResponse from(Teacher teacher, String presignedUrl) {
         return TeacherResponse.builder()
@@ -27,6 +28,7 @@ public record TeacherResponse(
                 .profileUrl(presignedUrl)
                 .subject(teacher.getSubject())
                 .notes(teacher.getNotes())
+                .imageId(teacher.getImage().getId())
                 .build();
 
     }

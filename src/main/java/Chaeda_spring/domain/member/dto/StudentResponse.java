@@ -16,7 +16,8 @@ public record StudentResponse(
         String parentPhoneNum,
         String homePhoneNum,
         String subject,
-        String notes
+        String notes,
+        Long imageId
 ) implements MemberResponse {
     public static StudentResponse from(Student student, String presignedUrl) {
         return StudentResponse.builder()
@@ -32,6 +33,7 @@ public record StudentResponse(
                 .homePhoneNum(student.getHomePhoneNum())
                 .subject(student.getSubject())
                 .notes(student.getNotes())
+                .imageId(student.getImage().getId())
                 .build();
 
     }

@@ -21,7 +21,8 @@ public record ClassGroupResponse(
         @Schema(description = "클래스 프로필 url")
         String presignedUrl,
         @Schema(description = "클래스 소속 학생들 요약 정보", example = "[{'id': 1, 'name': '김철수', 'grade': 'HIGH_3'}, {'id': 2, 'name': '이영희', 'grade': 'HIGH_3'}]")
-        List<StudentSummaryResponse> studentSummaryResponseList
+        List<StudentSummaryResponse> studentSummaryResponseList,
+        Long imageId
 ) {
     public static ClassGroupResponse from(ClassGroup classGroup, String presignedUrl, List<StudentSummaryResponse> studentSummaryResponseList) {
         return ClassGroupResponse.builder()
@@ -31,6 +32,7 @@ public record ClassGroupResponse(
                 .lessonDays(classGroup.getLessonDays())
                 .presignedUrl(presignedUrl)
                 .studentSummaryResponseList(studentSummaryResponseList)
+                .imageId(classGroup.getImage().getId())
                 .build();
     }
 }
