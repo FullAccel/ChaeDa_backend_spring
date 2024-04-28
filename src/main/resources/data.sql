@@ -1,34 +1,43 @@
-INSERT INTO textbook (textbook_id, name, image_url, last_page_num, target_grade)
-VALUES (1, '쎈_고등수학상_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8(%E1%84%89%E1%85%A1%E1%86%BC)_2024.jpeg',
-        224, '고1'),
-       (2, '쎈_고등수학하_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%80%E1%85%A9%E1%84%83%E1%85%B3%E1%86%BC%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8(%E1%84%92%E1%85%A1)_2024.jpeg',
-        160, '고1'),
-       (3, '쎈_수1_2024',
+INSERT INTO Textbook (name, start_page_num, last_page_num, publisher, publish_year, subject, target_grade,
+                      upload_member_id, textbook_thumbnail, textbook_src_url)
+VALUES ('Textbook 1', 1, 100, 'Publisher 1', '2022', 'Calculus', 'HIGH_3', 1,
         'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
-        184, '고2'),
-       (4, '쎈_수2_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE2_2024.jpeg',
-        168, '고2'),
-       (5, '쎈_미적분_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%86%E1%85%B5%E1%84%8C%E1%85%A5%E1%86%A8%E1%84%87%E1%85%AE%E1%86%AB_2024.jpeg',
-        200, '고3'),
-       (6, '쎈_기하_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%80%E1%85%B5%E1%84%92%E1%85%A1_2024.jpeg',
-        128, '고3'),
-       (7, '쎈_확률과통계_2024',
-        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%92%E1%85%AA%E1%86%A8%E1%84%85%E1%85%B2%E1%86%AF%E1%84%80%E1%85%AA%E1%84%90%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A8_2024.jpeg',
-        120, '고3')
-;
+        'url1'),
+       ('Textbook 2', 2, 200, 'Publisher 2', '2022', 'Calculus', 'HIGH_3', 2,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url2'),
+       ('Textbook 3', 3, 300, 'Publisher 3', '2022', 'Calculus', 'HIGH_3', 3,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url3'),
+       ('Textbook 4', 4, 400, 'Publisher 4', '2022', 'Calculus', 'HIGH_3', 4,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url4'),
+       ('Textbook 5', 5, 500, 'Publisher 5', '2022', 'Calculus', 'HIGH_3', 5,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url5'),
+       ('Textbook 6', 6, 600, 'Publisher 6', '2022', 'Calculus', 'HIGH_3', 6,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url6'),
+       ('Textbook 7', 7, 700, 'Publisher 7', '2022', 'Calculus', 'HIGH_3', 7,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url7'),
+       ('Textbook 8', 8, 800, 'Publisher 8', '2022', 'Calculus', 'HIGH_3', 8,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url8'),
+       ('Textbook 9', 9, 900, 'Publisher 9', '2022', 'Calculus', 'HIGH_3', 9,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url9'),
+       ('Textbook 10', 10, 1000, 'Publisher 10', '2022', 'Calculus', 'HIGH_3', 10,
+        'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
+        'url10');
 
-INSERT INTO member (member_id, address, email, gender, name, phone_number, dtype)
-VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
-       (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
-       (3, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher'),
-       (4, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student'),
-       (5, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student'),
-       (6, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student')
+INSERT INTO member (member_id, address, email, gender, name, phone_number, dtype, role)
+VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
+       (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
+       (3, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
+       (4, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT'),
+       (5, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT'),
+       (6, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT')
 ;
 
 INSERT INTO teacher (member_id, subject, notes)

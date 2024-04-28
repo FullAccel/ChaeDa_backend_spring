@@ -28,7 +28,7 @@ public record TeacherResponse(
                 .profileUrl(presignedUrl)
                 .subject(teacher.getSubject())
                 .notes(teacher.getNotes())
-                .imageId(teacher.getImage().getId())
+                .imageId(presignedUrl != null ? teacher.getImage().getId() : null)
                 .build();
 
     }

@@ -1,12 +1,12 @@
 package Chaeda_spring.domain.submission.service;
 
-import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
 import Chaeda_spring.domain.image.dto.ImageResponse;
 import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.entity.ImageRepository;
 import Chaeda_spring.domain.image.entity.ImageType;
 import Chaeda_spring.domain.image.service.ImageService;
+import Chaeda_spring.domain.announcement.entity.HwAnnouncementRepository;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.submission.entity.Submission;
@@ -74,7 +74,7 @@ public class SubmissionService {
         }
 
         return requests.stream()
-                .map(request -> imageService.getPresignedUrlResponse(
+                .map(request -> imageService.getImagePresignedUrlResponse(
                         studentId,
                         request.imageType(),
                         request.imageFileExtension(),
@@ -112,7 +112,7 @@ public class SubmissionService {
             throw new NotFoundException(ErrorCode.HOMEWORK_NOT_COMPLETE);
 
         return submission.getImageList().stream()
-                .map(image -> imageService.getPresignedUrlResponse(
+                .map(image -> imageService.getImagePresignedUrlResponse(
                         studentId,
                         image.getImageType(),
                         image.getImageFileExtension(),

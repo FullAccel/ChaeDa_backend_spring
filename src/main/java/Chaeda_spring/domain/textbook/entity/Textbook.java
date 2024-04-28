@@ -1,15 +1,16 @@
 package Chaeda_spring.domain.textbook.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
+import Chaeda_spring.domain.textbook.dto.UploadTextbookFileRequest;
+import Chaeda_spring.global.constant.Grade;
+import Chaeda_spring.global.constant.Subject;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Year;
 
 @Getter
 @SuperBuilder
@@ -26,22 +27,53 @@ public class Textbook extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private int startPageNum;
 
     @Column(nullable = false)
     private int lastPageNum;
 
-    @Column(nullable = false)
-    private String targetGrade;
+    private String publisher;
 
-    @OneToMany(mappedBy = "textbook")
-    private List<HwAnnouncement> homeworkNotificationList = new ArrayList<>();
+    @Column(nullable = false)
+    private Year publishYear;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Subject subject;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Grade targetGrade;
+
+    private Long uploadMemberId;
+
+    private String textbookThumbnail;
+
+    private String textbookSrcUrl;
 
     @Builder
-    public Textbook(String name, String imageUrl, int lastPageNum, String targetGrade) {
+    public Textbook(String name, int startPageNum, int lastPageNum, String publisher, Year publishYear, Subject subject, Grade targetGrade, Long uploadMemberId, String textbookThumbnail, String textbookSrcUrl) {
         this.name = name;
-        this.imageUrl = imageUrl;
+        this.startPageNum = startPageNum;
         this.lastPageNum = lastPageNum;
+        this.publisher = publisher;
+        this.publishYear = publishYear;
+        this.subject = subject;
         this.targetGrade = targetGrade;
+        this.uploadMemberId = uploadMemberId;
+        this.textbookThumbnail = textbookThumbnail;
+        this.textbookSrcUrl = textbookSrcUrl;
+    }
+
+    public static Textbook from(UploadTextbookFileRequest request) {
+        return Textbook.builder()
+                .name(request.name())
+                .startPageNum(request.startPageNum())
+                .lastPageNum(request.lastPageNum())
+                .publisher(request.publisher())
+                .targetGrade(request.targetGrade())
+                .subject(request.subject())
+                .publishYear(request.publishYear())
+                .build();
     }
 }

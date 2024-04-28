@@ -21,7 +21,7 @@ public record HwAnnounceSummaryResponse(
         return HwAnnounceSummaryResponse.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .bookImageUrl(entity.getTextbook().getImageUrl())
+                .bookImageUrl(entity.getTextbook().getTextbookThumbnail())
                 .startPage(entity.getStartPage())
                 .endPage(entity.getEndPage())
                 .build();

@@ -10,9 +10,12 @@ public enum ErrorCode {
     SAMPLE_ERROR(HttpStatus.BAD_REQUEST, "Sample Error Message"),
 
     // Common
+    UNSUPPORTED_VALUE(HttpStatus.BAD_REQUEST, "지원하지 않는 종류의 값이 body에 있습니다."),
     METHOD_ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "요청 한 값 타입이 잘못되어 binding에 실패하였습니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP method 입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류, 관리자에게 문의하세요"),
+
+    JSON_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱오류, 관리자에게 문의"),
 
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
@@ -32,6 +35,11 @@ public enum ErrorCode {
 
     //Announcement
     ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 공지를 찾을 수 없습니다."),
+
+    //auth
+    ID_OR_PW_EMPTY(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 비어있습니다"),
+    ALREADY_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "이미 가입된 이메일입니다"),
+    LOGIN_ID_NOT_FOUND(HttpStatus.UNAUTHORIZED, "가입되지 않은 아이디입니다"),
 
     // Security
     AUTH_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "시큐리티 인증 정보를 찾을 수 없습니다."),

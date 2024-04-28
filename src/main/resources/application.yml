@@ -15,10 +15,15 @@ spring:
       ddl-auto: create
     defer-datasource-initialization: true
   profiles:
-    include: aws, swagger, auth
+    include: aws, swagger, auth, security
   sql:
     init:
       mode: always
+
+logging:
+  level:
+    root: INFO  # 모든 로그에 대한 기본 로그 레벨 설정
+    org.springframework.security: TRACE
 
 jwt:
   expiration_time: 86400000 #1일

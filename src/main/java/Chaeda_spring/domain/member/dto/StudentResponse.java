@@ -33,7 +33,7 @@ public record StudentResponse(
                 .homePhoneNum(student.getHomePhoneNum())
                 .subject(student.getSubject())
                 .notes(student.getNotes())
-                .imageId(student.getImage().getId())
+                .imageId(presignedUrl != null ? student.getImage().getId() : null)
                 .build();
 
     }

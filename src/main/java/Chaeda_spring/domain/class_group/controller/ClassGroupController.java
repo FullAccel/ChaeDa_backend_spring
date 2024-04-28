@@ -1,10 +1,10 @@
 package Chaeda_spring.domain.class_group.controller;
 
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.class_group.dto.ClassGroupRequest;
 import Chaeda_spring.domain.class_group.dto.ClassGroupResponse;
 import Chaeda_spring.domain.class_group.dto.ClassGroupSummaryResponse;
 import Chaeda_spring.domain.class_group.service.ClassGroupService;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

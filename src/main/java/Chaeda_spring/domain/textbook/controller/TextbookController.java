@@ -1,13 +1,14 @@
 package Chaeda_spring.domain.textbook.controller;
 
 import Chaeda_spring.domain.textbook.dto.TextbookResponse;
+import Chaeda_spring.domain.textbook.dto.TextbookUrlResponse;
+import Chaeda_spring.domain.textbook.dto.UploadTextbookFileRequest;
 import Chaeda_spring.domain.textbook.service.TextbookService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +24,19 @@ public class TextbookController {
     public ResponseEntity<List<TextbookResponse>> getClassGroupList() {
         return ResponseEntity.ok().body(textbookService.getTextbookList());
     }
-    
+
+    @PostMapping("/presigned-url")
+    @Operation(summary = "한 권의 교재를 업로드할 presigned-url 요청")
+    public ResponseEntity<TextbookUrlResponse> createPresignedUrl(
+            @Valid @RequestBody UploadTextbookFileRequest request) {
+        return ResponseEntity.ok(textbookService.createTextbookUploadUrl(request));
+    }
+
+    @PostMapping("/uploadCompleted")
+    public ResponseEntity<Void> uploadCompleted(@RequestBody UploadTextbookFileRequest request) {
+        textbookService.saveTextBook(request);
+        return ResponseEntity.ok().body(null);
+    }
+
+
 }

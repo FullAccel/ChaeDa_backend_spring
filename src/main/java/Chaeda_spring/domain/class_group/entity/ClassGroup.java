@@ -5,6 +5,7 @@ import Chaeda_spring.domain.announcement.entity.HwAnnouncement;
 import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.global.constant.Grade;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

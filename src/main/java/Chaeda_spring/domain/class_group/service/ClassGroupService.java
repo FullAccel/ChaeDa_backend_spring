@@ -1,5 +1,9 @@
 package Chaeda_spring.domain.class_group.service;
 
+import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.image.entity.Image;
+import Chaeda_spring.domain.image.entity.ImageRepository;
+import Chaeda_spring.domain.image.service.ImageService;
 import Chaeda_spring.domain.class_group.dto.ClassGroupRequest;
 import Chaeda_spring.domain.class_group.dto.ClassGroupResponse;
 import Chaeda_spring.domain.class_group.dto.ClassGroupSummaryResponse;
@@ -7,10 +11,6 @@ import Chaeda_spring.domain.class_group.entity.ClassGroup;
 import Chaeda_spring.domain.class_group.entity.ClassGroupRepository;
 import Chaeda_spring.domain.course.entity.Course;
 import Chaeda_spring.domain.course.entity.CourseRepository;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.entity.Image;
-import Chaeda_spring.domain.image.entity.ImageRepository;
-import Chaeda_spring.domain.image.service.ImageService;
 import Chaeda_spring.domain.member.dto.StudentSummaryResponse;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;

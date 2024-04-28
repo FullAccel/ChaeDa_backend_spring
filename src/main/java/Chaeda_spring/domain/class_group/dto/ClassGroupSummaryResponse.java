@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.class_group.dto;
 
 import Chaeda_spring.domain.class_group.entity.ClassGroup;
-import Chaeda_spring.domain.class_group.entity.Grade;
+import Chaeda_spring.global.constant.Grade;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

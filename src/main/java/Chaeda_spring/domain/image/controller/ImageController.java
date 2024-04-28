@@ -23,37 +23,35 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @PostMapping(value = "/upload/{memberId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이미지 직접 서버로 보내서 저장하기")
     public ResponseEntity<ArrayList<String>> uploadFiles(
             @Parameter(description = "압로드할 이미지 파일 이름은 'homework_thumbnail-1' 같이 {이미지타입}-{순서}로 해주세요."
                     +
                     "\n이미지 타입은 소문자로 homework_thumbnail, announcement_thumbnail, member_profile 중 하나입니다.")
-            @RequestPart("files") MultipartFile[] files,
-            @RequestParam Long memberId) {
-        return ResponseEntity.ok(imageService.uploadFile(files, memberId));
+            @RequestPart("files") MultipartFile[] files) {
+        return ResponseEntity.ok(imageService.uploadFile(files));
     }
 
-    @PostMapping("/presigned-url/{memberId}")
+    @PostMapping("/presigned-url")
     @Operation(summary = "한 장의 이미지를 업로드할 presigned-url 요청")
     public ResponseEntity<ImageResponse> createPresignedUrl(
-            @PathVariable Long memberId,
             @Valid @RequestBody UploadImageRequest request) {
-        return ResponseEntity.ok(imageService.createFileUploadUrl(memberId, request));
+        return ResponseEntity.ok(imageService.getImageUploadUrl(request));
     }
 
-    @PostMapping("/presigned-url/submission/{memberId}")
+    @PostMapping("/presigned-url/submission")
     @Operation(summary = "여러 장의 이미지를 업로드할 presigned-url 요청")
     public ResponseEntity<List<ImageResponse>> createPresignedUrlList(
             @PathVariable Long memberId,
             @Valid @RequestBody List<UploadImageRequest> requests) {
-        return ResponseEntity.ok(imageService.createFileUploadUrlList(memberId, requests));
+        return ResponseEntity.ok(imageService.getImageUploadUrlList(requests));
     }
 
-    @PostMapping("/display/{memberId}")
+    @PostMapping("/display")
     @Operation(summary = "이미지 파일 읽어올 url 요청")
-    public ResponseEntity<List<ImageResponse>> getDisplayUrl(@PathVariable Long memberId, @RequestBody List<UploadImageCompleteRequest> requests) {
-        return ResponseEntity.ok(imageService.getFileReadUrl(memberId, requests));
+    public ResponseEntity<List<ImageResponse>> getDisplayUrl(@RequestBody List<UploadImageCompleteRequest> requests) {
+        return ResponseEntity.ok(imageService.getImageReadUrl(requests));
     }
 
 }

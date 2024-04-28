@@ -1,4 +1,4 @@
-package Chaeda_spring.global.config;
+package Chaeda_spring.cloud_service_agents.s3;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

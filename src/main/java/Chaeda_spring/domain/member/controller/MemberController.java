@@ -1,8 +1,12 @@
 package Chaeda_spring.domain.member.controller;
 
 import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.member.dto.LoginRequest;
 import Chaeda_spring.domain.member.dto.MemberResponse;
+import Chaeda_spring.domain.member.dto.SignUpRequestForStudent;
+import Chaeda_spring.domain.member.dto.SignUpRequestForTeacher;
 import Chaeda_spring.domain.member.service.MemberService;
+import Chaeda_spring.global.security.jwt.dto.TokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +22,45 @@ public class MemberController {
     @GetMapping("/{memberId}")
     @Operation(summary = "회원 정보 가져오기")
     public ResponseEntity<MemberResponse> getMemberInfo(
-            @PathVariable Long memberId
+            @PathVariable("memberId") Long memberId
     ) {
         return ResponseEntity.ok(memberService.getMemberInfo(memberId));
     }
 
+    @PostMapping("/login")
+    @Operation(summary = "로그인하기")
+    public ResponseEntity<TokenDto> login(
+            @RequestBody LoginRequest request
+    ) {
+        return ResponseEntity.ok(memberService.login(request));
+    }
+
+    @PostMapping("/logout/{memberId}")
+    @Operation(summary = "로그아웃하기")
+    public ResponseEntity<Void> logout(
+            @PathVariable Long memberId
+    ) {
+        memberService.logout(memberId);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/student/signUp")
+    @Operation(summary = "회원가입하기")
+    public ResponseEntity<Void> signUpForStudent(@RequestBody SignUpRequestForStudent request) {
+        memberService.signUp(request);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/teacher/signUp")
+    @Operation(summary = "회원가입하기")
+    public ResponseEntity<Void> signUpForTeacher(@RequestBody SignUpRequestForTeacher request) {
+        memberService.signUp(request);
+        return ResponseEntity.ok().body(null);
+    }
+
     @PutMapping("/profile-image/{memberId}")
     @Operation(summary = "회원 프로필 이미지 수정하기", description = "1~6번 회원의 프로필을 수정하지 말아주세요. (= 더미 데이터는 조회만 하세요)")
+
     public ResponseEntity<Void> updateMemberProfileImage(
             @PathVariable Long memberId,
             @RequestBody UploadImageCompleteRequest request

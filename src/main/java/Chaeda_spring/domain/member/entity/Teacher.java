@@ -28,8 +28,8 @@ public class Teacher extends Member {
     @OneToMany(mappedBy = "teacher")
     private List<HwAnnouncement> homeworkNotificationList = new ArrayList<>();
 
-    public Teacher(String name, String email, String gender, String phoneNumber, String address, String subject, String notes) {
-        super(name, email, gender, phoneNumber, address);
+    public Teacher(String name, String email, String gender, String phoneNumber, Role role, String address, String subject, String notes) {
+        super(name, email, gender, phoneNumber, address, role);
         this.subject = subject;
         this.notes = notes;
     }
