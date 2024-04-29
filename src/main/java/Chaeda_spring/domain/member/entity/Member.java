@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.member.entity;
 
-import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.member.dto.SignUpRequest;
 import Chaeda_spring.domain.member.dto.SignUpRequestForStudent;
 import Chaeda_spring.domain.member.dto.SignUpRequestForTeacher;
@@ -26,10 +26,8 @@ public abstract class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @Column(nullable = false)
     private String loginId;
 
-    //    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -60,8 +58,7 @@ public abstract class Member extends BaseTimeEntity {
     }
 
     public static Member createSignUpMember(SignUpRequest signUpRequest, String password) {
-        if (signUpRequest instanceof SignUpRequestForStudent) {
-            SignUpRequestForStudent request = (SignUpRequestForStudent) signUpRequest;
+        if (signUpRequest instanceof SignUpRequestForStudent request) {
             return Student.builder()
                     .name(request.name())
                     .email(request.email())

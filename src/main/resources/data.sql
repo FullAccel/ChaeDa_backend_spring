@@ -46,10 +46,10 @@ VALUES (1, '수학', null),
        (3, '수학', null)
 ;
 
-INSERT INTO student (member_id, home_phone_num, parent_phone_num, school_name, subject, notes, grade)
-VALUES (4, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_1'),
-       (5, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_2'),
-       (6, '02-5318-6577', '010-5318-6577', '건국고등학교', '수학', null, 'HIGH_3')
+INSERT INTO student (member_id, home_phone_num, parent_phone_num, school_name, notes, grade)
+VALUES (4, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_1'),
+       (5, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_2'),
+       (6, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_3')
 ;
 
 

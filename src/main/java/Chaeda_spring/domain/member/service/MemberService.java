@@ -3,11 +3,11 @@ package Chaeda_spring.domain.member.service;
 import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.image.service.ImageService;
-import Chaeda_spring.domain.member.dto.*;
-import Chaeda_spring.domain.member.entity.Member;
-import Chaeda_spring.domain.member.entity.MemberRepository;
-import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.member.entity.Teacher;
+import Chaeda_spring.domain.member.dto.LoginRequest;
+import Chaeda_spring.domain.member.dto.SignUpRequest;
+import Chaeda_spring.domain.member.dto.StudentResponse;
+import Chaeda_spring.domain.member.dto.TeacherResponse;
+import Chaeda_spring.domain.member.entity.*;
 import Chaeda_spring.global.exception.AlreadyExistException;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotEqualsException;
@@ -15,6 +15,7 @@ import Chaeda_spring.global.exception.NotFoundException;
 import Chaeda_spring.global.security.jwt.dto.TokenDto;
 import Chaeda_spring.global.security.jwt.entity.RefreshTokenRepository;
 import Chaeda_spring.global.security.jwt.service.JwtTokenService;
+import Chaeda_spring.global.utils.MemberUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private final MemberUtils memberUtils;
     private final MemberRepository memberRepository;
     private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
@@ -78,19 +80,39 @@ public class MemberService {
     }
 
     /**
-     * 해당 회원이 선생님인지 학생인지 판단하여 알맞게 해당 회원의 정보를 전달합니다.
+     * 현재 회원의 학생 정보를 검색합니다.
      *
-     * @param memberId
-     * @return {@link StudentResponse} or {@link TeacherResponse}
+     * @return 학생 정보가 포함된 응답입니다.
+     * @throws NotEqualsException 현재 회원이 학생이 아닌 경우.
      */
-    public MemberResponse getMemberInfo(Long memberId) {
-        Member member = findMemberById(memberId);
+    public StudentResponse getStudentInfo() {
+        Member member = memberUtils.getCurrentMember();
+
         String presignedUrl = (member.getImage() != null) ? imageService.getPresignedUrlByImage(member.getImage()) : null;
 
-        if (member instanceof Student) {
-            return StudentResponse.from((Student) member, presignedUrl);
+        if (!member.getRole().equals(Role.STUDENT)) {
+            throw new NotEqualsException(ErrorCode.IS_NOT_STUDENT);
+        }
+        return StudentResponse.from((Student) member, presignedUrl);
+
+    }
+
+    /**
+     * 현재 로그인한 교사에 대한 정보를 검색합니다.
+     *
+     * @return 교사 정보 및 가능한 경우 프로필 이미지의 URL이 포함된 {@link TeacherResponse}입니다.
+     * @throws NotEqualsException 로그인한 회원이 교사가 아닌 경우.
+     */
+    public TeacherResponse getTeacherInfo() {
+        Member member = memberUtils.getCurrentMember();
+
+        String presignedUrl = (member.getImage() != null) ? imageService.getPresignedUrlByImage(member.getImage()) : null;
+
+        if (!member.getRole().equals(Role.TEACHER)) {
+            throw new NotEqualsException(ErrorCode.IS_NOT_TEACHER);
         }
         return TeacherResponse.from((Teacher) member, presignedUrl);
+
     }
 
     /**

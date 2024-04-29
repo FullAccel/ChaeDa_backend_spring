@@ -1,10 +1,7 @@
 package Chaeda_spring.domain.member.controller;
 
 import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.member.dto.LoginRequest;
-import Chaeda_spring.domain.member.dto.MemberResponse;
-import Chaeda_spring.domain.member.dto.SignUpRequestForStudent;
-import Chaeda_spring.domain.member.dto.SignUpRequestForTeacher;
+import Chaeda_spring.domain.member.dto.*;
 import Chaeda_spring.domain.member.service.MemberService;
 import Chaeda_spring.global.security.jwt.dto.TokenDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,12 +16,18 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{memberId}")
-    @Operation(summary = "회원 정보 가져오기")
-    public ResponseEntity<MemberResponse> getMemberInfo(
-            @PathVariable("memberId") Long memberId
+    @GetMapping("/student")
+    @Operation(summary = "학생 정보 가져오기")
+    public ResponseEntity<StudentResponse> getStudentInfo(
     ) {
-        return ResponseEntity.ok(memberService.getMemberInfo(memberId));
+        return ResponseEntity.ok(memberService.getStudentInfo());
+    }
+
+    @GetMapping("/teacher")
+    @Operation(summary = "선생님 정보 가져오기")
+    public ResponseEntity<TeacherResponse> getTeacherInfo(
+    ) {
+        return ResponseEntity.ok(memberService.getTeacherInfo());
     }
 
     @PostMapping("/login")

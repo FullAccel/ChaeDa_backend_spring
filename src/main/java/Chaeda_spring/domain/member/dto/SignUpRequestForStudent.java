@@ -28,7 +28,7 @@ public record SignUpRequestForStudent(
         @Schema(description = "학교이름 (선생님인 경우 받지 않습니다", example = "건대부속고등학교")
         String schoolName,
         @NotBlank(message = "학년은 필수 입력 항목이며 비어있을 수 없습니다.")
-        @Schema(description = "학년 (선생님인 경우 받지 않습니다", example = "HIGH_2")
+        @Schema(description = "학년 (선생님인 경우 받지 않습니다", example = "고2")
         Grade grade,
         @NotBlank()
         @Schema(description = "유저타입 (STUDENT or TEACHER)", example = "STUDENT")

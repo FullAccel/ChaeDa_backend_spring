@@ -25,8 +25,6 @@ public class Student extends Member {
 
     private String homePhoneNum;
 
-    private String subject;
-
     private String notes;
 
     @Column(nullable = false)
@@ -44,7 +42,6 @@ public class Student extends Member {
         this.schoolName = schoolName;
         this.parentPhoneNum = parentPhoneNum;
         this.homePhoneNum = homePhoneNum;
-        this.subject = subject;
         this.notes = notes;
     }
 }
