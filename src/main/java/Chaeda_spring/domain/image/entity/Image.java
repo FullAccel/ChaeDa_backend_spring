@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.image.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.submission.entity.Submission;
+import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHomework;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class Image extends BaseTimeEntity {
     private ImageFileExtension imageFileExtension;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Submission submission;
+    private SubmissionHomework submissionHomework;
 
     @Builder
     public Image(
@@ -44,8 +44,8 @@ public class Image extends BaseTimeEntity {
         this.imageFileExtension = imageFileExtension;
     }
 
-    public void setSubmission(Submission submission) {
-        this.submission = submission;
+    public void setSubmissionHomework(SubmissionHomework submissionHomework) {
+        this.submissionHomework = submissionHomework;
     }
 
     public void updateImageKey(String imageKey) {

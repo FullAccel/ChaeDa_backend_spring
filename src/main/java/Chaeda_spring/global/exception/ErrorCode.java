@@ -11,12 +11,12 @@ public enum ErrorCode {
 
     // Common
     UNSUPPORTED_VALUE(HttpStatus.BAD_REQUEST, "지원하지 않는 종류의 값이 body에 있습니다."),
+    TITLE_TOO_LONG(HttpStatus.BAD_REQUEST, "글자 수가 제한 길이를 초과하였습니다."),
     METHOD_ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "요청 한 값 타입이 잘못되어 binding에 실패하였습니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP method 입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류, 관리자에게 문의하세요"),
-
     JSON_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱오류, 관리자에게 문의"),
-
+    INCORRECT_SCOPE(HttpStatus.BAD_REQUEST, "범위에 맞지 않는 값을 넣었습니다"),
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
     MEMBER_NOT_AUTHORIZED_TO_ANNOUNCE(HttpStatus.BAD_REQUEST, "이 회원은 해당 공지를 할 권한이 없습니다."),
@@ -32,6 +32,10 @@ public enum ErrorCode {
 
     // TextBook
     TEXTBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 교재를 찾을 수 없습니다"),
+
+    // Self_Assignment
+    SELF_ASSIGNMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 과제를 찾을 수 없습니다"),
+
 
     //Announcement
     ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 공지를 찾을 수 없습니다."),

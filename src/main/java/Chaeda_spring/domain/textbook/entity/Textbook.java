@@ -76,4 +76,15 @@ public class Textbook extends BaseTimeEntity {
                 .publishYear(request.publishYear())
                 .build();
     }
+
+    /**
+     * 교과서의 시작 페이지 번호와 끝 페이지 번호를 기준으로 지정된 페이지 범위가 유효한지 확인합니다.
+     *
+     * @param startAssignment 과제의 시작 페이지 번호입니다.
+     * @param endAssignment   과제의 종료 페이지 번호입니다.
+     * @return {@code true}  페이지 범위가 유효한 경우, {@code false} 아닌 경우.
+     */
+    public boolean isValidPageRange(int startAssignment, int endAssignment) {
+        return startAssignment > this.startPageNum && endAssignment <= this.lastPageNum && startAssignment <= endAssignment;
+    }
 }
