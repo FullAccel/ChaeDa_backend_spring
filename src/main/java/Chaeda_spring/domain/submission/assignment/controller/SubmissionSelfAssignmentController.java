@@ -1,11 +1,14 @@
 package Chaeda_spring.domain.submission.assignment.controller;
 
 import Chaeda_spring.domain.submission.assignment.dto.AssignmentSubmissionRequest;
+import Chaeda_spring.domain.submission.assignment.dto.ProblemNumScopeResponse;
 import Chaeda_spring.domain.submission.assignment.service.AssignmentSubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +25,13 @@ public class SubmissionSelfAssignmentController {
     ) {
         assignmentSubmissionService.updateMathProblemRecords(assignmentId, assignmentSubmissionRequest);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{assignmentId}")
+    @Operation(summary = "개인 과제의 페이지별 문제 번호 리스트 조회하기")
+    public ResponseEntity<List<ProblemNumScopeResponse>> getProblemNumListById(
+            @PathVariable Long assignmentId
+    ) {
+        return ResponseEntity.ok(assignmentSubmissionService.getProblemNumScopes(assignmentId));
     }
 }

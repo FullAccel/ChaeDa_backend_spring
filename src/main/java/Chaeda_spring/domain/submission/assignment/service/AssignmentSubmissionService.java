@@ -6,6 +6,7 @@ import Chaeda_spring.domain.assignment.entity.SelfAssignment;
 import Chaeda_spring.domain.assignment.entity.SelfAssignmentRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.submission.assignment.dto.AssignmentSubmissionRequest;
+import Chaeda_spring.domain.submission.assignment.dto.ProblemNumScopeResponse;
 import Chaeda_spring.domain.submission.assignment.dto.WrongProblemWithinPageRequest;
 import Chaeda_spring.domain.submission.assignment.entity.WrongProblemRecord;
 import Chaeda_spring.domain.submission.assignment.entity.WrongProblemRecordRepository;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,6 +88,23 @@ public class AssignmentSubmissionService {
                 }
             }
         }
+    }
+
+    public List<ProblemNumScopeResponse> getProblemNumScopes(Long assignmentId) {
+        SelfAssignment selfAssignment = selfAssignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SELF_ASSIGNMENT_NOT_FOUND));
+        List<ProblemNumScopeResponse> problemNumScopes = new ArrayList<>();
+
+        for (int page = selfAssignment.getStartPage(); page <= selfAssignment.getEndPage(); page++) {
+            List<MathProblem> mathProblems = mathProblemRepository.findAllByTextbookAndPageNumber(selfAssignment.getTextbook(), page);
+
+            List<String> problemNumbers = new ArrayList<>();
+            for (MathProblem mathProblem : mathProblems) {
+                problemNumbers.add(mathProblem.getProblemNumber());
+            }
+            problemNumScopes.add(ProblemNumScopeResponse.of(page, problemNumbers));
+        }
+        return problemNumScopes;
     }
 
 }
