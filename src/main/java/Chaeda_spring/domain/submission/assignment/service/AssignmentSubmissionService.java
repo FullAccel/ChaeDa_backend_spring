@@ -56,13 +56,13 @@ public class AssignmentSubmissionService {
 
         for (WrongProblemWithinPageRequest wrongProblemWithinPageRequest : assignmentSubmissionRequest.wrongProblemWithinPageRequests()) {
             int pageNum = wrongProblemWithinPageRequest.pageNumber();
-            HashMap<Integer, DifficultyLevel> wrongProblemRecordMap = wrongProblemWithinPageRequest.wrongProblemRecords();
+            HashMap<String, DifficultyLevel> wrongProblemRecordMap = wrongProblemWithinPageRequest.wrongProblemRecords();
 
             List<MathProblem> mathProblems = mathProblemRepository.findAllByTextbookAndPageNumber(textbook, pageNum);
             for (MathProblem mathProblem : mathProblems) {
                 //페이지에 속하는 모든 문제는 풀이 횟수가 +1됩니다.
                 mathProblem.increaseSolvedStudentsCount();
-                int problemNum = mathProblem.getProblemNumber();
+                String problemNum = mathProblem.getProblemNumber();
 
                 //페이지 속 문제 중 틀린 문제라면
                 if (wrongProblemRecordMap.containsKey(problemNum)) {

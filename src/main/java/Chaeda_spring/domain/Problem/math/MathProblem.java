@@ -15,7 +15,7 @@ public class MathProblem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int problemNumber;
+    private String problemNumber;
     private int pageNumber;
 
     private int solvedStudentsCount;
@@ -30,7 +30,7 @@ public class MathProblem {
 
     @Builder
 
-    public MathProblem(int problemNumber, int pageNumber, Textbook textbook) {
+    public MathProblem(String problemNumber, int pageNumber, Textbook textbook) {
         this.problemNumber = problemNumber;
         this.pageNumber = pageNumber;
         this.textbook = textbook;

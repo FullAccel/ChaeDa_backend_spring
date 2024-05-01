@@ -3,6 +3,7 @@ package Chaeda_spring.global.constant;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -25,5 +26,10 @@ public enum DifficultyLevel {
             }
         }
         throw new NotFoundException(ErrorCode.UNSUPPORTED_VALUE, value + "는 " + DifficultyLevel.class.getName() + "에서는 지원하지 않는 타입입니다.");
+    }
+
+    @JsonValue
+    public String toValue() {
+        return this.value;
     }
 }

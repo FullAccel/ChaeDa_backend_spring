@@ -10,5 +10,5 @@ public interface MathProblemRepository extends JpaRepository<MathProblem, Long> 
 
     List<MathProblem> findAllByTextbookAndPageNumber(Textbook textbook, Integer pageNumber);
 
-    MathProblem findMathProblemByTextbookAndPageNumberAndProblemNumber(Textbook textbook, Integer pageNumber, Integer problemNum);
+    MathProblem findMathProblemByTextbookAndPageNumberAndProblemNumber(Textbook textbook, Integer pageNumber, String problemNum);
 }
