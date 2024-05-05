@@ -71,6 +71,7 @@ public class MemberService {
      *
      * @param {@link SignUpRequest}
      */
+    @Transactional
     public void signUp(SignUpRequest request) {
         if (memberRepository.existsMemberByEmail(request.email())) {
             throw new AlreadyExistException(ErrorCode.ALREADY_EXIST_MEMBER);

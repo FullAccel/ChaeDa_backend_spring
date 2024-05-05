@@ -3,6 +3,7 @@ package Chaeda_spring.domain.assignment.controller;
 import Chaeda_spring.domain.assignment.dto.SelfAssignmentRequest;
 import Chaeda_spring.domain.assignment.dto.SelfAssignmentResponse;
 import Chaeda_spring.domain.assignment.service.SelfAssignmentService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,8 @@ public class SelfAssignmentController {
     @Operation(summary = "개인 과제 날짜로 여러개 조회하기")
     public ResponseEntity<List<SelfAssignmentResponse>> getAssignmentsByDate(
             @Schema(description = "날짜 형식은 'yyyy-mm-dd'로 해주세요", example = "2024-04-30")
-            @RequestBody LocalDate date) {
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+            @RequestParam("date") LocalDate date) {
         return ResponseEntity.ok(selfAssignmentService.getSelfAssignmentsByDate(date));
     }
 

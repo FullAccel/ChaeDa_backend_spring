@@ -5,6 +5,10 @@ import Chaeda_spring.domain.Problem.math.MathProblemRepository;
 import Chaeda_spring.domain.assignment.entity.SelfAssignment;
 import Chaeda_spring.domain.assignment.entity.SelfAssignmentRepository;
 import Chaeda_spring.domain.member.entity.Student;
+import Chaeda_spring.domain.statistics.entity.SolvedNumForDay;
+import Chaeda_spring.domain.statistics.entity.SolvedNumForDayRepository;
+import Chaeda_spring.domain.statistics.entity.SolvedNumForMonthRepository;
+import Chaeda_spring.domain.statistics.entity.SolvedNumForWeekRepository;
 import Chaeda_spring.domain.submission.assignment.dto.AssignmentSubmissionRequest;
 import Chaeda_spring.domain.submission.assignment.dto.ProblemNumScopeResponse;
 import Chaeda_spring.domain.submission.assignment.dto.WrongProblemWithinPageRequest;
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +36,10 @@ public class AssignmentSubmissionService {
     private final MathProblemRepository mathProblemRepository;
     private final WrongProblemRecordRepository wrongProblemRecordRepository;
     private final MemberUtils memberUtils;
+    private final SolvedNumForDayRepository solvedNumForDayRepository;
+    private final SolvedNumForWeekRepository solvedNumForWeekRepository;
+    private final SolvedNumForMonthRepository solvedNumForMonthRepository;
+
 
     //TODO: 틀린 문제를 받아서 오답여부를 DB에 등록합니다. ok
     // -1 : 문제 데이터의 풀이 횟수, 틀린 횟수를 업데이트 합니다. ok
@@ -59,8 +68,24 @@ public class AssignmentSubmissionService {
         for (WrongProblemWithinPageRequest wrongProblemWithinPageRequest : assignmentSubmissionRequest.wrongProblemWithinPageRequests()) {
             int pageNum = wrongProblemWithinPageRequest.pageNumber();
             HashMap<String, DifficultyLevel> wrongProblemRecordMap = wrongProblemWithinPageRequest.wrongProblemRecords();
-
+            //해당 페이지에 속하는 문제들을 모두 가져옵니다.
             List<MathProblem> mathProblems = mathProblemRepository.findAllByTextbookAndPageNumber(textbook, pageNum);
+
+            //TODO: 해당 날짜의 푼 문제 수를 업데이트를 해야합니다
+            SolvedNumForDay solvedNumForDay = solvedNumForDayRepository.findByTodayDate(LocalDate.now());
+            if (solvedNumForDay != null) {
+                // 일간 풀이 횟수 통계가 있다면 업데이트합니다.
+                solvedNumForDay.increaseSolvedNum(mathProblems.size());
+                solvedNumForDayRepository.save(solvedNumForDay);
+            } else {
+                // 일간 풀이 횟수 통계가 없다면 생성합니다.
+                SolvedNumForDay newDayStatistics = SolvedNumForDay.builder()
+                        .todayDate(LocalDate.now())
+                        .build();
+                newDayStatistics.increaseSolvedNum(mathProblems.size());
+                solvedNumForDayRepository.save(newDayStatistics);
+            }
+
             for (MathProblem mathProblem : mathProblems) {
                 //페이지에 속하는 모든 문제는 풀이 횟수가 +1됩니다.
                 mathProblem.increaseSolvedStudentsCount();
@@ -69,6 +94,7 @@ public class AssignmentSubmissionService {
                 //페이지 속 문제 중 틀린 문제라면
                 if (wrongProblemRecordMap.containsKey(problemNum)) {
 
+                    // -- [전체] 문제의 틀린 학생 수와 난이도에 맞는 틀린 학생 수를 +1합니다.
                     //틀린 횟수를 +1 합니다.
                     mathProblem.increaseIncorrectStudentsCount();
                     //체감 난이도에 맞는 틀린 횟수를 +1 합니다.
@@ -85,6 +111,9 @@ public class AssignmentSubmissionService {
                                     .build()
                     );
 
+                    //TODO: 이번주 푼 문제 수를 업데이트 합니다.
+
+                    //TODO: 이번달 푼 문제 수를 업데이트 합니다.
                 }
             }
         }

@@ -25,6 +25,7 @@ public class SelfAssignment {
     private String title;
     private int startPage;
     private int endPage;
+    private boolean isCompleted;
 
     @Temporal(TemporalType.DATE)
     private LocalDate targetDate;
@@ -37,6 +38,16 @@ public class SelfAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public SelfAssignment(String title, int startPage, int endPage, boolean isCompleted, LocalDate targetDate, Textbook textbook, Student student) {
+        this.title = title;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.isCompleted = isCompleted;
+        this.targetDate = targetDate;
+        this.textbook = textbook;
+        this.student = student;
+    }
 
     @Builder
     public SelfAssignment(String title, int startPage, int endPage, LocalDate targetDate, Textbook textbook, Student student) {

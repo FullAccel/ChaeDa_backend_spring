@@ -9,7 +9,7 @@ import java.util.List;
 public record ProblemNumScopeResponse(
         @Schema(description = "페이지 번호", example = "12")
         int pageNum,
-        @Schema(description = "문제 번호 리스트", example = "{'1', '2', '3'}")
+        @Schema(description = "문제 번호 리스트", example = "['1', '2', '3']")
         List<String> problemNumbers
 ) {
 

@@ -63,6 +63,7 @@ public class SelfAssignmentService {
     //TODO: 과제 날짜로 한 번에 조회하기
     public List<SelfAssignmentResponse> getSelfAssignmentsByDate(LocalDate date) {
         Student student = (Student) memberUtils.getCurrentMember();
+
         return selfAssignmentRepository.findAllByTargetDateAndStudent(date, student).stream()
                 .map(selfAssignment -> SelfAssignmentResponse.of(selfAssignment))
                 .collect(Collectors.toList());
