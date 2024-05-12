@@ -19,7 +19,6 @@ import java.time.Year;
 public class Textbook extends BaseTimeEntity {
 
     @Id
-    @Column(name = "TEXTBOOK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -85,6 +84,6 @@ public class Textbook extends BaseTimeEntity {
      * @return {@code true}  페이지 범위가 유효한 경우, {@code false} 아닌 경우.
      */
     public boolean isValidPageRange(int startAssignment, int endAssignment) {
-        return startAssignment > this.startPageNum && endAssignment <= this.lastPageNum && startAssignment <= endAssignment;
+        return startAssignment >= this.startPageNum && endAssignment <= this.lastPageNum && startAssignment <= endAssignment;
     }
 }

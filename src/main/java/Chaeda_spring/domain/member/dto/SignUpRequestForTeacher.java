@@ -1,6 +1,6 @@
 package Chaeda_spring.domain.member.dto;
 
-import Chaeda_spring.domain.member.entity.Role;
+import Chaeda_spring.global.constant.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 

@@ -4,6 +4,6 @@ import java.util.List;
 
 public record AssignmentSubmissionRequest(
 
-        List<WrongProblemWithinPageRequest> wrongProblemWithinPageRequests
+        List<WrongProblemListPerPageRequest> wrongProblemListPerPageRequests
 ) {
 }

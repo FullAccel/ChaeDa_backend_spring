@@ -25,7 +25,12 @@ public record TextbookResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy")
         Year publishYear,
         @Schema(description = "출판사 이름", example = "좋은책 신사고")
-        String publisher
+        String publisher,
+        @Schema(description = "문제 시작 페이지", example = "10")
+        int startPage,
+        @Schema(description = "문제 등장 마지막 페이지", example = "210")
+        int lastPage
+
 ) {
 
     public static TextbookResponse of(Textbook textbook) {
@@ -37,6 +42,8 @@ public record TextbookResponse(
                 .subject(textbook.getSubject())
                 .publishYear(textbook.getPublishYear())
                 .publisher(textbook.getPublisher())
+                .startPage(textbook.getStartPageNum())
+                .lastPage(textbook.getLastPageNum())
                 .build();
     }
 }

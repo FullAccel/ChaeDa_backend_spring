@@ -15,7 +15,6 @@ public class Image extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

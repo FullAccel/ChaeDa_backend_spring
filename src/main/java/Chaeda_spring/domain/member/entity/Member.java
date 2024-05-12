@@ -5,6 +5,7 @@ import Chaeda_spring.domain.image.entity.Image;
 import Chaeda_spring.domain.member.dto.SignUpRequest;
 import Chaeda_spring.domain.member.dto.SignUpRequestForStudent;
 import Chaeda_spring.domain.member.dto.SignUpRequestForTeacher;
+import Chaeda_spring.global.constant.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,6 @@ public abstract class Member extends BaseTimeEntity {
     @JoinColumn(name = "image_id")
     Image image;
     @Id
-    @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

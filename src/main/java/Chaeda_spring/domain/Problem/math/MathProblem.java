@@ -7,29 +7,31 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
 public class MathProblem {
 
+    @OneToMany(mappedBy = "mathProblem")
+    private final List<ProblemTypeMapping> problemTypeMappings = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String problemNumber;
     private int pageNumber;
-
     private int solvedStudentsCount;
     private int incorrectStudentsCount;
-    private int lowDifficultyPerceivedCount;
+    private int easyNum;
     private int mediumDifficultyPerceivedCount;
     private int highDifficultyPerceivedCount;
-
     @ManyToOne
-    @JoinColumn(name = "problem_id")
+    @JoinColumn(name = "textbook_id")
     private Textbook textbook;
 
     @Builder
-
     public MathProblem(String problemNumber, int pageNumber, Textbook textbook) {
         this.problemNumber = problemNumber;
         this.pageNumber = pageNumber;
@@ -40,7 +42,7 @@ public class MathProblem {
         this.solvedStudentsCount++;
     }
 
-    public void increaseIncorrectStudentsCount() {
+    public void increaseWrongStudentsCount() {
         this.incorrectStudentsCount++;
     }
 
@@ -53,7 +55,7 @@ public class MathProblem {
                 this.mediumDifficultyPerceivedCount++;
                 break;
             case LOW:
-                this.lowDifficultyPerceivedCount++;
+                this.easyNum++;
                 break;
         }
     }

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class SubmissionPageImage {
 
     @Id
-    @Column(name = "SUBMISSION_IMAGE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

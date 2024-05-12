@@ -5,11 +5,13 @@ import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.global.constant.DifficultyLevel;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class WrongProblemRecord {
 

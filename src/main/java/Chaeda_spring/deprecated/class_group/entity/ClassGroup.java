@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @Entity
 @Getter
 @SuperBuilder
@@ -26,7 +27,6 @@ public class ClassGroup extends BaseTimeEntity {
     @JoinColumn(name = "image_id")
     Image image;
     @Id
-    @Column(name = "CLASS_GROUP_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)

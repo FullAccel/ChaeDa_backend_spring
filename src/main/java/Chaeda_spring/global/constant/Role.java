@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.member.entity;
+package Chaeda_spring.global.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

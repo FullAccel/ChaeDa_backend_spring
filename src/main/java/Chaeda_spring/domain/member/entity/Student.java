@@ -2,8 +2,10 @@ package Chaeda_spring.domain.member.entity;
 
 import Chaeda_spring.deprecated.course.entity.Course;
 import Chaeda_spring.domain.assignment.entity.SelfAssignment;
+import Chaeda_spring.domain.statistics.entity.solvedNum.SolvedNumForDay;
 import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHomework;
 import Chaeda_spring.global.constant.Grade;
+import Chaeda_spring.global.constant.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,9 @@ public class Student extends Member {
 
     @OneToMany(mappedBy = "student")
     private List<SelfAssignment> selfAssignments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student")
+    private List<SolvedNumForDay> solvedNumForDays = new ArrayList<>();
 
     public Student(String name, String email, String gender, Role role, String phoneNumber, String address, String profileUrl, String schoolName, String parentPhoneNum, String homePhoneNum, String subject, String notes) {
         super(name, email, gender, phoneNumber, address, role);

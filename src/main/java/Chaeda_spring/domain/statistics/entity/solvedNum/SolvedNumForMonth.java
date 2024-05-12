@@ -1,9 +1,7 @@
-package Chaeda_spring.domain.statistics.entity;
+package Chaeda_spring.domain.statistics.entity.solvedNum;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import Chaeda_spring.domain.member.entity.Student;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +19,18 @@ public class SolvedNumForMonth {
 
     private int solvedNum;
 
+    @Temporal(TemporalType.DATE)
     private LocalDate monthDate;
 
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+
     @Builder
-    public SolvedNumForMonth(LocalDate monthDate) {
+    public SolvedNumForMonth(LocalDate monthDate, Student student) {
         this.solvedNum = 1;
         this.monthDate = monthDate;
+        this.student = student;
     }
 
     public void increaseSolvedNum(int solvedNum) {

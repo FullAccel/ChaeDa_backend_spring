@@ -1,12 +1,13 @@
 package Chaeda_spring.deprecated.announcement.entity;
 
-import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.deprecated.class_group.entity.ClassGroup;
+import Chaeda_spring.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+@Deprecated
 @Entity
 @Getter
 @NoArgsConstructor
@@ -16,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 public abstract class Announcement extends BaseTimeEntity {
 
     @Id
-    @Column(name = "announcement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

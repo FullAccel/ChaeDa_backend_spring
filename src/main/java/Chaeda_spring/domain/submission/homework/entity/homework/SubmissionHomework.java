@@ -19,7 +19,6 @@ import java.util.List;
 public class SubmissionHomework extends BaseTimeEntity {
 
     @Id
-    @Column(name = "SUBMISSION_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

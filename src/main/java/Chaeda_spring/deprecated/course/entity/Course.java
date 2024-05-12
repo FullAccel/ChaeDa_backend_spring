@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+@Deprecated
 @Entity
 @Getter
 @SuperBuilder
@@ -14,7 +15,6 @@ import lombok.experimental.SuperBuilder;
 public class Course {
 
     @Id
-    @Column(name = "Course_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

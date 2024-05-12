@@ -16,7 +16,7 @@ public enum Subject {
     Math_1("수학1"),
     Math_2("수학2"),
     Calculus("미적분"),
-    Probability_And_Statistics("확률과 통계"),
+    Probability_and_Statistics("확률과 통계"),
     Geometry("기하"),
     Mix("혼합형");
 

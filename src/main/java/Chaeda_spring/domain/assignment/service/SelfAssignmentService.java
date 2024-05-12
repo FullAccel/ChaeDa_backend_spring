@@ -35,6 +35,14 @@ public class SelfAssignmentService {
         return SelfAssignmentResponse.of(save);
     }
 
+    /**
+     * Updates a self assignment based on the provided ID and request.
+     *
+     * @param id      The ID of the self assignment to update.
+     * @param request The self assignment request containing the updated information.
+     * @return The updated self assignment response.
+     * @throws NotFoundException If the self assignment or textbook is not found.
+     */
     //TODO: 과제 수정하기
     public SelfAssignmentResponse updateSelfAssignment(Long id, SelfAssignmentRequest request) {
 

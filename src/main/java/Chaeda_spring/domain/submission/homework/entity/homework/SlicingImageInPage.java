@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class SlicingImageInPage {
 
     @Id
-    @Column(name = "SLICING_IMAGE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

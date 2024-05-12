@@ -2,6 +2,7 @@ package Chaeda_spring.domain.member.entity;
 
 import Chaeda_spring.deprecated.announcement.entity.HwAnnouncement;
 import Chaeda_spring.deprecated.class_group.entity.ClassGroup;
+import Chaeda_spring.global.constant.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

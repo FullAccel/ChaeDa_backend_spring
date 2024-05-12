@@ -1,6 +1,6 @@
 package Chaeda_spring.global.security.jwt.service;
 
-import Chaeda_spring.domain.member.entity.Role;
+import Chaeda_spring.global.constant.Role;
 import Chaeda_spring.global.security.jwt.dto.AccessTokenDto;
 import Chaeda_spring.global.security.jwt.dto.RefreshTokenDto;
 import Chaeda_spring.global.security.jwt.entity.JwtProperties;

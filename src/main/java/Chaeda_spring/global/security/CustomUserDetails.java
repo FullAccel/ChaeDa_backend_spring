@@ -1,6 +1,6 @@
 package Chaeda_spring.global.security;
 
-import Chaeda_spring.domain.member.entity.Role;
+import Chaeda_spring.global.constant.Role;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
