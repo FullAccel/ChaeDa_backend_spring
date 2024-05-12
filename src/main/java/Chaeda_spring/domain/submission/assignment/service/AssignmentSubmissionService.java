@@ -8,7 +8,6 @@ import Chaeda_spring.domain.assignment.entity.SelfAssignment;
 import Chaeda_spring.domain.assignment.entity.SelfAssignmentRepository;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.statistics.SolvedNumForDayListener;
 import Chaeda_spring.domain.statistics.entity.problem_type_statistics.*;
 import Chaeda_spring.domain.statistics.entity.solvedNum.*;
 import Chaeda_spring.domain.submission.assignment.dto.AssignmentSubmissionRequest;
@@ -94,7 +93,6 @@ public class AssignmentSubmissionService {
 
     /**
      * 현재 날짜에 풀었던 문제 수를 업데이트하거나 저장합니다.
-     * {@link SolvedNumForDayListener}를 통해day를 업데이트하면 week, month도 자동으로 업데이트 됩니다.
      *
      * @param solvedNum 업데이트하거나 저장할 해결한 문제 수입니다.
      * @param student   문제 풀이 횟수를 업데이트할 target 학생입니다.
