@@ -19,7 +19,7 @@ public interface SubconceptStatisticsForWeekRepository extends JpaRepository<Sub
             FROM 
                 SubconceptStatisticsForWeek s
             WHERE 
-                s.startOfWeek = :startOfWeek
+                s.startOfWeek = :startOfWeek AND s.student = :student
             ORDER BY 
                 s.wrongNum DESC
             """)

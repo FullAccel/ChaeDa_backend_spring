@@ -11,6 +11,6 @@ public interface SolvedNumForMonthRepository extends JpaRepository<SolvedNumForM
 
     SolvedNumForMonth findByMonthDateAndStudent(LocalDate monthDate, Student student);
 
-    @Query("SELECT s FROM SolvedNumForMonth s WHERE s.monthDate >= :monthDate")
+    @Query("SELECT s FROM SolvedNumForMonth s WHERE s.monthDate >= :monthDate AND s.student = :student")
     List<SolvedNumForMonth> findForMonthsByMonthDateAndStudent(LocalDate monthDate, Student student);
 }

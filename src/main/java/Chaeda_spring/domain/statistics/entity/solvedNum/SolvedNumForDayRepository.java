@@ -10,6 +10,6 @@ import java.util.List;
 public interface SolvedNumForDayRepository extends JpaRepository<SolvedNumForDay, Long> {
     SolvedNumForDay findByTodayDateAndStudent(LocalDate todayDate, Student student);
 
-    @Query("SELECT s FROM SolvedNumForDay s WHERE s.todayDate >= :todayDate")
+    @Query("SELECT s FROM SolvedNumForDay s WHERE s.todayDate >= :todayDate AND s.student = :student")
     List<SolvedNumForDay> findForDaysByTodayDateAndStudent(LocalDate todayDate, Student student);
 }

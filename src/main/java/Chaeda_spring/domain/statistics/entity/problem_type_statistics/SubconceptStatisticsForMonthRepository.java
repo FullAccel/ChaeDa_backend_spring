@@ -19,7 +19,7 @@ public interface SubconceptStatisticsForMonthRepository extends JpaRepository<Su
             FROM 
                 SubconceptStatisticsForMonth s
             WHERE 
-                s.targetMonth = :targetMonth
+                s.targetMonth = :targetMonth AND s.student = :student
             ORDER BY 
                 s.wrongNum DESC
             """)
