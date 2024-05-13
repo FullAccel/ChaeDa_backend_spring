@@ -196,45 +196,33 @@ public class AssignmentSubmissionServiceTest {
                 Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 6);
             }
 
-            @Nested
-            class 오늘_추가문제를_풀어도_정상적으로_업데이트_되어야합니다 {
+            @Test
+            void 추가문제_발생시_일별_주별_월별_정상업데이트() {
+                //given
+                HashMap<String, DifficultyLevel> wrongProblems = new HashMap<>() {{
+                    put("3.2", DifficultyLevel.LOW);
+                }};
 
-                @BeforeEach
-                void setUp() {
-                    HashMap<String, DifficultyLevel> wrongProblems = new HashMap<>() {{
-                        put("3.2", DifficultyLevel.LOW);
-                    }};
+                WrongProblemListPerPageRequest wrongProblemListPerPageRequest =
+                        new WrongProblemListPerPageRequest(3, wrongProblems);
 
-                    WrongProblemListPerPageRequest wrongProblemListPerPageRequest =
-                            new WrongProblemListPerPageRequest(3, wrongProblems);
+                List<WrongProblemListPerPageRequest> wrongProblemListPerPageRequests = List.of(wrongProblemListPerPageRequest);
+                AssignmentSubmissionRequest request = new AssignmentSubmissionRequest(wrongProblemListPerPageRequests);
+                SelfAssignment selfAssignment = selfAssignmentRepository.findById(1L).get();
 
-                    List<WrongProblemListPerPageRequest> wrongProblemListPerPageRequests = List.of(wrongProblemListPerPageRequest);
-                    AssignmentSubmissionRequest request = new AssignmentSubmissionRequest(wrongProblemListPerPageRequests);
-                    SelfAssignment selfAssignment = selfAssignmentRepository.findById(1L).get();
-                    assignmentSubmissionService.updateMathProblemRecords(member, selfAssignment.getId(), request);
-                }
+                //when
+                assignmentSubmissionService.updateMathProblemRecords(member, selfAssignment.getId(), request);
 
-                @Test
-                void 일별() {
-                    //then
-                    var solvedNumForDays = solvedNumForDayRepository.findByTodayDateAndStudent(LocalDate.now(), (Student) member);
-                    Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 9);
-                }
+                //then
+                var solvedNumForDays = solvedNumForDayRepository.findByTodayDateAndStudent(LocalDate.now(), (Student) member);
+                Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 9);
 
-                @Test
-                void 주별() {
-                    //then
-                    var solvedNumForWeek = solvedNumForWeekRepository.findByStartOfWeekAndStudent(
-                            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), (Student) member);
-                    Assertions.assertEquals(solvedNumForWeek.getSolvedNum(), 9);
-                }
+                var solvedNumForWeek = solvedNumForWeekRepository.findByStartOfWeekAndStudent(
+                        LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), (Student) member);
+                Assertions.assertEquals(solvedNumForWeek.getSolvedNum(), 9);
 
-                @Test
-                void 월별() {
-                    //then
-                    var solvedNumForDays = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), (Student) member);
-                    Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 9);
-                }
+                var solvedNumForMonth = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), (Student) member);
+                Assertions.assertEquals(solvedNumForMonth.getSolvedNum(), 9);
             }
         }
     }
