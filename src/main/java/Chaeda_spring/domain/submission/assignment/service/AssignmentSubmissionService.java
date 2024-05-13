@@ -65,6 +65,9 @@ public class AssignmentSubmissionService {
         if (selfAssignment.getStudent().getId() != student.getId())
             throw new NotEqualsException(ErrorCode.SELF_ASSIGNMENT_NOT_FOUND, "해당 과제는 본인의 과제가 아닙니다.");
 
+        selfAssignment.setCompleted();
+        selfAssignmentRepository.save(selfAssignment);
+
         //페이지 단위로 틀린 문제를 DB에 기록합니다.
         for (WrongProblemListPerPageRequest wrongProblemListPerPage : request.wrongProblemListPerPageRequests()) {
             handleWrongProblemListPerPage(wrongProblemListPerPage, selfAssignment, student);
@@ -117,26 +120,24 @@ public class AssignmentSubmissionService {
                         LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), student);
         if (weekStatistics == null) {
             // 주간 풀이 횟수 통계가 없다면 생성합니다.
-            SolvedNumForWeek newWeekStatistics = SolvedNumForWeek.builder()
+            weekStatistics = SolvedNumForWeek.builder()
                     .startOfWeek(LocalDate.now().with(DayOfWeek.MONDAY))
                     .student(student)
                     .build();
-            weekStatistics = newWeekStatistics;
         }
-        weekStatistics.increaseSolvedNum(solvedNumForDay.getSolvedNum());
+        weekStatistics.increaseSolvedNum(solvedNum);
         solvedNumForWeekRepository.save(weekStatistics);
 
         // logic for month
         SolvedNumForMonth monthStatistics = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), student);
         if (monthStatistics == null) {
             // 월간 풀이 횟수 통계가 없다면 업데이트합니다.
-            SolvedNumForMonth newMonthStatistics = SolvedNumForMonth.builder()
+            monthStatistics = SolvedNumForMonth.builder()
                     .monthDate(LocalDate.now().withDayOfMonth(1))
                     .student(student)
                     .build();
-            monthStatistics = newMonthStatistics;
         }
-        monthStatistics.increaseSolvedNum(solvedNumForDay.getSolvedNum());
+        monthStatistics.increaseSolvedNum(solvedNum);
         solvedNumForMonthRepository.save(monthStatistics);
     }
 

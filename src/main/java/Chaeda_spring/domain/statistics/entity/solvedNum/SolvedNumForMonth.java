@@ -28,7 +28,6 @@ public class SolvedNumForMonth {
 
     @Builder
     public SolvedNumForMonth(LocalDate monthDate, Student student) {
-        this.solvedNum = 1;
         this.monthDate = monthDate;
         this.student = student;
     }

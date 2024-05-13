@@ -22,7 +22,9 @@ public record SelfAssignmentResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate targetDate,
         @Schema(description = "과제를 진행할 교재 정보")
-        TextbookResponse textbook
+        TextbookResponse textbook,
+        @Schema(description = "과제 결과 제출 여부", example = "true")
+        boolean isCompleted
 ) {
 
     public static SelfAssignmentResponse of(SelfAssignment selfAssignment) {
@@ -32,6 +34,7 @@ public record SelfAssignmentResponse(
                 .endPage(selfAssignment.getEndPage())
                 .targetDate(selfAssignment.getTargetDate())
                 .textbook(TextbookResponse.of(selfAssignment.getTextbook()))
+                .isCompleted(selfAssignment.isCompleted())
                 .build();
     }
 }

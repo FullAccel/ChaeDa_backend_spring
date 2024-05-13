@@ -11,5 +11,5 @@ public interface SolvedNumForDayRepository extends JpaRepository<SolvedNumForDay
     SolvedNumForDay findByTodayDateAndStudent(LocalDate todayDate, Student student);
 
     @Query("SELECT s FROM SolvedNumForDay s WHERE s.todayDate >= :todayDate AND s.student = :student")
-    List<SolvedNumForDay> findForDaysByTodayDateAndStudent(LocalDate todayDate, Student student);
+    List<SolvedNumForDay> find7DaysByTodayDateAndStudent(LocalDate todayDate, Student student);
 }

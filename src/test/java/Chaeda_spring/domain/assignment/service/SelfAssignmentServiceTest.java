@@ -80,7 +80,6 @@ public class SelfAssignmentServiceTest {
                     LocalDate.parse("2024-12-01"),
                     1L
             );
-
             textbookRespository.save(Textbook.builder()
                     .name("My First Textbook")
                     .startPageNum(1)

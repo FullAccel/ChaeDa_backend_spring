@@ -45,7 +45,7 @@ public class StatisticsService {
      */
     public Map<LocalDate, Integer> getSolvedCountByDate(Member member, LocalDate date) {
         LocalDate sevenDaysAgo = date.minusDays(7);
-        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.findForDaysByTodayDateAndStudent(sevenDaysAgo, (Student) member);
+        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateAndStudent(sevenDaysAgo, (Student) member);
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForDay::getTodayDate, SolvedNumForDay::getSolvedNum));
 

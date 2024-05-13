@@ -74,4 +74,8 @@ public class SelfAssignment {
         this.targetDate = request.targetDate();
         this.textbook = textbook;
     }
+
+    public void setCompleted() {
+        isCompleted = true;
+    }
 }

@@ -27,12 +27,11 @@ public class SolvedNumForWeek {
 
     @Builder
     public SolvedNumForWeek(LocalDate startOfWeek, Student student) {
-        this.solvedNum = 1;
         this.startOfWeek = startOfWeek;
         this.student = student;
     }
 
     public void increaseSolvedNum(int solvedNum) {
-        solvedNum += solvedNum;
+        this.solvedNum += solvedNum;
     }
 }

@@ -25,6 +25,7 @@ import Chaeda_spring.global.constant.DifficultyLevel;
 import Chaeda_spring.global.constant.Grade;
 import Chaeda_spring.global.constant.Role;
 import Chaeda_spring.global.constant.Subject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -119,6 +122,9 @@ public class AssignmentSubmissionServiceTest {
         Map<Integer, List<String>> pageToProblemNumbers = new HashMap<>();
         pageToProblemNumbers.put(1, Arrays.asList("1.1", "1.2", "1.3"));
         pageToProblemNumbers.put(2, Arrays.asList("2.1", "2.2", "2.3"));
+        pageToProblemNumbers.put(3, Arrays.asList("3.1", "3.2", "3.3"));
+        pageToProblemNumbers.put(4, Arrays.asList("4.1", "4.2", "4.3"));
+
 
         pageToProblemNumbers.forEach((pageNumber, problemNumbers) -> {
             problemNumbers.stream()
@@ -134,6 +140,7 @@ public class AssignmentSubmissionServiceTest {
     @Nested
     class 과제_제출시 {
 
+        //given
         HashMap<String, DifficultyLevel> wrongProblems1 = new HashMap<>() {{
             put("1.1", DifficultyLevel.HIGH);
             put("1.3", DifficultyLevel.MEDIUM);
@@ -150,26 +157,90 @@ public class AssignmentSubmissionServiceTest {
                 new WrongProblemListPerPageRequest(2, wrongProblems2);
 
         List<WrongProblemListPerPageRequest> wrongProblemListPerPageRequests = Arrays.asList(wrongProblemListPerPageRequest1, wrongProblemListPerPageRequest2);
-        AssignmentSubmissionRequest request = new AssignmentSubmissionRequest(wrongProblemListPerPageRequests);
+        AssignmentSubmissionRequest request;
 
-        Member member = memberRepository.findById(1L).get();
+        Member member;
 
         @BeforeEach
         void runUpdateMathProblemRecords() {
+            //when
+            request = new AssignmentSubmissionRequest(wrongProblemListPerPageRequests);
+
+            member = memberRepository.findById(1L).get();
             SelfAssignment selfAssignment = selfAssignmentRepository.findById(1L).get();
             assignmentSubmissionService.updateMathProblemRecords(member, selfAssignment.getId(), request);
         }
 
         @Nested
-        class 기간별로_문제_수_만큼_횟수가_증가해야합니다 {
+        class 푼_문제_수가_올바르게_업데이트되어야합니다 {
 
             @Test
-            void 일별_푼_문제_수가_올바르게_업데이트되어야합니다() {
-                //given
+            void 일별() {
+                //then
+                var solvedNumForDays = solvedNumForDayRepository.findByTodayDateAndStudent(LocalDate.now(), (Student) member);
+                Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 6);
+            }
 
+            @Test
+            void 주별() {
+                //then
+                var solvedNumForWeek = solvedNumForWeekRepository.findByStartOfWeekAndStudent(
+                        LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), (Student) member);
+                Assertions.assertEquals(solvedNumForWeek.getSolvedNum(), 6);
+            }
 
+            @Test
+            void 월별() {
+                //then
+                var solvedNumForDays = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), (Student) member);
+                Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 6);
+            }
+
+            @Nested
+            class 오늘_추가문제를_풀어도_정상적으로_업데이트_되어야합니다 {
+
+                @BeforeEach
+                void setUp() {
+                    HashMap<String, DifficultyLevel> wrongProblems = new HashMap<>() {{
+                        put("3.2", DifficultyLevel.LOW);
+                    }};
+
+                    WrongProblemListPerPageRequest wrongProblemListPerPageRequest =
+                            new WrongProblemListPerPageRequest(3, wrongProblems);
+
+                    List<WrongProblemListPerPageRequest> wrongProblemListPerPageRequests = List.of(wrongProblemListPerPageRequest);
+                    AssignmentSubmissionRequest request = new AssignmentSubmissionRequest(wrongProblemListPerPageRequests);
+                    SelfAssignment selfAssignment = selfAssignmentRepository.findById(1L).get();
+                    assignmentSubmissionService.updateMathProblemRecords(member, selfAssignment.getId(), request);
+                }
+
+                @Test
+                void 일별() {
+                    //then
+                    var solvedNumForDays = solvedNumForDayRepository.findByTodayDateAndStudent(LocalDate.now(), (Student) member);
+                    Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 9);
+                }
+
+                @Test
+                void 주별() {
+                    //then
+                    var solvedNumForWeek = solvedNumForWeekRepository.findByStartOfWeekAndStudent(
+                            LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), (Student) member);
+                    Assertions.assertEquals(solvedNumForWeek.getSolvedNum(), 9);
+                }
+
+                @Test
+                void 월별() {
+                    //then
+                    var solvedNumForDays = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), (Student) member);
+                    Assertions.assertEquals(solvedNumForDays.getSolvedNum(), 9);
+                }
             }
         }
     }
 
+    @Nested
+    class 세부개념별_풀이횟수_틀린횟수가_정상적으로_업데이트되어야합니다 {
+
+    }
 }
