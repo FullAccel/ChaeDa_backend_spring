@@ -2,6 +2,7 @@ package Chaeda_spring.domain.statistics.controller;
 
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.statistics.dto.SolvedCountsByMonthResponse;
+import Chaeda_spring.domain.statistics.dto.StatisticsBySubconceptResponse;
 import Chaeda_spring.domain.statistics.dto.WrongCountWithSubconceptResponse;
 import Chaeda_spring.domain.statistics.service.StatisticsService;
 import Chaeda_spring.global.annotation.AuthUser;
@@ -15,10 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -95,5 +93,37 @@ public class StatisticsController {
             @RequestParam("chapter") Chapter chapter
     ) {
         return ResponseEntity.ok(statisticsService.getSubconceptListByChapter(chapter));
+    }
+
+    @GetMapping("/statistics/weekly/{subConcept}")
+    @Operation(summary = "주간 세부개념 통계 조회")
+    public ResponseEntity<StatisticsBySubconceptResponse> getWeeklyStatisticsBySubconcept(
+            @AuthUser Member member,
+            @PathVariable SubConcept subConcept) {
+        return ResponseEntity.ok(statisticsService.getWeeklyStatisticsBySubConcept(member, subConcept));
+    }
+
+    @GetMapping("/statistics/monthly/{subConcept}")
+    @Operation(summary = "월간 세부개념 통계 조회")
+    public ResponseEntity<StatisticsBySubconceptResponse> getMonthlyStatisticsBySubconcept(
+            @AuthUser Member member,
+            @PathVariable SubConcept subConcept) {
+        return ResponseEntity.ok(statisticsService.getMonthlyStatisticsBySubConcept(member, subConcept));
+    }
+
+    @GetMapping("/statistics/accumulated/{subConcept}")
+    @Operation(summary = "누적 세부개념 통계 조회")
+    public ResponseEntity<StatisticsBySubconceptResponse> getAccumulatedWeekStatisticsBySubconcept(
+            @AuthUser Member member,
+            @PathVariable SubConcept subConcept) {
+        return ResponseEntity.ok(statisticsService.getAccumulatedStatisticsBySubConcept(member, subConcept));
+    }
+
+    @GetMapping("/statistics/accumulated/{chapter}")
+    @Operation(summary = "특정 단원에 속하는 모든 세부개념의 누적 통계 리스트 조회", description = "결과에 없는 세부개념은 풀이 횟수가 존재하지 없어 통계에 존재하지 않는 세부개념입니다.")
+    public ResponseEntity<List<StatisticsBySubconceptResponse>> getAccumulatedWeekStatisticsBySubconcept(
+            @AuthUser Member member,
+            @PathVariable Chapter chapter) {
+        return ResponseEntity.ok(statisticsService.getAccumulatedStatisticsBySubConceptList(member, chapter));
     }
 }

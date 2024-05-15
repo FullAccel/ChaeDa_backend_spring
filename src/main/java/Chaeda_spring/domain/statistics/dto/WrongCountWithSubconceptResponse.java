@@ -10,9 +10,9 @@ public record WrongCountWithSubconceptResponse(
         @Schema(description = "세부 개념", example = "Operations_of_polynomials")
         SubConcept subConcept,
         @Schema(description = "푼 문항 수", example = "5")
-        Long problemCount,
+        int problemCount,
         @Schema(description = "틀린 문항 수", example = "2")
-        Long wrongCount
+        int wrongCount
 ) {
     public static WrongCountWithSubconceptResponse of(SubconceptStatisticsForWeek statistics) {
         return new WrongCountWithSubconceptResponse(

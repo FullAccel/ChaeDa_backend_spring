@@ -20,22 +20,22 @@ public class AccumulatedStatisticsForSubconcept implements Statistics {
     @JoinColumn(nullable = false)
     private Student student;
     @Column(nullable = false)
-    private Long solvedNum;
+    private int solvedNum;
     @Column(nullable = false)
-    private Long wrongNum;
+    private int wrongNum;
     @Column(nullable = false)
-    private Long easyNum;
+    private int easyNum;
     @Column(nullable = false)
-    private Long middleNum;
+    private int middleNum;
     @Column(nullable = false)
-    private Long hardNum;
+    private int hardNum;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private MathProblemType type;
 
     @Builder
-    public AccumulatedStatisticsForSubconcept(Student student, Long solvedNum, Long wrongNum, Long easyNum, Long middleNum, Long hardNum, MathProblemType mathProblemType) {
+    public AccumulatedStatisticsForSubconcept(Student student, int solvedNum, int wrongNum, int easyNum, int middleNum, int hardNum, MathProblemType mathProblemType) {
         this.student = student;
         this.solvedNum = solvedNum;
         this.wrongNum = wrongNum;
@@ -68,5 +68,35 @@ public class AccumulatedStatisticsForSubconcept implements Statistics {
                 hardNum++;
                 break;
         }
+    }
+
+    @Override
+    public MathProblemType getType() {
+        return type;
+    }
+
+    @Override
+    public int getSolvedNum() {
+        return solvedNum;
+    }
+
+    @Override
+    public int getWrongNum() {
+        return wrongNum;
+    }
+
+    @Override
+    public int getEasyNum() {
+        return easyNum;
+    }
+
+    @Override
+    public int getMiddleNum() {
+        return middleNum;
+    }
+
+    @Override
+    public int getHardNum() {
+        return hardNum;
     }
 }

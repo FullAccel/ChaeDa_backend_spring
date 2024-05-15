@@ -10,9 +10,9 @@ public record SolvedCountsByMonthResponse(
         @Schema(description = "세부 개념", example = "Operations_of_polynomials")
         SubConcept subConcept,
         @Schema(description = "푼 문항 수", example = "5")
-        Long solvedCount,
+        int solvedCount,
         @Schema(description = "틀린 문항 수", example = "2")
-        Long wrongCount
+        int wrongCount
 ) {
     public static SolvedCountsByMonthResponse of(SubconceptStatisticsForMonth statistics) {
         return new SolvedCountsByMonthResponse(

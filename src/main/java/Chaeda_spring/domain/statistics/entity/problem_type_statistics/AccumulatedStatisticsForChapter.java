@@ -1,5 +1,6 @@
 package Chaeda_spring.domain.statistics.entity.problem_type_statistics;
 
+import Chaeda_spring.domain.Problem.math.MathProblemType;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.global.constant.Chapter;
 import Chaeda_spring.global.constant.DifficultyLevel;
@@ -21,21 +22,21 @@ public class AccumulatedStatisticsForChapter implements Statistics {
     @JoinColumn(nullable = false)
     private Student student;
     @Column(nullable = false)
-    private Long solvedNum;
+    private int solvedNum;
     @Column(nullable = false)
-    private Long wrongNum;
+    private int wrongNum;
     @Column(nullable = false)
-    private Long easyNum;
+    private int easyNum;
     @Column(nullable = false)
-    private Long middleNum;
+    private int middleNum;
     @Column(nullable = false)
-    private Long hardNum;
-    
+    private int hardNum;
+
     @Enumerated(EnumType.STRING)
     private Chapter chapter;
 
     @Builder
-    public AccumulatedStatisticsForChapter(Student student, Long solvedNum, Long wrongNum, Long easyNum, Long middleNum, Long hardNum, Chapter chapter) {
+    public AccumulatedStatisticsForChapter(Student student, int solvedNum, int wrongNum, int easyNum, int middleNum, int hardNum, Chapter chapter) {
         this.student = student;
         this.solvedNum = solvedNum;
         this.wrongNum = wrongNum;
@@ -68,5 +69,35 @@ public class AccumulatedStatisticsForChapter implements Statistics {
                 hardNum++;
                 break;
         }
+    }
+
+    @Override
+    public MathProblemType getType() {
+        return null;
+    }
+
+    @Override
+    public int getSolvedNum() {
+        return solvedNum;
+    }
+
+    @Override
+    public int getWrongNum() {
+        return wrongNum;
+    }
+
+    @Override
+    public int getEasyNum() {
+        return easyNum;
+    }
+
+    @Override
+    public int getMiddleNum() {
+        return middleNum;
+    }
+
+    @Override
+    public int getHardNum() {
+        return hardNum;
     }
 }

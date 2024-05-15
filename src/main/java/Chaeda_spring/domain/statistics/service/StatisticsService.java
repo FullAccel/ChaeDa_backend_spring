@@ -1,12 +1,13 @@
 package Chaeda_spring.domain.statistics.service;
 
+import Chaeda_spring.domain.Problem.math.MathProblemType;
+import Chaeda_spring.domain.Problem.math.MathProblemTypeRepository;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.statistics.dto.SolvedCountsByMonthResponse;
+import Chaeda_spring.domain.statistics.dto.StatisticsBySubconceptResponse;
 import Chaeda_spring.domain.statistics.dto.WrongCountWithSubconceptResponse;
-import Chaeda_spring.domain.statistics.entity.problem_type_statistics.AccumulatedStatisticsForChapterRepository;
-import Chaeda_spring.domain.statistics.entity.problem_type_statistics.SubconceptStatisticsForMonthRepository;
-import Chaeda_spring.domain.statistics.entity.problem_type_statistics.SubconceptStatisticsForWeekRepository;
+import Chaeda_spring.domain.statistics.entity.problem_type_statistics.*;
 import Chaeda_spring.domain.statistics.entity.solvedNum.*;
 import Chaeda_spring.global.constant.Chapter;
 import Chaeda_spring.global.constant.SubConcept;
@@ -29,12 +30,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StatisticsService {
 
+    private final MathProblemTypeRepository mathProblemTypeRepository;
     private final SolvedNumForDayRepository solvedNumForDayRepository;
     private final SolvedNumForWeekRepository solvedNumForWeekRepository;
     private final SolvedNumForMonthRepository solvedNumForMonthRepository;
     private final SubconceptStatisticsForWeekRepository subconceptStatisticsForWeekRepository;
     private final SubconceptStatisticsForMonthRepository subconceptStatisticsForMonthRepository;
+
     private final AccumulatedStatisticsForChapterRepository accumulatedStatisticsForChapterRepository;
+    private final AccumulatedStatisticsForSubconceptRepository accumulatedStatisticsForSubconceptRepository;
 
     /**
      * 지정된 날짜부터 7일 동안 각 날짜에 대해 해결한 문제 수를 검색합니다.
@@ -110,5 +114,44 @@ public class StatisticsService {
 
     public List<SubConcept> getSubconceptListByChapter(Chapter chapter) {
         return Chapter.getSubConceptsByChapterName(chapter);
+    }
+
+    public StatisticsBySubconceptResponse getWeeklyStatisticsBySubConcept(Member member, SubConcept subConcept) {
+
+        MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
+
+        LocalDate today = LocalDate.now();
+        LocalDate thisWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+        SubconceptStatisticsForWeek stats = subconceptStatisticsForWeekRepository.findByStartOfWeekAndStudentAndType(thisWeek, (Student) member, type);
+
+        return StatisticsBySubconceptResponse.from(subConcept, stats);
+    }
+
+    public StatisticsBySubconceptResponse getMonthlyStatisticsBySubConcept(Member member, SubConcept subConcept) {
+
+        MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
+        LocalDate thisMonth = LocalDate.now().withDayOfMonth(1);
+
+        SubconceptStatisticsForMonth stats = subconceptStatisticsForMonthRepository.findByTargetMonthAndStudentAndType(thisMonth, (Student) member, type);
+
+        return StatisticsBySubconceptResponse.from(subConcept, stats);
+    }
+
+    public StatisticsBySubconceptResponse getAccumulatedStatisticsBySubConcept(Member member, SubConcept subConcept) {
+
+        MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
+
+        AccumulatedStatisticsForSubconcept stats = accumulatedStatisticsForSubconceptRepository.findByStudentAndType((Student) member, type);
+
+        return StatisticsBySubconceptResponse.from(subConcept, stats);
+    }
+
+    public List<StatisticsBySubconceptResponse> getAccumulatedStatisticsBySubConceptList(Member member, Chapter chapter) {
+
+        return mathProblemTypeRepository.findAllByChapter(chapter).stream()
+                .map((type) -> accumulatedStatisticsForSubconceptRepository.findByStudentAndType((Student) member, type))
+                .map((stats) -> StatisticsBySubconceptResponse.from(stats.getType().getSubConcept(), stats))
+                .collect(Collectors.toList());
     }
 }

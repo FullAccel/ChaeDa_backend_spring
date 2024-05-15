@@ -5,12 +5,10 @@ import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.global.constant.DifficultyLevel;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Getter
 @Entity
 @NoArgsConstructor
 public class SubconceptStatisticsForWeek implements Statistics {
@@ -32,22 +30,22 @@ public class SubconceptStatisticsForWeek implements Statistics {
     private LocalDate startOfWeek;
 
     @Column(nullable = false)
-    private Long solvedNum;
+    private int solvedNum;
 
     @Column(nullable = false)
-    private Long wrongNum;
+    private int wrongNum;
 
     @Column(nullable = false)
-    private Long easyNum;
+    private int easyNum;
 
     @Column(nullable = false)
-    private Long middleNum;
+    private int middleNum;
 
     @Column(nullable = false)
-    private Long hardNum;
+    private int hardNum;
 
     @Builder
-    public SubconceptStatisticsForWeek(MathProblemType type, Student student, LocalDate startOfWeek, Long solvedNum, Long wrongNum, Long easyNum, Long middleNum, Long hardNum) {
+    public SubconceptStatisticsForWeek(MathProblemType type, Student student, LocalDate startOfWeek, int solvedNum, int wrongNum, int easyNum, int middleNum, int hardNum) {
         this.type = type;
         this.student = student;
         this.startOfWeek = startOfWeek;
@@ -81,5 +79,35 @@ public class SubconceptStatisticsForWeek implements Statistics {
                 hardNum++;
                 break;
         }
+    }
+
+    @Override
+    public int getSolvedNum() {
+        return solvedNum;
+    }
+
+    @Override
+    public int getWrongNum() {
+        return wrongNum;
+    }
+
+    @Override
+    public int getEasyNum() {
+        return easyNum;
+    }
+
+    @Override
+    public int getMiddleNum() {
+        return middleNum;
+    }
+
+    @Override
+    public int getHardNum() {
+        return hardNum;
+    }
+
+    @Override
+    public MathProblemType getType() {
+        return type;
     }
 }
