@@ -25,12 +25,6 @@ logging:
     root: INFO  # 모든 로그에 대한 기본 로그 레벨 설정
     org.springframework.security: TRACE
 
-jwt:
-  expiration_time: 86400000 #1일
-  secret:
-    key: dbc8f198571ff39133958631658a18849423c9e013eaa308210267feec4799fcf85d099d7d8b984ecb2ebe6a6a85f82464ecd0272c55c78f89b4960ea51edc32
-
-
 #server:
 #  servlet:
 #    encoding:
