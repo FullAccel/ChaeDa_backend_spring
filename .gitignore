@@ -7,6 +7,7 @@ build/
 
 application-aws.yml
 application-auth.yml
+application.yml
 
 ### STS ###
 .apt_generated
