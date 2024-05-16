@@ -56,6 +56,12 @@ public class SubconceptStatisticsForMonth implements Statistics {
         this.hardNum = hardNum;
     }
 
+    public SubconceptStatisticsForMonth(LocalDate targetMonth, Student student, MathProblemType type) {
+        this.targetMonth = targetMonth;
+        this.student = student;
+        this.type = type;
+    }
+
     @Override
     public void increaseSolvedNum() {
         solvedNum++;

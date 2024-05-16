@@ -225,14 +225,7 @@ public class AssignmentSubmissionServiceTest {
                 Assertions.assertEquals(solvedNumForMonth.getSolvedNum(), 9);
             }
         }
-
-//        @Nested
-//        class 세부개념별_풀이횟수_틀린횟수가_정상적으로_업데이트되어야합니다 {
-//
-//            @Test
-//            void 월별() {
-//            }
-//        }
+        
     }
 
 

@@ -4,6 +4,7 @@ import Chaeda_spring.global.constant.Chapter;
 import Chaeda_spring.global.constant.SubConcept;
 import Chaeda_spring.global.constant.Subject;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,12 @@ public class MathProblemType {
     private SubConcept subConcept;
 
     @OneToMany(mappedBy = "mathProblemType", fetch = FetchType.LAZY)
-    private List<ProblemTypeMapping> problemTypeMappings = new ArrayList<>();
+    private final List<ProblemTypeMapping> problemTypeMappings = new ArrayList<>();
 
+    @Builder
+    public MathProblemType(Subject subject, Chapter chapter, SubConcept subConcept) {
+        this.subject = subject;
+        this.chapter = chapter;
+        this.subConcept = subConcept;
+    }
 }

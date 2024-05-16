@@ -56,6 +56,12 @@ public class SubconceptStatisticsForWeek implements Statistics {
         this.hardNum = hardNum;
     }
 
+    public SubconceptStatisticsForWeek(LocalDate startOfWeek, Student student, MathProblemType type) {
+        this.startOfWeek = startOfWeek;
+        this.student = student;
+        this.type = type;
+    }
+
     @Override
     public void increaseSolvedNum() {
         solvedNum++;

@@ -8,8 +8,6 @@ import Chaeda_spring.domain.assignment.entity.SelfAssignment;
 import Chaeda_spring.domain.assignment.entity.SelfAssignmentRepository;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.statistics.entity.problem_type_statistics.*;
-import Chaeda_spring.domain.statistics.entity.solvedNum.*;
 import Chaeda_spring.domain.submission.assignment.dto.AssignmentSubmissionRequest;
 import Chaeda_spring.domain.submission.assignment.dto.ProblemNumScopeResponse;
 import Chaeda_spring.domain.submission.assignment.dto.WrongProblemListPerPageRequest;
@@ -24,9 +22,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +33,10 @@ public class AssignmentSubmissionService {
     private final SelfAssignmentRepository selfAssignmentRepository;
     private final MathProblemRepository mathProblemRepository;
     private final WrongProblemRecordRepository wrongProblemRecordRepository;
-    private final SolvedNumForDayRepository solvedNumForDayRepository;
-    private final SolvedNumForWeekRepository solvedNumForWeekRepository;
-    private final SolvedNumForMonthRepository solvedNumForMonthRepository;
 
-    private final SubconceptStatisticsForWeekRepository subconceptStatisticsForWeekRepository;
-    private final SubconceptStatisticsForMonthRepository subconceptStatisticsForMonthRepository;
-    private final AccumulatedStatisticsForSubconceptRepository accumulatedStatisticsForSubconceptRepository;
-    private final AccumulatedStatisticsForChapterRepository accumulatedStatisticsForChapterRepository;
+    private final SubconceptStatisticsUpdater subconceptStatisticsUpdater;
+    private final AccumulatedStatisticsUpdater accumulatedStatisticsUpdater;
+    private final SolvedNumStatisticsUpdater solvedNumStatisticsUpdater;
 
 
     //TODO: 틀린 문제를 받아서 오답여부를 DB에 등록합니다. ok
@@ -69,9 +60,8 @@ public class AssignmentSubmissionService {
         selfAssignmentRepository.save(selfAssignment);
 
         //페이지 단위로 틀린 문제를 DB에 기록합니다.
-        for (WrongProblemListPerPageRequest wrongProblemListPerPage : request.wrongProblemListPerPageRequests()) {
-            handleWrongProblemListPerPage(wrongProblemListPerPage, selfAssignment, student);
-        }
+        request.wrongProblemListPerPageRequests().forEach(listPerPage ->
+                handleWrongProblemListPerPage(listPerPage, selfAssignment, student));
     }
 
     /**
@@ -88,7 +78,7 @@ public class AssignmentSubmissionService {
         List<MathProblem> mathProblems = mathProblemRepository.findAllByTextbookAndPageNumber(textbook, pageNum);
 
         //해당 페이지에 있는 문제 수 만큼 오늘 푼 문제 수를 업데이트 합니다.
-        updateOrSaveSolvedNumForDayWeekMonth(mathProblems.size(), student);
+        updateSolvedNum(mathProblems.size(), student);
 
         //목록에 있는 각 수학 문제에 대해서 유형을 판단하고 풀이 횟수와 틀린 횟수를 업데이트합니다
         handleMathProblems(mathProblems, wrongProblemRecordMap, selfAssignment, student);
@@ -100,45 +90,10 @@ public class AssignmentSubmissionService {
      * @param solvedNum 업데이트하거나 저장할 해결한 문제 수입니다.
      * @param student   문제 풀이 횟수를 업데이트할 target 학생입니다.
      */
-    private void updateOrSaveSolvedNumForDayWeekMonth(int solvedNum, Student student) {
-
-        //일간 푼 문제 수
-        LocalDate today = LocalDate.now();
-        SolvedNumForDay solvedNumForDay = solvedNumForDayRepository.findByTodayDateAndStudent(today, student);
-        if (solvedNumForDay == null) {
-            solvedNumForDay = SolvedNumForDay.builder()
-                    .todayDate(today)
-                    .student(student)
-                    .build();
-        }
-        solvedNumForDay.increaseSolvedNum(solvedNum);
-        solvedNumForDayRepository.save(solvedNumForDay);
-
-        // logic for week
-        SolvedNumForWeek weekStatistics = solvedNumForWeekRepository.
-                findByStartOfWeekAndStudent(
-                        LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)), student);
-        if (weekStatistics == null) {
-            // 주간 풀이 횟수 통계가 없다면 생성합니다.
-            weekStatistics = SolvedNumForWeek.builder()
-                    .startOfWeek(LocalDate.now().with(DayOfWeek.MONDAY))
-                    .student(student)
-                    .build();
-        }
-        weekStatistics.increaseSolvedNum(solvedNum);
-        solvedNumForWeekRepository.save(weekStatistics);
-
-        // logic for month
-        SolvedNumForMonth monthStatistics = solvedNumForMonthRepository.findByMonthDateAndStudent(LocalDate.now().withDayOfMonth(1), student);
-        if (monthStatistics == null) {
-            // 월간 풀이 횟수 통계가 없다면 업데이트합니다.
-            monthStatistics = SolvedNumForMonth.builder()
-                    .monthDate(LocalDate.now().withDayOfMonth(1))
-                    .student(student)
-                    .build();
-        }
-        monthStatistics.increaseSolvedNum(solvedNum);
-        solvedNumForMonthRepository.save(monthStatistics);
+    private void updateSolvedNum(int solvedNum, Student student) {
+        solvedNumStatisticsUpdater.updateSolvedNumForDay(solvedNum, student);
+        solvedNumStatisticsUpdater.updateSolvedNumForWeek(solvedNum, student);
+        solvedNumStatisticsUpdater.updateSolvedNumForMonth(solvedNum, student);
     }
 
 
@@ -182,63 +137,10 @@ public class AssignmentSubmissionService {
      * @param mathProblemType       the math problem type
      */
     private void processStatistics(boolean isWrong, String problemNum, HashMap<String, DifficultyLevel> wrongProblemRecordMap, Student student, MathProblemType mathProblemType) {
-
-        LocalDate startOfWeekDay = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        SubconceptStatisticsForWeek subconceptStatisticsForWeek = subconceptStatisticsForWeekRepository.findByStartOfWeekAndStudentAndType(startOfWeekDay, student, mathProblemType);
-        if (subconceptStatisticsForWeek == null) {
-            SubconceptStatisticsForWeek newSubConceptStat = SubconceptStatisticsForWeek.builder()
-                    .startOfWeek(startOfWeekDay)
-                    .student(student)
-                    .build();
-            subconceptStatisticsForWeek = newSubConceptStat;
-        }
-
-        updateStatistics(subconceptStatisticsForWeek, isWrong, problemNum, wrongProblemRecordMap);
-        subconceptStatisticsForWeekRepository.save(subconceptStatisticsForWeek);
-
-        LocalDate month = LocalDate.now().withDayOfMonth(1);
-        SubconceptStatisticsForMonth subconceptStatisticsForMonth = subconceptStatisticsForMonthRepository.findByTargetMonthAndStudentAndType(month, student, mathProblemType);
-        if (subconceptStatisticsForMonth == null) {
-            SubconceptStatisticsForMonth newSubConceptStat = SubconceptStatisticsForMonth.builder()
-                    .targetMonth(month)
-                    .student(student)
-                    .build();
-            subconceptStatisticsForMonth = newSubConceptStat;
-        }
-
-        updateStatistics(subconceptStatisticsForMonth, isWrong, problemNum, wrongProblemRecordMap);
-        subconceptStatisticsForMonthRepository.save(subconceptStatisticsForMonth);
-
-        AccumulatedStatisticsForSubconcept accumulatedStatisticsForSubconcept = accumulatedStatisticsForSubconceptRepository.findByStudentAndType(student, mathProblemType);
-        if (accumulatedStatisticsForSubconcept == null) {
-            AccumulatedStatisticsForSubconcept newAccumulatedStatistics = AccumulatedStatisticsForSubconcept.builder()
-                    .student(student)
-                    .build();
-            accumulatedStatisticsForSubconcept = newAccumulatedStatistics;
-        }
-
-        updateStatistics(accumulatedStatisticsForSubconcept, isWrong, problemNum, wrongProblemRecordMap);
-        accumulatedStatisticsForSubconceptRepository.save(accumulatedStatisticsForSubconcept);
-
-        AccumulatedStatisticsForChapter accumulatedStatisticsForChapter = accumulatedStatisticsForChapterRepository.findByStudentAndChapter(student, mathProblemType.getChapter());
-        if (accumulatedStatisticsForChapter == null) {
-            AccumulatedStatisticsForChapter newAccumulatedStatistics = AccumulatedStatisticsForChapter.builder()
-                    .student(student)
-                    .build();
-            accumulatedStatisticsForChapter = newAccumulatedStatistics;
-        }
-
-        updateStatistics(accumulatedStatisticsForChapter, isWrong, problemNum, wrongProblemRecordMap);
-        accumulatedStatisticsForSubconceptRepository.save(accumulatedStatisticsForSubconcept);
-
-    }
-
-    private void updateStatistics(Statistics statistics, boolean isWrong, String probNum, HashMap<String, DifficultyLevel> wrongProbRecordMap) {
-        statistics.increaseSolvedNum();
-        if (isWrong) {
-            statistics.increaseWrongNum();
-            statistics.increaseDifficultyNumByType(wrongProbRecordMap.get(probNum));
-        }
+        //세부개념 통계를 업데이트 합니다.
+        subconceptStatisticsUpdater.updateSubconceptStatistics(mathProblemType, isWrong, problemNum, wrongProblemRecordMap);
+        //누적 통계를 업데이트 합니다.
+        accumulatedStatisticsUpdater.updateAccumulatedStatistics(mathProblemType, isWrong, problemNum, wrongProblemRecordMap);
     }
 
     /**
