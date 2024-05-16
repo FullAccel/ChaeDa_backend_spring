@@ -31,6 +31,130 @@ VALUES ('Textbook 1', 1, 100, 'Publisher 1', '2022', 'Calculus', 'HIGH_3', 1,
         'https://s3-fullaccel.s3.ap-northeast-2.amazonaws.com/textbook_thumbnail/%E1%84%8A%E1%85%A6%E1%86%AB_%E1%84%89%E1%85%AE1_2024.jpeg',
         'url10');
 
+-- 수학 상
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Polynomial', 'Operations_of_polynomials');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Polynomial', 'Remainder_theorem_and_factorization');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations', 'Complex_numbers');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations', 'Quadratic_equations');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations', 'Quadratic_equations_and_quadratic_functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations', 'Various_types_of_equations');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Inequalities', 'Linear_inequalities');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Inequalities', 'Quadratic_inequalities');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations_of_Shapes', 'Plane_coordinates');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations_of_Shapes', 'Equations_of_lines');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations_of_Shapes', 'Equations_of_circles');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_high', 'Equations_of_Shapes', 'Transformation_of_shapes');
+
+-- 수학 하
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Sets_and_Propositions', 'Meaning_and_representation_of_sets');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Sets_and_Propositions', 'Operations_of_sets');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Sets_and_Propositions', 'Propositions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Functions', 'Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Functions', 'Rational_expressions_and_rational_functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Functions', 'Irrational_expressions_and_irrational_functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_low', 'Permutations_and_Combinations', 'Permutations_and_combinations');
+
+-- 수학 1
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Exponential_and_Logarithmic_Functions', 'Exponents_and_Logarithms');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Exponential_and_Logarithmic_Functions', 'Exponential_and_Logarithmic_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Trigonometric_Functions', 'Trigonometric_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Trigonometric_Functions', 'Graphs_of_Trigonometric_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Trigonometric_Functions', 'Applications_of_Trigonometric_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Sequences', 'Arithmetic_and_Geometric_Sequences');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Sequences', 'Sum_of_Sequences');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_1', 'Sequences', 'Mathematical_Induction');
+
+-- 수학 2
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Functions_Limits_and_Continuity', 'Functions_Limits');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Functions_Limits_and_Continuity', 'Functions_Continuity');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Differentiation', 'Differential_Coefficient');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Differentiation', 'Derivative_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Differentiation', 'Applications_of_Derivatives');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Integration_in_Math_2', 'Indefinite_Integrals');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Integration_in_Math_2', 'Definite_Integrals');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Math_2', 'Integration_in_Math_2', 'Applications_of_Definite_Integrals_in_Math_2');
+
+-- 미적분
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Limits_of_Sequences', 'Limits_of_Sequences');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Limits_of_Sequences', 'Series');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Differential_Calculus', 'Differentiation_of_Various_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Differential_Calculus', 'Various_Differentiation_Methods');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Differential_Calculus', 'Applications_of_Derivative_Functions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Integration_in_calculus', 'Various_Integration_Methods');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Calculus', 'Integration_in_calculus', 'Applications_of_Definite_Integrals_in_Calculus');
+
+-- 확률과 통계
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Counting_Methods', 'Permutations_and_Combinations');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Counting_Methods', 'Binomial_Theorem');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Probability', 'Probability');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Probability', 'Conditional_Probability');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Statistics', 'Probability_Distributions');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Probability_and_Statistics', 'Statistics', 'Statistical_Estimation');
+
+-- 기하
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Conic_Sections', 'Conic_Sections');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Conic_Sections', 'Conic_Sections_and_Lines');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Plane_Vectors', 'Vector_Operations');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Plane_Vectors', 'Components_and_Dot_Product_of_Plane_Vectors');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Spatial_Shapes_and_Coordinates', 'Spatial_Shapes');
+INSERT INTO math_problem_type (subject, chapter, sub_concept)
+VALUES ('Geometry', 'Spatial_Shapes_and_Coordinates', 'Spatial_Coordinates');
+
+
+
 -- INSERT INTO member (member_id, address, email, gender, name, phone_number, dtype, role)
 -- VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
 --        (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),

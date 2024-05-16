@@ -20,8 +20,7 @@ public enum Subject {
     Math_2("수학2", Arrays.asList(Chapter.Functions_Limits_and_Continuity, Chapter.Differentiation, Chapter.Integration_in_Math_2)),
     Calculus("미적분", Arrays.asList(Chapter.Limits_of_Sequences, Chapter.Differential_Calculus, Chapter.Integration_in_calculus)),
     Probability_and_Statistics("확률과 통계", Arrays.asList(Chapter.Counting_Methods, Chapter.Probability, Chapter.Statistics)),
-    Geometry("기하", Arrays.asList(Chapter.Conic_Sections, Chapter.Plane_Vectors, Chapter.Spatial_Shapes_and_Coordinates)),
-    Mix("혼합형", List.of());
+    Geometry("기하", Arrays.asList(Chapter.Conic_Sections, Chapter.Plane_Vectors, Chapter.Spatial_Shapes_and_Coordinates));
 
 
     private final String value;
