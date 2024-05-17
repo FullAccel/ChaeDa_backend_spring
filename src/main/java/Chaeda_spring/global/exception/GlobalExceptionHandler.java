@@ -29,6 +29,17 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * record field애 등록한 @NotNull 때문에 빈 값이 들어오거나
+     * enum 값에 없는 타입이 들어오면 발생한다.
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleUnKnownException(Exception ex) {
+        String errorMessage = ex.getMessage();
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * 아래와 같은 형식의 예외를 프론트에 던져줍니다
      * {
      * "message": "해당 공지를 찾을 수 없습니다.",

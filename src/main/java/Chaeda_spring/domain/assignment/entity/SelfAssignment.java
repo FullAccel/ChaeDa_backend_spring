@@ -29,7 +29,8 @@ public class SelfAssignment {
 
     @Temporal(TemporalType.DATE)
     private LocalDate targetDate;
-    @OneToOne
+
+    @ManyToOne
     private Textbook textbook;
 
     @ManyToOne(fetch = FetchType.LAZY)

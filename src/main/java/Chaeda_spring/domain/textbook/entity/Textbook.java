@@ -1,6 +1,7 @@
 package Chaeda_spring.domain.textbook.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.assignment.entity.SelfAssignment;
 import Chaeda_spring.domain.textbook.dto.UploadTextbookFileRequest;
 import Chaeda_spring.global.constant.Grade;
 import Chaeda_spring.global.constant.Subject;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Year;
+import java.util.List;
 
 @Getter
 @SuperBuilder
@@ -49,6 +51,9 @@ public class Textbook extends BaseTimeEntity {
     private String textbookThumbnail;
 
     private String textbookSrcUrl;
+
+    @OneToMany(mappedBy = "textbook")
+    private List<SelfAssignment> selfAssignments;
 
     @Builder
     public Textbook(String name, int startPageNum, int lastPageNum, String publisher, Year publishYear, Subject subject, Grade targetGrade, Long uploadMemberId, String textbookThumbnail, String textbookSrcUrl) {
