@@ -1,5 +1,6 @@
 package Chaeda_spring.global.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -53,6 +55,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, LocalDateTime.now());
         errorResponse.setDetail(e.getMessage());
+        log.error("code : {}, error", errorCode.getStatus(), errorResponse);
         return new ResponseEntity<>(errorResponse, errorCode.getStatus());
     }
 
