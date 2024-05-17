@@ -119,7 +119,7 @@ public class StatisticsController {
         return ResponseEntity.ok(statisticsService.getAccumulatedStatisticsBySubConcept(member, subConcept));
     }
 
-    @GetMapping("/statistics/accumulated/{chapter}")
+    @GetMapping("/statistics/accumulated/{chapter}/list")
     @Operation(summary = "특정 단원에 속하는 모든 세부개념의 누적 통계 리스트 조회", description = "결과에 없는 세부개념은 풀이 횟수가 존재하지 없어 통계에 존재하지 않는 세부개념입니다.")
     public ResponseEntity<List<StatisticsBySubconceptResponse>> getAccumulatedWeekStatisticsBySubconcept(
             @AuthUser Member member,
