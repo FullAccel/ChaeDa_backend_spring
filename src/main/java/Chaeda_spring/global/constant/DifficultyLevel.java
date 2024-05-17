@@ -10,7 +10,9 @@ import lombok.Getter;
 public enum DifficultyLevel {
     LOW("하"),
     MEDIUM("중"),
-    HIGH("상");
+    HIGH("상"),
+    UNSOLVED("미풀이");
+
 
     private final String value;
 
