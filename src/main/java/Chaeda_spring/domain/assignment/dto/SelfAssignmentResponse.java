@@ -12,6 +12,8 @@ import static Chaeda_spring.global.constant.ValidationConstant.TITLE_LENGTH_MAX;
 
 @Builder
 public record SelfAssignmentResponse(
+        @Schema(description = "과제 id", example = "1")
+        Long id,
         @Schema(description = "과제 타이틀", example = "블랙라벨 오늘 분량 끝내기", maxLength = TITLE_LENGTH_MAX)
         String title,
         @Schema(description = "과제할 교재 범위의 시작", example = "50")
@@ -29,6 +31,7 @@ public record SelfAssignmentResponse(
 
     public static SelfAssignmentResponse of(SelfAssignment selfAssignment) {
         return SelfAssignmentResponse.builder()
+                .id(selfAssignment.getId())
                 .title(selfAssignment.getTitle())
                 .startPage(selfAssignment.getStartPage())
                 .endPage(selfAssignment.getEndPage())
