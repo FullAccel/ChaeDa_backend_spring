@@ -48,7 +48,7 @@ public class StatisticsService {
      * @return 7일 이내의 각 날짜에 대한 해결된 문제 수가 포함된 응답입니다.
      */
     public Map<LocalDate, Integer> getSolvedCountByDate(Member member, LocalDate date) {
-        LocalDate sevenDaysAgo = date.minusDays(7);
+        LocalDate sevenDaysAgo = date.minusDays(6);
         List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateBetweenAndStudent(date, sevenDaysAgo, (Student) member);
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForDay::getTodayDate, SolvedNumForDay::getSolvedNum));
@@ -66,7 +66,7 @@ public class StatisticsService {
     public Map<LocalDate, Integer> getSolvedCountByWeek(Member member) {
         LocalDate today = LocalDate.now();
         LocalDate thisWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate eightWeeksAgo = thisWeek.minusWeeks(8);
+        LocalDate eightWeeksAgo = thisWeek.minusWeeks(7);
 
         List<SolvedNumForWeek> solvedNums = solvedNumForWeekRepository.findForWeeksBetweenStartDateAndEndDateAndStudent(thisWeek, eightWeeksAgo, (Student) member);
 
@@ -80,7 +80,7 @@ public class StatisticsService {
         LocalDate today = LocalDate.now();
         LocalDate todayMonth = LocalDate.now().withDayOfMonth(1);
 
-        LocalDate sixMonthsAgo = today.minusMonths(6);
+        LocalDate sixMonthsAgo = today.minusMonths(5);
 
         List<SolvedNumForMonth> solvedNums = solvedNumForMonthRepository.findForMonthsBetweenDatesAndStudent(todayMonth, sixMonthsAgo, (Student) member);
 
