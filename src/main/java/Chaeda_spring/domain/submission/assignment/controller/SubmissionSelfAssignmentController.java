@@ -27,7 +27,7 @@ public class SubmissionSelfAssignmentController {
             @RequestBody AssignmentSubmissionRequest assignmentSubmissionRequest
     ) {
         assignmentSubmissionService.updateMathProblemRecords(member, assignmentId, assignmentSubmissionRequest);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(null);
     }
 
     @GetMapping("/{assignmentId}")

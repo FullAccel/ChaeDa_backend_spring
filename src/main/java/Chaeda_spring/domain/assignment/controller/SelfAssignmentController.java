@@ -53,6 +53,6 @@ public class SelfAssignmentController {
     @Operation(summary = "개인 과제 삭제하기")
     public ResponseEntity<Void> deleteSelfAssignment(@PathVariable Long assignmentId) {
         selfAssignmentService.deleteSelfAssignment(assignmentId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(null);
     }
 }

@@ -51,14 +51,14 @@ public class MemberController {
     @Operation(summary = "회원가입하기")
     public ResponseEntity<Void> signUpForStudent(@RequestBody SignUpRequestForStudent request) {
         memberService.signUp(request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("/teacher/signUp")
     @Operation(summary = "회원가입하기")
     public ResponseEntity<Void> signUpForTeacher(@RequestBody SignUpRequestForTeacher request) {
         memberService.signUp(request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(null);
     }
 
     @PutMapping("/profile-image/{memberId}")
