@@ -13,6 +13,8 @@ import Chaeda_spring.global.constant.Chapter;
 import Chaeda_spring.global.constant.SubConcept;
 import Chaeda_spring.global.constant.Subject;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StatisticsService {
 
+    private static final Logger log = LoggerFactory.getLogger(StatisticsService.class);
     private final MathProblemTypeRepository mathProblemTypeRepository;
     private final SolvedNumForDayRepository solvedNumForDayRepository;
     private final SolvedNumForWeekRepository solvedNumForWeekRepository;
@@ -49,10 +52,14 @@ public class StatisticsService {
      */
     public Map<LocalDate, Integer> getSolvedCountByDate(Member member, LocalDate date) {
         LocalDate sevenDaysAgo = date.minusDays(6);
-        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateBetweenAndStudent(date, sevenDaysAgo, (Student) member);
+        log.info("sevenDaysAgo : {}, {}", date, sevenDaysAgo);
+        log.info("student : {}", member.getId());
+        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateBetweenAndStudent(sevenDaysAgo, date, (Student) member);
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForDay::getTodayDate, SolvedNumForDay::getSolvedNum));
 
+        solvedNums.stream()
+                .forEach(t -> log.info("solvenum : {}", t));
         return solvedNumMap;
     }
 
@@ -68,7 +75,7 @@ public class StatisticsService {
         LocalDate thisWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate eightWeeksAgo = thisWeek.minusWeeks(7);
 
-        List<SolvedNumForWeek> solvedNums = solvedNumForWeekRepository.findForWeeksBetweenStartDateAndEndDateAndStudent(thisWeek, eightWeeksAgo, (Student) member);
+        List<SolvedNumForWeek> solvedNums = solvedNumForWeekRepository.findForWeeksBetweenStartDateAndEndDateAndStudent(eightWeeksAgo, thisWeek, (Student) member);
 
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForWeek::getStartOfWeek, SolvedNumForWeek::getSolvedNum));
@@ -82,7 +89,7 @@ public class StatisticsService {
 
         LocalDate sixMonthsAgo = today.minusMonths(5);
 
-        List<SolvedNumForMonth> solvedNums = solvedNumForMonthRepository.findForMonthsBetweenDatesAndStudent(todayMonth, sixMonthsAgo, (Student) member);
+        List<SolvedNumForMonth> solvedNums = solvedNumForMonthRepository.findForMonthsBetweenDatesAndStudent(sixMonthsAgo, todayMonth, (Student) member);
 
         Map<String, Integer> solvedNumMap = new LinkedHashMap<>();
         for (SolvedNumForMonth solvedNumForMonth : solvedNums) {
