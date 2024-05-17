@@ -155,120 +155,67 @@ VALUES ('Geometry', 'Spatial_Shapes_and_Coordinates', 'Spatial_Coordinates');
 
 
 
--- INSERT INTO member (member_id, address, email, gender, name, phone_number, dtype, role)
--- VALUES (1, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
---        (2, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
---        (3, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Teacher', 'TEACHER'),
---        (4, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT'),
---        (5, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT'),
---        (6, '서울시 광진구', 'parksejoon313@gmail.com', '남', '홍길동', '010-5318-6577', 'Student', 'STUDENT')
--- ;
+INSERT INTO member (id, address, email, gender, name, phone_number, dtype, role)
+VALUES (1, '서울시 광진구', 'chaeda@konkuk.ac.kr', 'MALE', '홍길동', '010-1234-5678', 'Student', 'STUDENT');
+
 --
--- INSERT INTO teacher (member_id, subject, notes)
--- VALUES (1, '수학', null),
---        (2, '수학', null),
---        (3, '수학', null)
--- ;
---
--- INSERT INTO student (member_id, home_phone_num, parent_phone_num, school_name, notes, grade)
--- VALUES (4, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_1'),
---        (5, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_2'),
---        (6, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_3')
--- ;
---
---
---
--- -- INSERT INTO class_group (class_group_id, name, teacher_member_id, grade, lesson_days)
--- -- VALUES (1, '고등 월수금반 3시', 1, 'HIGH_3', 'MWF'),
--- --        (2, '고등 월수금반 3시', 1, 'HIGH_2', 'MWF'),
--- --        (3, '고등 월수금반 3시', 1, 'HIGH_1', 'MWF'),
--- --        (4, '고등 월수금반 3시', 1, 'N_SU', 'MWF'),
--- --        (5, '고등 월수금반 3시', 1, 'HIGH_3', 'MWF'),
--- --        (6, '고등 월수금반 3시', 1, 'HIGH_2', 'MWF')
--- -- ;
--- --
--- -- INSERT INTO course (course_id, class_group_class_group_id, student_member_id)
--- -- VALUES (1, 1, 4),
--- --        (2, 1, 5),
--- --        (3, 1, 6)
--- -- ;
--- --
--- -- INSERT INTO announcement (announcement_id, title, content, class_group_class_group_id, dtype)
--- -- VALUES (1, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement'),
--- --        (2, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement'),
--- --        (3, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement'),
--- --        (4, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement'),
--- --        (5, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement'),
--- --        (6, '숙제공지 제목', '이번 숙제는 잘해와라', 1, 'hw_announcement')
--- -- ;
--- --
--- -- INSERT INTO hw_announcement(announcement_id, dead_line_date, dead_line_date_time, end_page, start_page, submission_num,
--- --                             teacher_member_id, textbook_textbook_id)
--- -- VALUES (1, '2024-04-26', '2024-04-26 00:00:00.000', 50, 56, 0, 1, 1),
--- --        (2, '2024-04-27', '2024-04-27 00:00:00.000', 50, 56, 0, 1, 1),
--- --        (3, '2024-04-28', '2024-04-28 00:00:00.000', 50, 56, 0, 1, 1),
--- --        (4, '2024-04-29', '2024-04-29 00:00:00.000', 50, 56, 0, 2, 2),
--- --        (5, '2024-04-30', '2024-04-30 00:00:00.000', 50, 56, 0, 2, 2),
--- --        (6, '2024-05-01', '2024-05-01 00:00:00.000', 50, 56, 0, 2, 2)
--- -- ;
---
---
--- INSERT INTO image(image_id, member_id, image_key, image_file_extension, image_type)
--- VALUES (19, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (20, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (21, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (22, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (23, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (24, 1, 'test', 'PNG', 'CLASS_GROUP_PROFILE'),
---        (25, 1, 'member1', 'PNG', 'MEMBER_PROFILE'),
---        (26, 2, 'member2', 'PNG', 'MEMBER_PROFILE'),
---        (27, 3, 'member3', 'PNG', 'MEMBER_PROFILE'),
---        (28, 4, 'member4', 'PNG', 'MEMBER_PROFILE'),
---        (29, 5, 'member5', 'PNG', 'MEMBER_PROFILE'),
---        (30, 6, 'member6', 'PNG', 'MEMBER_PROFILE')
--- ;
---
--- -- UPDATE class_group
--- -- SET image_id = 19
--- -- WHERE class_group_id = 1;
--- -- UPDATE class_group
--- -- SET image_id = 20
--- -- WHERE class_group_id = 2;
--- -- UPDATE class_group
--- -- SET image_id = 21
--- -- WHERE class_group_id = 3;
--- -- UPDATE class_group
--- -- SET image_id = 22
--- -- WHERE class_group_id = 4;
--- -- UPDATE class_group
--- -- SET image_id = 23
--- -- WHERE class_group_id = 5;
--- -- UPDATE class_group
--- -- SET image_id = 24
--- -- WHERE class_group_id = 6;
--- --
--- -- UPDATE member
--- -- SET image_id = 25
--- -- WHERE member_id = 1;
--- -- UPDATE member
--- -- SET image_id = 26
--- -- WHERE member_id = 2;
--- -- UPDATE member
--- -- SET image_id = 27
--- -- WHERE member_id = 3;
--- -- UPDATE member
--- -- SET image_id = 28
--- -- WHERE member_id = 4;
--- -- UPDATE member
--- -- SET image_id = 29
--- -- WHERE member_id = 5;
--- -- UPDATE member
--- -- SET image_id = 30
--- -- WHERE member_id = 6;
--- --
--- -- SELECT SETVAL('class_group_class_group_id_seq', (SELECT MAX(class_group_id) FROM class_group));
--- -- SELECT SETVAL('image_image_id_seq', (SELECT MAX(image_id) FROM image));
--- -- SELECT SETVAL('course_course_id_seq', (SELECT MAX(course_id) FROM course));
--- -- SELECT SETVAL('submission_submission_id_seq', (SELECT MAX(submission_id) FROM submissionHomework));
--- -- SELECT SETVAL('member_member_id_seq', (SELECT MAX(member_id) FROM member));
--- -- SELECT SETVAL('announcement_announcement_id_seq', (SELECT MAX(announcement_id) FROM announcement));
+INSERT INTO student (id, home_phone_num, parent_phone_num, school_name, notes, grade)
+VALUES (1, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_1')
+;
+
+INSERT INTO math_problem
+(id, problem_number, page_number, solved_students_count, incorrect_students_count, easy_num,
+ medium_difficulty_perceived_count, high_difficulty_perceived_count, textbook_id)
+VALUES (1, 101, 10, 30, 5, 10, 15, 5, 1),
+       (2, 102, 10, 25, 10, 8, 12, 5, 1),
+       (3, 103, 10, 20, 15, 5, 10, 5, 1),
+       (4, 104, 10, 22, 8, 7, 11, 4, 1),
+       (5, 105, 10, 27, 13, 9, 13, 5, 1),
+       (6, 106, 11, 30, 10, 12, 15, 3, 1),
+       (7, 107, 11, 24, 9, 8, 11, 5, 1),
+       (8, 108, 11, 28, 7, 11, 14, 3, 1),
+       (9, 109, 11, 26, 12, 6, 10, 6, 1),
+       (10, 110, 11, 29, 11, 10, 13, 4, 1),
+       (11, 111, 12, 31, 14, 7, 12, 3, 1),
+       (12, 112, 12, 23, 9, 5, 10, 8, 1),
+       (13, 113, 12, 27, 13, 11, 13, 2, 1),
+       (14, 114, 12, 25, 8, 9, 11, 5, 1),
+       (15, 115, 12, 32, 6, 10, 14, 2, 1),
+       (16, 116, 13, 21, 12, 4, 9, 8, 1),
+       (17, 117, 13, 33, 11, 13, 15, 2, 1),
+       (18, 118, 13, 20, 8, 6, 10, 7, 1),
+       (19, 119, 13, 28, 10, 9, 12, 4, 1),
+       (20, 120, 13, 26, 15, 7, 11, 5, 1);
+
+-- ProblemTypeMapping 테이블에 30개의 레코드를 삽입하는 SQL 문
+INSERT INTO problem_type_mapping (math_problem_id, math_problem_type_id)
+VALUES (1, 36),
+       (2, 37),
+       (3, 38),
+       (4, 39),
+       (5, 40),
+       (6, 41),
+       (7, 42),
+       (8, 36),
+       (9, 37),
+       (10, 38),
+       (11, 39),
+       (12, 40),
+       (13, 41),
+       (14, 42),
+       (15, 36),
+       (16, 37),
+       (17, 38),
+       (18, 39),
+       (19, 40),
+       (20, 41),
+       (1, 42),
+       (2, 36),
+       (3, 37),
+       (4, 38),
+       (5, 39),
+       (6, 40),
+       (7, 41),
+       (8, 42),
+       (9, 36),
+       (10, 37);
