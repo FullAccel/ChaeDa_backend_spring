@@ -49,7 +49,7 @@ public class StatisticsService {
      */
     public Map<LocalDate, Integer> getSolvedCountByDate(Member member, LocalDate date) {
         LocalDate sevenDaysAgo = date.minusDays(7);
-        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateAndStudent(sevenDaysAgo, (Student) member);
+        List<SolvedNumForDay> solvedNums = solvedNumForDayRepository.find7DaysByTodayDateBetweenAndStudent(date, sevenDaysAgo, (Student) member);
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForDay::getTodayDate, SolvedNumForDay::getSolvedNum));
 
@@ -68,7 +68,7 @@ public class StatisticsService {
         LocalDate thisWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate eightWeeksAgo = thisWeek.minusWeeks(8);
 
-        List<SolvedNumForWeek> solvedNums = solvedNumForWeekRepository.findForWeeksByStartOfWeekAndStudent(eightWeeksAgo, (Student) member);
+        List<SolvedNumForWeek> solvedNums = solvedNumForWeekRepository.findForWeeksBetweenStartDateAndEndDateAndStudent(thisWeek, eightWeeksAgo, (Student) member);
 
         Map<LocalDate, Integer> solvedNumMap = solvedNums.stream()
                 .collect(Collectors.toMap(SolvedNumForWeek::getStartOfWeek, SolvedNumForWeek::getSolvedNum));
@@ -78,9 +78,11 @@ public class StatisticsService {
 
     public Map<String, Integer> getSolvedCountByMonth(Member member) {
         LocalDate today = LocalDate.now();
+        LocalDate todayMonth = LocalDate.now().withDayOfMonth(1);
+
         LocalDate sixMonthsAgo = today.minusMonths(6);
 
-        List<SolvedNumForMonth> solvedNums = solvedNumForMonthRepository.findForMonthsByMonthDateAndStudent(sixMonthsAgo, (Student) member);
+        List<SolvedNumForMonth> solvedNums = solvedNumForMonthRepository.findForMonthsBetweenDatesAndStudent(todayMonth, sixMonthsAgo, (Student) member);
 
         Map<String, Integer> solvedNumMap = new LinkedHashMap<>();
         for (SolvedNumForMonth solvedNumForMonth : solvedNums) {

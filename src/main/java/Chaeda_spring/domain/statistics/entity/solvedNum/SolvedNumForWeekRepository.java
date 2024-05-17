@@ -10,6 +10,6 @@ import java.util.List;
 public interface SolvedNumForWeekRepository extends JpaRepository<SolvedNumForWeek, Long> {
     SolvedNumForWeek findByStartOfWeekAndStudent(LocalDate startOfWeek, Student student);
 
-    @Query("SELECT s FROM SolvedNumForWeek s WHERE s.startOfWeek >= :startOfWeek AND s.student = :student")
-    List<SolvedNumForWeek> findForWeeksByStartOfWeekAndStudent(LocalDate startOfWeek, Student student);
+    @Query("SELECT s FROM SolvedNumForWeek s WHERE s.startOfWeek BETWEEN :startDate AND :endDate AND s.student = :student")
+    List<SolvedNumForWeek> findForWeeksBetweenStartDateAndEndDateAndStudent(LocalDate startDate, LocalDate endDate, Student student);
 }
