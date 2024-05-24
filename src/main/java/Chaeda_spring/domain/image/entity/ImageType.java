@@ -10,6 +10,7 @@ public enum ImageType {
     ANNOUNCEMENT_THUMBNAIL("announcement_thumbnail"),
     HOMEWORK_SUBMISSION("homework_submission"),
     MEMBER_PROFILE("member_profile"),
+    REVIEW_NOTE_PROBLEM("review_note_problem"),
     CLASS_GROUP_PROFILE("class_group_profile");
     private final String value;
 
