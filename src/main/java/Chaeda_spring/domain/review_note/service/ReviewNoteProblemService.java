@@ -9,10 +9,7 @@ import Chaeda_spring.domain.File.entity.FileRepository;
 import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.review_note.dto.ReviewNotePDFInfo;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemIdRequest;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemResponse;
+import Chaeda_spring.domain.review_note.dto.*;
 import Chaeda_spring.domain.review_note.entity.*;
 import Chaeda_spring.external_component.review_note_maker.ReviewNoteMakerService;
 import Chaeda_spring.global.constant.FileExtension;
@@ -52,6 +49,10 @@ public class ReviewNoteProblemService {
         );
     }
 
+    /**
+     * @param member
+     * @return
+     */
     public List<ReviewNoteProblemResponse> getProblemsInInCorrectStorage(Member member) {
         List<ReviewNoteProblem> reviewNoteProblemList = reviewNoteProblemRepository.findAllByStudent((Student) member);
         List<UploadImageCompleteRequest> imageRequest = reviewNoteProblemList.stream()
@@ -127,6 +128,38 @@ public class ReviewNoteProblemService {
 
         return fileRepository.findAllByMember(member).stream()
                 .map(file -> ReviewNotePDFInfo.of(file))
+                .collect(Collectors.toList());
+    }
+
+    public List<ReviewNoteProblemResponse> getProblemListInFolder(Member member, Long folderId) {
+
+        List<ReviewNoteProblem> reviewNoteProblemList = reviewNoteFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_NOT_FOUND))
+                .getReviewNoteProblemFolders().stream()
+                .map(mapper -> mapper.getReviewNoteProblem())
+                .collect(Collectors.toList());
+
+        List<UploadImageCompleteRequest> imageRequest = reviewNoteProblemList.stream()
+                .map(problem -> UploadImageCompleteRequest.of(
+                        problem.getImageType(),
+                        problem.getFileExtension(),
+                        problem.getImageKey()
+                )).collect(Collectors.toList());
+
+        List<ImageResponse> imageReadUrls = imageService.getImageReadUrl(imageRequest);
+
+        List<ReviewNoteProblemResponse> response = new ArrayList<>();
+        for (int i = 0; i < reviewNoteProblemList.size(); i++) {
+            response.add(ReviewNoteProblemResponse.of(reviewNoteProblemList.get(i), imageReadUrls.get(i)));
+        }
+        return response;
+
+    }
+
+    public List<ReviewNoteFolderInfo> getReviewNoteFolderList(Member member) {
+
+        return reviewNoteFolderRepository.findAllByMember(member).stream()
+                .map(enity -> ReviewNoteFolderInfo.from(enity))
                 .collect(Collectors.toList());
     }
 

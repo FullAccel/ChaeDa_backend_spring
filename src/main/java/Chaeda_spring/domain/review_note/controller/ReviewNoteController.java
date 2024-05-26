@@ -2,10 +2,7 @@ package Chaeda_spring.domain.review_note.controller;
 
 import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.member.entity.Member;
-import Chaeda_spring.domain.review_note.dto.ReviewNotePDFInfo;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemIdRequest;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemResponse;
+import Chaeda_spring.domain.review_note.dto.*;
 import Chaeda_spring.domain.review_note.service.ReviewNoteProblemService;
 import Chaeda_spring.global.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,6 +50,23 @@ public class ReviewNoteController {
             @PathVariable Long reviewNoteFolderId
     ) {
         return ResponseEntity.ok(reviewNoteProblemService.createReviewNotePDF(member, reviewNoteFolderId));
+    }
+
+    @GetMapping("/folder/{folderId}/problem/list")
+    @Operation(summary = "오답 노트 폴더 속 문제 list 가져오기")
+    public ResponseEntity<List<ReviewNoteProblemResponse>> getProblemListInFolder(
+            @AuthUser Member member,
+            @PathVariable Long folderId
+    ) {
+        return ResponseEntity.ok(reviewNoteProblemService.getProblemListInFolder(member, folderId));
+    }
+
+    @GetMapping("/folder/list")
+    @Operation(summary = "오답 노트 pdf id list 가져오기")
+    public ResponseEntity<List<ReviewNoteFolderInfo>> getReviewNoteFolderList(
+            @AuthUser Member member
+    ) {
+        return ResponseEntity.ok(reviewNoteProblemService.getReviewNoteFolderList(member));
     }
 
     @GetMapping("/pdf/list")
