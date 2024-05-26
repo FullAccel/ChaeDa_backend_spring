@@ -21,4 +21,4 @@ jobs:
             docker rm desktop_back_1 --force
             docker rmi desktop_back
             cd ..
-            docker-compose up
+            docker-compose up -d
