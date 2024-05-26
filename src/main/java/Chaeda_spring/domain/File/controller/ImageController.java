@@ -4,6 +4,8 @@ import Chaeda_spring.domain.File.dto.ImageResponse;
 import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.File.dto.UploadImageRequest;
 import Chaeda_spring.domain.File.service.ImageService;
+import Chaeda_spring.domain.member.entity.Member;
+import Chaeda_spring.global.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -52,6 +54,16 @@ public class ImageController {
     @Operation(summary = "이미지 파일 읽어올 url 요청")
     public ResponseEntity<List<ImageResponse>> getDisplayUrl(@RequestBody List<UploadImageCompleteRequest> requests) {
         return ResponseEntity.ok(imageService.getImageReadUrl(requests));
+    }
+
+    @PostMapping("/upload-complete/{memberId}")
+    @Operation(summary = "오답 노트 문제 이미지 s3에 업로드 완료 후 완료 요청 보내기",
+            description = "오답 노트 문제 사진을 DB에 업로드합니다")
+    public ResponseEntity<Void> uploadImageComplete(
+            @AuthUser Member member,
+            @Valid @RequestBody List<UploadImageCompleteRequest> requests) {
+        imageService.uploadImageComplete(member, requests);
+        return ResponseEntity.ok().body(null);
     }
 
 }

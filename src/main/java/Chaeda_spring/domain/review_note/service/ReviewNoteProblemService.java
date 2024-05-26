@@ -6,6 +6,7 @@ import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.File.entity.File;
 import Chaeda_spring.domain.File.entity.FileRepository;
+import Chaeda_spring.domain.File.entity.ImageRepository;
 import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
@@ -35,6 +36,7 @@ public class ReviewNoteProblemService {
     private final ReviewNoteMakerService reviewNoteMakerService;
     private final FileRepository fileRepository;
     private final S3Utils s3Utils;
+    private final ImageRepository imageRepository;
 
     /**
      * 사용자로부터 수신된 정보를 사용하여 ReviewNoteProblem을 생성하고 저장합니다.
@@ -100,6 +102,7 @@ public class ReviewNoteProblemService {
         folder.mappingProblemsToFolder(problemFolderMappingList);
         return reviewNoteFolderRepository.save(folder).getId();
     }
+
 
     public Long createReviewNotePDF(Member member, Long reviewNoteFolderId) {
 

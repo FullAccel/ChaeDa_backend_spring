@@ -146,6 +146,27 @@ public class ImageService {
     }
 
     /**
+     * 주어진 회원에 대해 이미지 업로드를 완료합니다.
+     *
+     * <p>이 메서드는 이미지 업로드 요청 목록을 처리하여 해당 회원에 대한 이미지 데이터를
+     * 저장소에 저장합니다.</p>
+     *
+     * @param member   이미지를 업로드하는 회원
+     * @param requests 이미지 세부 정보가 포함된 이미지 업로드 요청 목록
+     */
+    public void uploadImageComplete(Member member, List<UploadImageCompleteRequest> requests) {
+        for (UploadImageCompleteRequest request : requests) {
+            Image image = Image.builder()
+                    .imageType(request.imageType())
+                    .imageKey(request.imageKey())
+                    .fileExtension(request.fileExtension())
+                    .memberId(member.getId())
+                    .build();
+            imageRepository.save(image);
+        }
+    }
+
+    /**
      * AWS S3에 해당 회원의 특정 이미지를 삭제합니다.
      *
      * @param image
