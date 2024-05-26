@@ -28,11 +28,11 @@ public class ReviewNoteProblem extends BaseTimeEntity {
     private Student student;
     @Column(name = "incorrect_date", nullable = false)
     private LocalDate incorrectDate;
-    @Column(name = "imageKey", nullable = false)
+    @Column(nullable = false)
     private String imageKey;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "imageFileExtension", nullable = false)
+    @Column(nullable = false)
     private FileExtension fileExtension;
     @Column(name = "answer", nullable = false)
     private String answer;
