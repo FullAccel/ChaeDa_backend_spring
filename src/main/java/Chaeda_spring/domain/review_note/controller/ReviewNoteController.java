@@ -62,7 +62,7 @@ public class ReviewNoteController {
     }
 
     @GetMapping("/folder/list")
-    @Operation(summary = "오답 노트 pdf id list 가져오기")
+    @Operation(summary = "오답 노트 folder list 가져오기")
     public ResponseEntity<List<ReviewNoteFolderInfo>> getReviewNoteFolderList(
             @AuthUser Member member
     ) {
