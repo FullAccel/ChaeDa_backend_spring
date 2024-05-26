@@ -89,7 +89,7 @@ public class ReviewNoteProblemService {
                     ReviewNoteProblem problem = reviewNoteProblemRepository.findById(id)
                             .orElseThrow(() -> new NotFoundException(ErrorCode.PROBLEM_NOT_FOUND));
                     ReviewNoteProblemFolder mapper = ReviewNoteProblemFolder.builder()
-                            .reviewNoteFolder(folder)
+                            .reviewNoteFolder(saved)
                             .reviewNoteProblem(problem)
                             .build();
                     reviewNoteProblemFolderRepository.save(mapper);
