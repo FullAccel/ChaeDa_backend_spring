@@ -61,6 +61,7 @@ public enum ErrorCode {
 
     // Image
     IMAGE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지 키를 찾을 수 없습니다."),
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지를 찾을 수 없습니다"),
     IMAGE_FILE_EXTENSION_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지 파일 형식을 찾을 수 없습니다."),
     IMAGE_TYPE_INCORRECT(HttpStatus.BAD_REQUEST, "해당 이미지 타입을 받을 수 없습니다."),
     IMAGEFILE_AND_REQUESTBODY_COUNT_NOT_EQUALS(HttpStatus.BAD_REQUEST, "파일 개수와 요청 body의 개수가 맞지 않습니다."),

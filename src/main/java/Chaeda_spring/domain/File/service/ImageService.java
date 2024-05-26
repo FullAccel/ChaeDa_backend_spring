@@ -10,6 +10,7 @@ import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.global.constant.FileExtension;
 import Chaeda_spring.global.constant.ImageType;
+import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotFoundException;
 import Chaeda_spring.global.utils.MemberUtils;
 import com.amazonaws.HttpMethod;
@@ -94,10 +95,13 @@ public class ImageService {
      *
      * @param requests ImageType과 ImageFileExtension을 담고 있습니다.
      * @return {@link ImageResponse}
-     * @throws NotFoundException 해당 멤버가 존재하지 않을 시 발생합니다.
+     * @throws NotFoundException 해당 이미지가 존재하지 않을 시 발생합니다.
      **/
     public List<ImageResponse> getImageReadUrl(List<UploadImageCompleteRequest> requests) {
         Member member = memberUtils.getCurrentMember();
+        requests.stream()
+                .forEach(request -> imageRepository.findByImageKey(request.imageKey())
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.IMAGE_NOT_FOUND)));
 
         return requests.stream()
                 .map(request -> getImagePresignedUrlResponse(
