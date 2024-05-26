@@ -82,7 +82,7 @@ public class ReviewNoteProblemService {
                 .build();
 
         List<ReviewNoteProblemFolder> problemFolderMappingList = new ArrayList<>();
-
+        ReviewNoteFolder saved = reviewNoteFolderRepository.save(folder);
         request.reviewNoteProblemIds().stream()
                 .forEach(id -> {
 
@@ -100,7 +100,7 @@ public class ReviewNoteProblemService {
                 });
 
         folder.mappingProblemsToFolder(problemFolderMappingList);
-        return reviewNoteFolderRepository.save(folder).getId();
+        return saved.getId();
     }
 
 
