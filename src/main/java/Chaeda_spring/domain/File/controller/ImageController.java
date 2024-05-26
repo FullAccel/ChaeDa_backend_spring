@@ -56,7 +56,7 @@ public class ImageController {
         return ResponseEntity.ok(imageService.getImageReadUrl(requests));
     }
 
-    @PostMapping("/upload-complete/{memberId}")
+    @PostMapping("/upload-complete")
     @Operation(summary = "오답 노트 문제 이미지 s3에 업로드 완료 후 완료 요청 보내기",
             description = "오답 노트 문제 사진을 DB에 업로드합니다")
     public ResponseEntity<Void> uploadImageComplete(
