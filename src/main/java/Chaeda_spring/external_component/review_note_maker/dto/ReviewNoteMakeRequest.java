@@ -8,6 +8,7 @@ import java.util.List;
 @Builder
 public record ReviewNoteMakeRequest(
         String filename,
+        Long memberId,
         List<ReviewNoteProblemInfo> reviewNoteProblemInfoList
 ) {
 }

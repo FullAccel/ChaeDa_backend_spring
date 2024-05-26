@@ -1,5 +1,6 @@
 package Chaeda_spring.external_component.review_note_maker;
 
+import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.external_component.review_note_maker.dto.ReviewNoteMakeRequest;
 import Chaeda_spring.global.constant.UrlConstants;
@@ -22,11 +23,12 @@ public class ReviewNoteMakerService {
 
 
     @Async
-    public CompletableFuture<Boolean> sendProblemInfoToPreprocessingServer(List<ReviewNoteProblemInfo> request, String filename) {
+    public CompletableFuture<Boolean> sendProblemInfoToPreprocessingServer(List<ReviewNoteProblemInfo> request, String filename, Member member) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<ReviewNoteMakeRequest> requestHttpEntity = new HttpEntity<>(ReviewNoteMakeRequest.builder()
                 .reviewNoteProblemInfoList(request)
+                .memberId(member.getId())
                 .filename(filename)
                 .build());
 

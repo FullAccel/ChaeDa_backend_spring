@@ -113,7 +113,7 @@ public class ReviewNoteProblemService {
         LocalDateTime now = LocalDateTime.now();
         String filename = getFilename(member, now, folder);
 
-        reviewNoteMakerService.sendProblemInfoToPreprocessingServer(problemInfoList, filename);
+        reviewNoteMakerService.sendProblemInfoToPreprocessingServer(problemInfoList, filename, member);
 
         return fileRepository.save(File.builder()
                 .title(folder.getTitle())
