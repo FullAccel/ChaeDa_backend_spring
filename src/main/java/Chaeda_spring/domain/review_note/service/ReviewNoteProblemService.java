@@ -158,7 +158,7 @@ public class ReviewNoteProblemService {
 
     public List<ReviewNoteFolderInfo> getReviewNoteFolderList(Member member) {
 
-        return reviewNoteFolderRepository.findAllByMember(member).stream()
+        return reviewNoteFolderRepository.findAllByStudent((Student) member).stream()
                 .map(enity -> ReviewNoteFolderInfo.from(enity))
                 .collect(Collectors.toList());
     }
