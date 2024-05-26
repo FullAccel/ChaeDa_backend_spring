@@ -108,7 +108,7 @@ public class ImageService {
                         member.getId(),
                         request.imageType(),
                         request.fileExtension(),
-                        generateUUID(),
+                        request.imageKey(),
                         HttpMethod.GET))
                 .collect(Collectors.toList());
     }
