@@ -1,7 +1,7 @@
 package Chaeda_spring.domain.submission.homework.controller;
 
-import Chaeda_spring.domain.image.dto.ImageResponse;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.dto.ImageResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.submission.homework.service.ImageSubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

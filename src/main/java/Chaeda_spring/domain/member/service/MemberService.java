@@ -1,8 +1,8 @@
 package Chaeda_spring.domain.member.service;
 
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.entity.Image;
-import Chaeda_spring.domain.image.service.ImageService;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.entity.Image;
+import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.dto.LoginRequest;
 import Chaeda_spring.domain.member.dto.SignUpRequest;
 import Chaeda_spring.domain.member.dto.StudentResponse;

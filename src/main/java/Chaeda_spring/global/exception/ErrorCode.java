@@ -38,6 +38,8 @@ public enum ErrorCode {
 
     //Review_note
     PROBLEM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 문제를 찾을 수 없습니다."),
+    REVIEW_NOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 오답노트를 찾을 수 없습니다."),
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 오답노트 pdf를 찾을 수 없습니다."),
 
     //Announcement
     ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 공지를 찾을 수 없습니다."),

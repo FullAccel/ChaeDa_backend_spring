@@ -1,16 +1,16 @@
 package Chaeda_spring.deprecated.class_group.service;
 
 import Chaeda_spring.deprecated.class_group.dto.ClassGroupRequest;
+import Chaeda_spring.deprecated.class_group.dto.ClassGroupResponse;
 import Chaeda_spring.deprecated.class_group.dto.ClassGroupSummaryResponse;
 import Chaeda_spring.deprecated.class_group.entity.ClassGroup;
 import Chaeda_spring.deprecated.class_group.entity.ClassGroupRepository;
 import Chaeda_spring.deprecated.course.entity.Course;
 import Chaeda_spring.deprecated.course.entity.CourseRepository;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.entity.Image;
-import Chaeda_spring.domain.image.entity.ImageRepository;
-import Chaeda_spring.domain.image.service.ImageService;
-import Chaeda_spring.deprecated.class_group.dto.ClassGroupResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.entity.Image;
+import Chaeda_spring.domain.File.entity.ImageRepository;
+import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.dto.StudentSummaryResponse;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
@@ -142,7 +142,7 @@ public class ClassGroupService {
         Image profileImage = !request.imageKey().equals("") ?
                 imageRepository.save(Image.builder()
                         .imageKey(request.imageKey())
-                        .imageFileExtension(request.imageFileExtension())
+                        .fileExtension(request.fileExtension())
                         .imageType(request.imageType())
                         .build())
                 : null;

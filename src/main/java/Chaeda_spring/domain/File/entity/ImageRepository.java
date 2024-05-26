@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.image.entity;
+package Chaeda_spring.domain.File.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

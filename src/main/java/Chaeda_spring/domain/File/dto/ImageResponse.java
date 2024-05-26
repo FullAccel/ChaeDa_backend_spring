@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.image.dto;
+package Chaeda_spring.domain.File.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

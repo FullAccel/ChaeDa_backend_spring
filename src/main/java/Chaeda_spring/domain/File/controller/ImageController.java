@@ -1,9 +1,9 @@
-package Chaeda_spring.domain.image.controller;
+package Chaeda_spring.domain.File.controller;
 
-import Chaeda_spring.domain.image.dto.ImageResponse;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.dto.UploadImageRequest;
-import Chaeda_spring.domain.image.service.ImageService;
+import Chaeda_spring.domain.File.dto.ImageResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.dto.UploadImageRequest;
+import Chaeda_spring.domain.File.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;

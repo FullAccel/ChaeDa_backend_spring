@@ -1,7 +1,9 @@
-package Chaeda_spring.domain.image.entity;
+package Chaeda_spring.domain.File.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHomework;
+import Chaeda_spring.global.constant.FileExtension;
+import Chaeda_spring.global.constant.ImageType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,7 +28,7 @@ public class Image extends BaseTimeEntity {
     private String imageKey;
 
     @Enumerated(EnumType.STRING)
-    private ImageFileExtension imageFileExtension;
+    private FileExtension fileExtension;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SubmissionHomework submissionHomework;
@@ -36,11 +38,11 @@ public class Image extends BaseTimeEntity {
             ImageType imageType,
             Long memberId,
             String imageKey,
-            ImageFileExtension imageFileExtension) {
+            FileExtension fileExtension) {
         this.imageType = imageType;
         this.memberId = memberId;
         this.imageKey = imageKey;
-        this.imageFileExtension = imageFileExtension;
+        this.fileExtension = fileExtension;
     }
 
     public void setSubmissionHomework(SubmissionHomework submissionHomework) {

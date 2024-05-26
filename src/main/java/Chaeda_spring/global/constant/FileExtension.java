@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.image.entity;
+package Chaeda_spring.global.constant;
 
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotFoundException;
@@ -9,15 +9,16 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
-public enum ImageFileExtension {
+public enum FileExtension {
     JPEG("jpeg"),
     JPG("jpg"),
     PNG("png"),
+    PDF("pdf"),
     ;
 
     private final String uploadExtension;
 
-    public static ImageFileExtension from(String uploadExtension) {
+    public static FileExtension from(String uploadExtension) {
         return Arrays.stream(values())
                 .filter(
                         imageFileExtension ->

@@ -1,7 +1,7 @@
-package Chaeda_spring.domain.image.dto;
+package Chaeda_spring.domain.File.dto;
 
-import Chaeda_spring.domain.image.entity.ImageFileExtension;
-import Chaeda_spring.domain.image.entity.ImageType;
+import Chaeda_spring.global.constant.FileExtension;
+import Chaeda_spring.global.constant.ImageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +11,6 @@ public record UploadImageRequest(
         ImageType imageType,
         @NotNull(message = "이미지 파일의 확장자는 비워둘 수 없습니다.")
         @Schema(description = "이미지 파일의 확장자", defaultValue = "PNG")
-        ImageFileExtension imageFileExtension
+        FileExtension fileExtension
 ) {
 }

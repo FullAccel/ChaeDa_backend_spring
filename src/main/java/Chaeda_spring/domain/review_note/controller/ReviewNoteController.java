@@ -1,6 +1,8 @@
 package Chaeda_spring.domain.review_note.controller;
 
+import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.member.entity.Member;
+import Chaeda_spring.domain.review_note.dto.ReviewNotePDFInfo;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemIdRequest;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemResponse;
@@ -16,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/review-note")
-public class ReviewNoteProblemController {
+public class ReviewNoteController {
 
     private final ReviewNoteProblemService reviewNoteProblemService;
 
@@ -44,4 +46,29 @@ public class ReviewNoteProblemController {
         return ResponseEntity.ok(reviewNoteProblemService.createReviewNoteFolder(member, request));
     }
 
+    @PostMapping("/pdf/{reviewNoteFolderId}")
+    @Operation(summary = "오답 노트 pdf 만들기")
+    public ResponseEntity<Long> createReviewNotePDF(
+            @AuthUser Member member,
+            @PathVariable Long reviewNoteFolderId
+    ) {
+        return ResponseEntity.ok(reviewNoteProblemService.createReviewNotePDF(member, reviewNoteFolderId));
+    }
+
+    @GetMapping("/pdf/list")
+    @Operation(summary = "오답 노트 pdf id list 가져오기")
+    public ResponseEntity<List<ReviewNotePDFInfo>> getReviewNotePDFList(
+            @AuthUser Member member
+    ) {
+        return ResponseEntity.ok(reviewNoteProblemService.getReviewNotePDFList(member));
+    }
+
+    @GetMapping("/pdf/{reviewNotePDFId}")
+    @Operation(summary = "오답 노트 pdf 다운로드 url 가져오기")
+    public ResponseEntity<PresignedUrlResponse> getReviewNotePDFUrl(
+            @AuthUser Member member,
+            @PathVariable Long reviewNotePDFId
+    ) {
+        return ResponseEntity.ok(reviewNoteProblemService.getReviewNotePDFUrl(member, reviewNotePDFId));
+    }
 }

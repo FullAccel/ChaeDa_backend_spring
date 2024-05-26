@@ -1,6 +1,7 @@
-package Chaeda_spring.external_component.textbook_preprocessing.service;
+package Chaeda_spring.external_component.review_note_maker;
 
-import Chaeda_spring.external_component.textbook_preprocessing.dto.FilenameRequest;
+import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
+import Chaeda_spring.external_component.review_note_maker.dto.ReviewNoteMakeRequest;
 import Chaeda_spring.global.constant.UrlConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -10,25 +11,25 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-public class PreprocessingService {
+public class ReviewNoteMakerService {
 
-    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL + "/textbook/preprocessing";
+    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL + "/review-note";
 
-    /**
-     * 파일명과 함께 POST 요청을 전송하여 서버와 통신합니다.
-     *
-     * @param filename 서버와 통신할 파일의 이름입니다.
-     */
+
     @Async
-    public CompletableFuture<Boolean> sendFilenameToPreprocessingServer(String filename) {
+    public CompletableFuture<Boolean> sendProblemInfoToPreprocessingServer(List<ReviewNoteProblemInfo> request, String filename) {
         RestTemplate restTemplate = new RestTemplate();
 
-        FilenameRequest request = new FilenameRequest(filename);
-        HttpEntity<FilenameRequest> requestHttpEntity = new HttpEntity<>(request);
+        HttpEntity<ReviewNoteMakeRequest> requestHttpEntity = new HttpEntity<>(ReviewNoteMakeRequest.builder()
+                .reviewNoteProblemInfoList(request)
+                .filename(filename)
+                .build());
+
         ResponseEntity<Void> responseEntity = restTemplate.postForEntity(serverUrl, requestHttpEntity, Void.class);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {

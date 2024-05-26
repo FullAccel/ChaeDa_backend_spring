@@ -1,8 +1,8 @@
 package Chaeda_spring.deprecated.class_group.dto;
 
-import Chaeda_spring.domain.image.entity.ImageFileExtension;
-import Chaeda_spring.domain.image.entity.ImageType;
+import Chaeda_spring.global.constant.FileExtension;
 import Chaeda_spring.global.constant.Grade;
+import Chaeda_spring.global.constant.ImageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +12,7 @@ public record ClassGroupRequest(
         @Schema(description = "이미지 파일의 타입", defaultValue = "ANNOUNCEMENT_THUMBNAIL")
         ImageType imageType,
         @Schema(description = "이미지 파일의 확장자", defaultValue = "PNG")
-        ImageFileExtension imageFileExtension,
+        FileExtension fileExtension,
         @Schema(description = "이미지 파일의 고유 키 값", defaultValue = "10a99bab-4940-48af-92e7-867a56d6ec79")
         String imageKey,
         @NotNull @Schema(description = "클래스 명", defaultValue = "클래스 이름")

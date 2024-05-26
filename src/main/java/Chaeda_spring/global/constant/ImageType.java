@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.image.entity;
+package Chaeda_spring.global.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

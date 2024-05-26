@@ -1,12 +1,11 @@
 package Chaeda_spring.domain.review_note.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.image.entity.ImageFileExtension;
-import Chaeda_spring.domain.image.entity.ImageType;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
-import Chaeda_spring.domain.textbook.entity.Textbook;
 import Chaeda_spring.global.constant.Chapter;
+import Chaeda_spring.global.constant.FileExtension;
+import Chaeda_spring.global.constant.ImageType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,12 +33,13 @@ public class ReviewNoteProblem extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "imageFileExtension", nullable = false)
-    private ImageFileExtension imageFileExtension;
+    private FileExtension fileExtension;
     @Column(name = "answer", nullable = false)
     private String answer;
 
-    @ManyToOne
-    private Textbook textbook;
+    @Column(nullable = false)
+    private String textbookName;
+
     @Column(nullable = false)
     private String problemNum;
     @Enumerated(EnumType.STRING)
@@ -47,26 +47,26 @@ public class ReviewNoteProblem extends BaseTimeEntity {
 
 
     @Builder
-    public ReviewNoteProblem(Student student, LocalDate incorrectDate, String imageKey, ImageFileExtension imageFileExtension, String answer, Textbook textbook, String problemNum, Chapter chapter) {
+    public ReviewNoteProblem(Student student, LocalDate incorrectDate, String imageKey, FileExtension fileExtension, String answer, String textbookName, String problemNum, Chapter chapter) {
         this.student = student;
         this.incorrectDate = incorrectDate;
         this.imageKey = imageKey;
-        this.imageFileExtension = imageFileExtension;
+        this.fileExtension = fileExtension;
         this.answer = answer;
-        this.textbook = textbook;
+        this.textbookName = textbookName;
         this.problemNum = problemNum;
         this.chapter = chapter;
         this.imageType = ImageType.REVIEW_NOTE_PROBLEM;
     }
 
-    public static ReviewNoteProblem of(Student student, ReviewNoteProblemInfo request, Textbook textbook) {
+    public static ReviewNoteProblem of(Student student, ReviewNoteProblemInfo request) {
         return ReviewNoteProblem.builder()
                 .student(student)  // Assuming you have studentId in DTO
                 .incorrectDate(request.incorrectDate())
                 .imageKey(request.imageKey())
-                .imageFileExtension(request.imageFileExtension())
+                .fileExtension(request.fileExtension())
                 .answer(request.answer())
-                .textbook(textbook)
+                .textbookName(request.textbookName())
                 .problemNum(request.problemNum())
                 .chapter(request.chapter())
                 .build();

@@ -2,7 +2,7 @@ package Chaeda_spring.domain.submission.homework.entity.homework;
 
 import Chaeda_spring.deprecated.announcement.entity.HwAnnouncement;
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.image.entity.Image;
+import Chaeda_spring.domain.File.entity.Image;
 import Chaeda_spring.domain.member.entity.Student;
 import jakarta.persistence.*;
 import lombok.Getter;

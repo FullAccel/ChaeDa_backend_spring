@@ -1,21 +1,28 @@
 package Chaeda_spring.domain.review_note.service;
 
-import Chaeda_spring.domain.image.dto.ImageResponse;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.service.ImageService;
+import Chaeda_spring.cloud_service_agents.s3.S3Utils;
+import Chaeda_spring.domain.File.dto.ImageResponse;
+import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.entity.File;
+import Chaeda_spring.domain.File.entity.FileRepository;
+import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
+import Chaeda_spring.domain.review_note.dto.ReviewNotePDFInfo;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemIdRequest;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemResponse;
 import Chaeda_spring.domain.review_note.entity.*;
-import Chaeda_spring.domain.textbook.entity.Textbook;
-import Chaeda_spring.domain.textbook.entity.TextbookRespository;
+import Chaeda_spring.external_component.review_note_maker.ReviewNoteMakerService;
+import Chaeda_spring.global.constant.FileExtension;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotFoundException;
+import com.amazonaws.HttpMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +34,10 @@ public class ReviewNoteProblemService {
     private final ReviewNoteProblemRepository reviewNoteProblemRepository;
     private final ReviewNoteFolderRepository reviewNoteFolderRepository;
     private final ReviewNoteProblemFolderRepository reviewNoteProblemFolderRepository;
-    private final TextbookRespository textbookRespository;
     private final ImageService imageService;
+    private final ReviewNoteMakerService reviewNoteMakerService;
+    private final FileRepository fileRepository;
+    private final S3Utils s3Utils;
 
     /**
      * 사용자로부터 수신된 정보를 사용하여 ReviewNoteProblem을 생성하고 저장합니다.
@@ -38,12 +47,8 @@ public class ReviewNoteProblemService {
      * @throws NotFoundException 해당 텍스트북을 찾지 못한 경우 예외를 발생시킵니다.
      */
     public void createReviewNoteProblem(Member member, ReviewNoteProblemInfo request) {
-
-        Textbook textbook = textbookRespository.findById(request.textbookId())
-                .orElseThrow(() -> new NotFoundException(ErrorCode.TEXTBOOK_NOT_FOUND));
-
         reviewNoteProblemRepository.save(
-                ReviewNoteProblem.of((Student) member, request, textbook)
+                ReviewNoteProblem.of((Student) member, request)
         );
     }
 
@@ -52,7 +57,7 @@ public class ReviewNoteProblemService {
         List<UploadImageCompleteRequest> imageRequest = reviewNoteProblemList.stream()
                 .map(problem -> UploadImageCompleteRequest.of(
                         problem.getImageType(),
-                        problem.getImageFileExtension(),
+                        problem.getFileExtension(),
                         problem.getImageKey()
                 )).collect(Collectors.toList());
 
@@ -95,4 +100,44 @@ public class ReviewNoteProblemService {
         return reviewNoteFolderRepository.save(folder).getId();
     }
 
+    public Long createReviewNotePDF(Member member, Long reviewNoteFolderId) {
+
+        ReviewNoteFolder folder = reviewNoteFolderRepository.findById(reviewNoteFolderId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_NOT_FOUND));
+
+        List<ReviewNoteProblemInfo> problemInfoList = folder.getReviewNoteProblemFolders().stream()
+                .map(mapper -> ReviewNoteProblemInfo.from(mapper.getReviewNoteProblem()))
+                .collect(Collectors.toList());
+
+        LocalDateTime now = LocalDateTime.now();
+        String filename = getFilename(member, now, folder);
+
+        reviewNoteMakerService.sendProblemInfoToPreprocessingServer(problemInfoList, filename);
+
+        return fileRepository.save(File.builder()
+                .title(folder.getTitle())
+                .fileSrcName(filename)
+                .createdDateTime(now)
+                .member(member)
+                .fileExtension(FileExtension.PDF)
+                .build()).getId();
+    }
+
+    public List<ReviewNotePDFInfo> getReviewNotePDFList(Member member) {
+
+        return fileRepository.findAllByMember(member).stream()
+                .map(file -> ReviewNotePDFInfo.of(file))
+                .collect(Collectors.toList());
+    }
+
+    public PresignedUrlResponse getReviewNotePDFUrl(Member member, Long reviewNotePDFId) {
+
+        File file = fileRepository.findById(reviewNotePDFId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.FILE_NOT_FOUND));
+        return PresignedUrlResponse.from(s3Utils.getS3PresignedUrl(file.getFileSrcName(), HttpMethod.GET));
+    }
+
+    private String getFilename(Member member, LocalDateTime now, ReviewNoteFolder folder) {
+        return "review-note/" + member.getId() + "/" + now + "/" + folder.getTitle() + ".pdf";
+    }
 }

@@ -1,15 +1,15 @@
-package Chaeda_spring.domain.image.service;
+package Chaeda_spring.domain.File.service;
 
 import Chaeda_spring.cloud_service_agents.s3.S3Utils;
-import Chaeda_spring.domain.image.dto.ImageResponse;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.dto.UploadImageRequest;
-import Chaeda_spring.domain.image.entity.Image;
-import Chaeda_spring.domain.image.entity.ImageFileExtension;
-import Chaeda_spring.domain.image.entity.ImageRepository;
-import Chaeda_spring.domain.image.entity.ImageType;
+import Chaeda_spring.domain.File.dto.ImageResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.dto.UploadImageRequest;
+import Chaeda_spring.domain.File.entity.Image;
+import Chaeda_spring.domain.File.entity.ImageRepository;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.MemberRepository;
+import Chaeda_spring.global.constant.FileExtension;
+import Chaeda_spring.global.constant.ImageType;
 import Chaeda_spring.global.exception.NotFoundException;
 import Chaeda_spring.global.utils.MemberUtils;
 import com.amazonaws.HttpMethod;
@@ -63,7 +63,7 @@ public class ImageService {
         return getImagePresignedUrlResponse(
                 member.getId(),
                 request.imageType(),
-                request.imageFileExtension(),
+                request.fileExtension(),
                 imageKey,
                 HttpMethod.PUT
         );
@@ -83,7 +83,7 @@ public class ImageService {
                 .map(request -> getImagePresignedUrlResponse(
                         member.getId(),
                         request.imageType(),
-                        request.imageFileExtension(),
+                        request.fileExtension(),
                         generateUUID(),
                         HttpMethod.PUT))
                 .collect(Collectors.toList());
@@ -103,7 +103,7 @@ public class ImageService {
                 .map(request -> getImagePresignedUrlResponse(
                         member.getId(),
                         request.imageType(),
-                        request.imageFileExtension(),
+                        request.fileExtension(),
                         generateUUID(),
                         HttpMethod.GET))
                 .collect(Collectors.toList());
@@ -132,7 +132,7 @@ public class ImageService {
                         member.getId(),
                         ImageType.from(imageType),
                         imageKey,
-                        ImageFileExtension.from(imageFileExtension));
+                        FileExtension.from(imageFileExtension));
 
                 // 파일을 Amazon S3에 업로드합니다.
                 amazonS3.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
@@ -155,7 +155,7 @@ public class ImageService {
                 image.getMemberId(),
                 image.getImageType(),
                 image.getImageKey(),
-                image.getImageFileExtension()
+                image.getFileExtension()
         );
         amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
@@ -169,7 +169,7 @@ public class ImageService {
      * 여기서부터는 재활용성을 위한 클래스 내에서 활용하는 메서드들 입니다.
      */
 
-    public ImageResponse getImagePresignedUrlResponse(Long memberId, ImageType imageType, ImageFileExtension extension, String imageKey, HttpMethod httpMethod) {
+    public ImageResponse getImagePresignedUrlResponse(Long memberId, ImageType imageType, FileExtension extension, String imageKey, HttpMethod httpMethod) {
         String fileName = createImageFileName(
                 memberId,
                 imageType,
@@ -190,7 +190,7 @@ public class ImageService {
                 image.getMemberId(),
                 image.getImageType(),
                 image.getImageKey(),
-                image.getImageFileExtension()
+                image.getFileExtension()
         );
 
         return s3Utils.getS3PresignedUrl(fileName, HttpMethod.GET);
@@ -218,7 +218,7 @@ public class ImageService {
             Long memberId,
             ImageType imageType,
             String imageKey,
-            ImageFileExtension imageFileExtension
+            FileExtension fileExtension
     ) {
         return imageType.getValue()
                 +
@@ -230,7 +230,7 @@ public class ImageService {
                 +
                 imageKey
                 + "."
-                + imageFileExtension.getUploadExtension();
+                + fileExtension.getUploadExtension();
     }
 }
 

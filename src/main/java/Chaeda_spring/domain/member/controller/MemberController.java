@@ -1,6 +1,6 @@
 package Chaeda_spring.domain.member.controller;
 
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.member.dto.*;
 import Chaeda_spring.domain.member.service.MemberService;
 import Chaeda_spring.global.security.jwt.dto.TokenDto;

@@ -3,7 +3,7 @@ package Chaeda_spring.deprecated.class_group.entity;
 import Chaeda_spring.deprecated.announcement.entity.HwAnnouncement;
 import Chaeda_spring.deprecated.course.entity.Course;
 import Chaeda_spring.domain.BaseTimeEntity;
-import Chaeda_spring.domain.image.entity.Image;
+import Chaeda_spring.domain.File.entity.Image;
 import Chaeda_spring.domain.member.entity.Teacher;
 import Chaeda_spring.global.constant.Grade;
 import jakarta.persistence.*;

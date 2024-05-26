@@ -1,16 +1,16 @@
 package Chaeda_spring.domain.submission.homework.service;
 
 import Chaeda_spring.deprecated.announcement.entity.HwAnnouncementRepository;
-import Chaeda_spring.domain.image.dto.ImageResponse;
-import Chaeda_spring.domain.image.dto.UploadImageCompleteRequest;
-import Chaeda_spring.domain.image.entity.Image;
-import Chaeda_spring.domain.image.entity.ImageRepository;
-import Chaeda_spring.domain.image.entity.ImageType;
-import Chaeda_spring.domain.image.service.ImageService;
+import Chaeda_spring.domain.File.dto.ImageResponse;
+import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
+import Chaeda_spring.domain.File.entity.Image;
+import Chaeda_spring.domain.File.entity.ImageRepository;
+import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.MemberRepository;
 import Chaeda_spring.domain.member.entity.Student;
 import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHWRepository;
 import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHomework;
+import Chaeda_spring.global.constant.ImageType;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotEqualsException;
 import Chaeda_spring.global.exception.NotFoundException;
@@ -60,7 +60,7 @@ public class ImageSubmissionService {
             Image image = Image.builder()
                     .imageType(request.imageType())
                     .imageKey(request.imageKey())
-                    .imageFileExtension(request.imageFileExtension())
+                    .fileExtension(request.fileExtension())
                     .memberId(studentId)
                     .build();
             Image savedImage = imageRepository.save(image);
@@ -78,7 +78,7 @@ public class ImageSubmissionService {
                 .map(request -> imageService.getImagePresignedUrlResponse(
                         studentId,
                         request.imageType(),
-                        request.imageFileExtension(),
+                        request.fileExtension(),
                         request.imageKey(),
                         HttpMethod.GET))
                 .collect(Collectors.toList());
@@ -117,7 +117,7 @@ public class ImageSubmissionService {
                 .map(image -> imageService.getImagePresignedUrlResponse(
                         studentId,
                         image.getImageType(),
-                        image.getImageFileExtension(),
+                        image.getFileExtension(),
                         image.getImageKey(),
                         HttpMethod.GET))
                 .collect(Collectors.toList());
