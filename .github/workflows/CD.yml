@@ -16,7 +16,7 @@ jobs:
           script: |
             cd ~/Desktop/ChaeDa_spring
             git fetch origin master
-            git merge origin master
+            git merge origin/master
             ./gradlew build
             docker rm desktop_back_1 --force
             docker rmi desktop_back
