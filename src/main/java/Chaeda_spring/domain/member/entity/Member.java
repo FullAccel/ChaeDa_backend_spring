@@ -23,7 +23,7 @@ public abstract class Member extends BaseTimeEntity {
     @JoinColumn(name = "image_id")
     Image image;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String loginId;
