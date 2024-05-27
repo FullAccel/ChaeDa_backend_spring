@@ -160,11 +160,18 @@ public class ImageService {
      */
     public void uploadImageComplete(Member member, List<UploadImageCompleteRequest> requests) {
         for (UploadImageCompleteRequest request : requests) {
+            String fileName = createImageFileName(
+                    member.getId(),
+                    request.imageType(),
+                    request.imageKey(),
+                    request.fileExtension()
+            );
             Image image = Image.builder()
                     .imageType(request.imageType())
                     .imageKey(request.imageKey())
                     .fileExtension(request.fileExtension())
                     .memberId(member.getId())
+                    .filename(fileName)
                     .build();
             imageRepository.save(image);
         }

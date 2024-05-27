@@ -6,6 +6,7 @@ import Chaeda_spring.domain.review_note.dto.*;
 import Chaeda_spring.domain.review_note.service.ReviewNoteProblemService;
 import Chaeda_spring.global.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,11 +54,22 @@ public class ReviewNoteController {
     }
 
     @DeleteMapping("/folder/{folderId}/problems")
-    @Operation(summary = "오답 폴더에 문제 삭제하기")
+    @Operation(summary = "오답 폴더에서 문제 삭제하기")
     public ResponseEntity<Long> deleteProblemFromFolder(
             @PathVariable Long folderId,
+            @Schema(example = "[1,3,6,7]")
             @RequestBody List<Long> reviewNoteProblemIds) {
         reviewNoteProblemService.deleteProblemFromFolder(folderId, reviewNoteProblemIds);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @DeleteMapping("/problem")
+    @Operation(summary = "오답 저장소에서 문제 삭제하기")
+    public ResponseEntity<Long> deleteProblemFromStorage(
+            @AuthUser Member member,
+            @Schema(example = "[1,3,6,7]")
+            @RequestBody List<Long> reviewNoteProblemIds) {
+        reviewNoteProblemService.deleteProblemFromStorage(member, reviewNoteProblemIds);
         return ResponseEntity.ok().body(null);
     }
 

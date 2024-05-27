@@ -9,4 +9,5 @@ public interface ReviewNoteProblemRepository extends JpaRepository<ReviewNotePro
 
     List<ReviewNoteProblem> findAllByStudent(Student student);
 
+    void deleteByStudentAndId(Student student, Long id);
 }

@@ -6,6 +6,7 @@ import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.File.entity.File;
 import Chaeda_spring.domain.File.entity.FileRepository;
+import Chaeda_spring.domain.File.entity.Image;
 import Chaeda_spring.domain.File.entity.ImageRepository;
 import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.Member;
@@ -15,6 +16,7 @@ import Chaeda_spring.domain.review_note.entity.*;
 import Chaeda_spring.external_component.review_note_maker.ReviewNoteMakerService;
 import Chaeda_spring.global.constant.FileExtension;
 import Chaeda_spring.global.exception.ErrorCode;
+import Chaeda_spring.global.exception.NotEqualsException;
 import Chaeda_spring.global.exception.NotFoundException;
 import com.amazonaws.HttpMethod;
 import lombok.RequiredArgsConstructor;
@@ -233,6 +235,24 @@ public class ReviewNoteProblemService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_FOLDER_NOT_FOUND));
 
         reviewNoteFolderRepository.deleteById(folderId);
+    }
+
+    public void deleteProblemFromStorage(Member member, List<Long> reviewNoteProblemIds) {
+        reviewNoteProblemIds.stream()
+                .forEach(id -> {
+
+                    ReviewNoteProblem problem = reviewNoteProblemRepository.findById(id)
+                            .orElseThrow(() -> new NotFoundException(ErrorCode.PROBLEM_NOT_FOUND));
+
+                    if (!problem.getStudent().equals(member)) {
+                        throw new NotEqualsException(ErrorCode.AUTHORIZATION_BAD_REQUEST, "본인이 등록한 문제만 삭제할 수 있습니다.");
+                    }
+                    reviewNoteProblemRepository.deleteById(id);
+                    Image image = imageRepository.findByImageKey(problem.getImageKey())
+                            .orElseThrow(() -> new NotFoundException(ErrorCode.IMAGE_NOT_FOUND));
+                    imageRepository.deleteById(image.getId());
+                    s3Utils.deleteS3Object(image.getFilename());
+                });
     }
 
 

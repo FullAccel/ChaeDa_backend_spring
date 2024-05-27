@@ -60,6 +60,7 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCHES(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
     ID_TOKEN_VERIFICATION_FAILED(HttpStatus.UNAUTHORIZED, "ID 토큰 검증에 실패했습니다."),
 
+    AUTHORIZATION_BAD_REQUEST(HttpStatus.UNAUTHORIZED, "해당 권한이 존재하지 않은 멤버입니다."),
     // Image
     IMAGE_KEY_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지 키를 찾을 수 없습니다."),
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지를 찾을 수 없습니다"),

@@ -2,6 +2,7 @@ package Chaeda_spring.cloud_service_agents.s3;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,5 +43,9 @@ public class S3Utils {
         expTimeMillis += PRESIGNED_EXPIRATION;
         expiration.setTime(expTimeMillis);
         return expiration;
+    }
+
+    public void deleteS3Object(String fileName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
 }

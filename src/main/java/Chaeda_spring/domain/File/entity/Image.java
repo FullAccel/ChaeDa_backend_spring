@@ -33,16 +33,20 @@ public class Image extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private SubmissionHomework submissionHomework;
 
+    private String filename;
+
     @Builder
     public Image(
             ImageType imageType,
             Long memberId,
             String imageKey,
-            FileExtension fileExtension) {
+            FileExtension fileExtension,
+            String filename) {
         this.imageType = imageType;
         this.memberId = memberId;
         this.imageKey = imageKey;
         this.fileExtension = fileExtension;
+        this.filename = filename;
     }
 
     public void setSubmissionHomework(SubmissionHomework submissionHomework) {
