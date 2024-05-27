@@ -29,9 +29,9 @@ public class ReviewNoteMakerService {
                 .memberId(member.getId())
                 .filename(filename)
                 .build());
-        log.info("fastapi로 pdf 생성 요청을 보냅니다");
-        ResponseEntity<Void> responseEntity = restTemplate.postForEntity(serverUrl, requestHttpEntity, Void.class);
-        log.info("fastapi로 pdf 생성 요청을 보냈습니다. 결과 : {}", responseEntity.getStatusCode());
+        log.info("fastapi {}로 pdf 생성 요청을 보냅니다", serverUrl);
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(serverUrl, requestHttpEntity, Boolean.class);
+        log.info("fastapi{}로 pdf 생성 요청을 보냈습니다. 결과 : {}", serverUrl, responseEntity.getStatusCode());
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             log.error("요청이 실패하였습니다. 응답 코드: {}", responseEntity.getStatusCode());
