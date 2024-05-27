@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +22,6 @@ public class PreprocessingService {
      *
      * @param filename 서버와 통신할 파일의 이름입니다.
      */
-    @Async
     public CompletableFuture<Boolean> sendFilenameToPreprocessingServer(String filename) {
         RestTemplate restTemplate = new RestTemplate();
 

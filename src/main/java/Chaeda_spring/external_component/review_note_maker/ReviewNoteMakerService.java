@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +21,6 @@ public class ReviewNoteMakerService {
     private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL + "/review-note";
 
 
-    @Async
     public CompletableFuture<Boolean> sendProblemInfoToPreprocessingServer(List<ReviewNoteProblemInfo> request, String filename, Member member) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -31,8 +29,9 @@ public class ReviewNoteMakerService {
                 .memberId(member.getId())
                 .filename(filename)
                 .build());
-
+        log.info("fastapi로 pdf 생성 요청을 보냅니다");
         ResponseEntity<Void> responseEntity = restTemplate.postForEntity(serverUrl, requestHttpEntity, Void.class);
+        log.info("fastapi로 pdf 생성 요청을 보냈습니다. 결과 : {}", responseEntity.getStatusCode());
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             log.error("요청이 실패하였습니다. 응답 코드: {}", responseEntity.getStatusCode());
