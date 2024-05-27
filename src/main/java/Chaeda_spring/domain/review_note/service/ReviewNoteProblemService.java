@@ -85,7 +85,6 @@ public class ReviewNoteProblemService {
         ReviewNoteFolder saved = reviewNoteFolderRepository.save(folder);
         request.reviewNoteProblemIds().stream()
                 .forEach(id -> {
-
                     ReviewNoteProblem problem = reviewNoteProblemRepository.findById(id)
                             .orElseThrow(() -> new NotFoundException(ErrorCode.PROBLEM_NOT_FOUND));
                     ReviewNoteProblemFolder mapper = ReviewNoteProblemFolder.builder()
@@ -94,9 +93,7 @@ public class ReviewNoteProblemService {
                             .build();
                     reviewNoteProblemFolderRepository.save(mapper);
 
-
                     problemFolderMappingList.add(mapper);
-
                 });
 
         folder.mappingProblemsToFolder(problemFolderMappingList);
@@ -166,12 +163,78 @@ public class ReviewNoteProblemService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 오답 노트 PDF 파일의 presigned URL을 가져옵니다.
+     *
+     * @param member          The member associated with the file.
+     * @param reviewNotePDFId The ID of the review note PDF file.
+     * @return The PresignedUrlResponse containing the presigned URL of the file.
+     * @throws NotFoundException If the file cannot be found.
+     */
     public PresignedUrlResponse getReviewNotePDFUrl(Member member, Long reviewNotePDFId) {
 
         File file = fileRepository.findById(reviewNotePDFId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.FILE_NOT_FOUND));
         return PresignedUrlResponse.from(s3Utils.getS3PresignedUrl(file.getFileSrcName(), HttpMethod.GET));
     }
+
+    /**
+     * 오답 폴더에 문제 추가하기
+     *
+     * @param folderId
+     * @param reviewNoteProblemIds
+     */
+    public void addProblemToFolder(Long folderId, List<Long> reviewNoteProblemIds) {
+
+        ReviewNoteFolder folder = reviewNoteFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_FOLDER_NOT_FOUND));
+
+        reviewNoteProblemIds.stream()
+                .map(id -> reviewNoteProblemRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.PROBLEM_NOT_FOUND)))
+                .forEach(problem -> {
+                    reviewNoteProblemFolderRepository.save(ReviewNoteProblemFolder.builder()
+                            .reviewNoteProblem(problem)
+                            .reviewNoteFolder(folder)
+                            .build());
+                });
+
+        reviewNoteFolderRepository.save(folder);
+    }
+
+    /**
+     * 지정된 문제 ID를 지정된 오답 노트 폴더에서 삭제합니다.
+     *
+     * @param folderId             The ID of the review note folder to delete the problems from.
+     * @param reviewNoteProblemIds The IDs of the problems to be deleted.
+     * @throws NotFoundException If the review note folder cannot be found.
+     */
+    public void deleteProblemFromFolder(Long folderId, List<Long> reviewNoteProblemIds) {
+        ReviewNoteFolder folder = reviewNoteFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_FOLDER_NOT_FOUND));
+
+        reviewNoteProblemIds.stream()
+                .map(id -> reviewNoteProblemRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.PROBLEM_NOT_FOUND)))
+                .forEach(problem -> {
+                    reviewNoteProblemFolderRepository.deleteByReviewNoteProblemAndReviewNoteFolder(problem, folder);
+
+                });
+    }
+
+    /**
+     * 지정된 폴더 ID를 가진 폴더를 삭제합니다.
+     *
+     * @param folderId The ID of the folder to be deleted.
+     * @throws NotFoundException If the folder cannot be found.
+     */
+    public void deleteFolder(Long folderId) {
+        ReviewNoteFolder folder = reviewNoteFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOTE_FOLDER_NOT_FOUND));
+
+        reviewNoteFolderRepository.deleteById(folderId);
+    }
+
 
     private String getFilename(Member member, LocalDateTime now, ReviewNoteFolder folder) {
         return "review-note/" + member.getId() + "/" + now + "/" + folder.getTitle() + ".pdf";

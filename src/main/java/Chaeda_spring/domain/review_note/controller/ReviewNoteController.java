@@ -43,6 +43,32 @@ public class ReviewNoteController {
         return ResponseEntity.ok(reviewNoteProblemService.createReviewNoteFolder(member, request));
     }
 
+    @PutMapping("/folder/{folderId}")
+    @Operation(summary = "오답 폴더에 문제 추가하기")
+    public ResponseEntity<Void> addProblemToFolder(
+            @PathVariable Long folderId,
+            @RequestBody List<Long> reviewNoteProblemIds) {
+        reviewNoteProblemService.addProblemToFolder(folderId, reviewNoteProblemIds);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @DeleteMapping("/folder/{folderId}/problems")
+    @Operation(summary = "오답 폴더에 문제 삭제하기")
+    public ResponseEntity<Long> deleteProblemFromFolder(
+            @PathVariable Long folderId,
+            @RequestBody List<Long> reviewNoteProblemIds) {
+        reviewNoteProblemService.deleteProblemFromFolder(folderId, reviewNoteProblemIds);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @DeleteMapping("/folder/{folderId}")
+    @Operation(summary = "오답 폴더 삭제하기")
+    public ResponseEntity<Long> deleteFolder(
+            @PathVariable Long folderId) {
+        reviewNoteProblemService.deleteFolder(folderId);
+        return ResponseEntity.ok().body(null);
+    }
+
     @PostMapping("/pdf/{reviewNoteFolderId}")
     @Operation(summary = "오답 노트 pdf 만들기")
     public ResponseEntity<Long> createReviewNotePDF(
