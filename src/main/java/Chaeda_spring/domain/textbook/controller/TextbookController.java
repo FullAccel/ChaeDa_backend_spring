@@ -33,6 +33,7 @@ public class TextbookController {
     }
 
     @PostMapping("/uploadCompleted")
+    @Operation(summary = "교재 PDF S3 업로드 완료 요청")
     public ResponseEntity<Void> uploadCompleted(@RequestBody UploadTextbookFileRequest request) {
         textbookService.saveTextBook(request);
         return ResponseEntity.ok().body(null);
