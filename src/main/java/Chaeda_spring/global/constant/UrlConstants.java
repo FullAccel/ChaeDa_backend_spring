@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UrlConstants {
-    FASTAPI_SERVER_URL("http://114.70.23.79:8000"),
+    FASTAPI_SERVER_URL("http://114.70.23.79:80"),
     ;
 
     private String value;
