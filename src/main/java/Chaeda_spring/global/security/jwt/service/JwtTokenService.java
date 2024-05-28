@@ -53,8 +53,7 @@ public class JwtTokenService {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.error("Access token 만료: " + token);
-
-            return false;
+            throw e;
         } catch (SignatureException e) {
             log.info("SignatureException", e);
             throw new JwtException(AuthenticationErrorCode.WRONG_TYPE_TOKEN.getMessage());
@@ -75,7 +74,7 @@ public class JwtTokenService {
             Jws<Claims> claims = jwtUtil.getRefreshTokenClaims(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
-            log.error("Access token 만료: " + token);
+            log.error("Refresh token 만료: " + token);
             throw new JwtException(AuthenticationErrorCode.EXPIRED_REFRESH_TOKEN.getMessage());
         } catch (SignatureException e) {
             log.info("SignatureException", e);

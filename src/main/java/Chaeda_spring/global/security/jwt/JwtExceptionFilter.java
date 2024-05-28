@@ -18,6 +18,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtException ex) {
             String message = ex.getMessage();
+            logger.error(ex);
             if (AuthenticationErrorCode.UNKNOWN_ERROR.getMessage().equals(message)) {
                 setResponse(response, AuthenticationErrorCode.UNKNOWN_ERROR);
             }
