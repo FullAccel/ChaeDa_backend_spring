@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class ReviewNoteMakerService {
 
-    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL + "/review-note";
+    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL.getValue() + "/review-note";
 
 
     public CompletableFuture<Boolean> sendProblemInfoToPreprocessingServer(List<ReviewNoteProblemInfo> request, String filename, Member member) {
