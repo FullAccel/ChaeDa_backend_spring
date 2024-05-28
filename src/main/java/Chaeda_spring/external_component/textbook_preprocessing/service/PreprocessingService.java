@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class PreprocessingService {
 
-    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL + "/textbook/preprocessing";
+    private final String serverUrl = UrlConstants.FASTAPI_SERVER_URL.getValue() + "/textbook/preprocessing";
 
     /**
      * 파일명과 함께 POST 요청을 전송하여 서버와 통신합니다.
