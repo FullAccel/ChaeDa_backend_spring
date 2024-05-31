@@ -1,12 +1,27 @@
 ## ✏ 기능
-교제를 등록하고 틀린문제를 입력하면 AI가 학생의 수학 취약점을 날짜별, 유형별로 분석해드립니다.
+교제를 등록하고 틀린문제를 입력하면 AI가 학생의 수학 취약점을 날짜별, 유형별로 분석!
+
 <p align="center">
-  <img width="1130" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/1a606cbe-0218-4474-89a0-5f9cf348e766">
+  <img width="719" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/f67540fe-b752-4a19-912c-33f61edb7c0f">
 </p>
 
-## 🖥️ Architecture
+오답 문제의 사진을 찍고 원하는 문제만 골라 오답노트 pdf로 빠르게 생성!
 <p align="center">
-  <img width="1235" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/282902b8-847d-48d3-aff8-c77d2807fb66">
+  <img width="705" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/d3d7afec-207e-47dd-8e6e-a70dbc37d78f">
+</p>
+
+
+
+## 🖥️ 컴포넌트 Architecture
+
+<p align="center">
+  <img width="1235" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/43ea3caf-6663-4a75-8b4a-50d035487be5">
+</p>
+
+## 🖥️ 기술 stack Architecture
+
+<p align="center">
+  <img width="1235" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/2cdbbc29-17d7-48a8-94bb-8545e2d1fea9">
 </p>
 
 </br></br>
