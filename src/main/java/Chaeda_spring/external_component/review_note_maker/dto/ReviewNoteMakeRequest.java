@@ -1,6 +1,6 @@
 package Chaeda_spring.external_component.review_note_maker.dto;
 
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
+import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemInfo;
 import lombok.Builder;
 
 import java.util.List;

@@ -1,9 +1,12 @@
-package Chaeda_spring.domain.review_note.controller;
+package Chaeda_spring.domain.review_note.folder_and_pdf.controller;
 
 import Chaeda_spring.domain.File.dto.PresignedUrlResponse;
 import Chaeda_spring.domain.member.entity.Member;
-import Chaeda_spring.domain.review_note.dto.*;
-import Chaeda_spring.domain.review_note.service.ReviewNoteProblemService;
+import Chaeda_spring.domain.review_note.folder_and_pdf.dto.ReviewNoteFolderInfo;
+import Chaeda_spring.domain.review_note.folder_and_pdf.dto.ReviewNotePDFInfo;
+import Chaeda_spring.domain.review_note.folder_and_pdf.dto.ReviewNoteProblemIdRequest;
+import Chaeda_spring.domain.review_note.folder_and_pdf.service.ReviewNoteFolderService;
+import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemResponse;
 import Chaeda_spring.global.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,32 +19,16 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/review-note")
-public class ReviewNoteController {
+public class ReviewNoteFolderController {
 
-    private final ReviewNoteProblemService reviewNoteProblemService;
-
-    @PostMapping("/problem")
-    @Operation(summary = "오답 저장소에 문제 추가하기", description = "먼저 이미지를 s3에 presigned-url을 통해 저장하고 나온 imageKey와 imageFileExtension을 보내주세요")
-    public ResponseEntity<Void> createReviewNoteProblem(
-            @AuthUser Member member,
-            @RequestBody ReviewNoteProblemInfo reviewNoteProblemInfo) {
-        reviewNoteProblemService.createReviewNoteProblem(member, reviewNoteProblemInfo);
-        return ResponseEntity.ok().body(null);
-    }
-
-    @GetMapping("/problem/list")
-    @Operation(summary = "오답 저장소에 저장된 문제 가져오기")
-    public ResponseEntity<List<ReviewNoteProblemResponse>> getProblemsInInCorrectStorage(
-            @AuthUser Member member) {
-        return ResponseEntity.ok(reviewNoteProblemService.getProblemsInInCorrectStorage(member));
-    }
+    private final ReviewNoteFolderService reviewNoteFolderService;
 
     @PostMapping("/folder")
     @Operation(summary = "오답 폴더 만들기")
     public ResponseEntity<Long> createReviewNoteFolder(
             @AuthUser Member member,
             @RequestBody ReviewNoteProblemIdRequest request) {
-        return ResponseEntity.ok(reviewNoteProblemService.createReviewNoteFolder(member, request));
+        return ResponseEntity.ok(reviewNoteFolderService.createReviewNoteFolder(member, request));
     }
 
     @PutMapping("/folder/{folderId}")
@@ -49,7 +36,7 @@ public class ReviewNoteController {
     public ResponseEntity<Void> addProblemToFolder(
             @PathVariable Long folderId,
             @RequestBody List<Long> reviewNoteProblemIds) {
-        reviewNoteProblemService.addProblemToFolder(folderId, reviewNoteProblemIds);
+        reviewNoteFolderService.addProblemToFolder(folderId, reviewNoteProblemIds);
         return ResponseEntity.ok().body(null);
     }
 
@@ -59,17 +46,7 @@ public class ReviewNoteController {
             @PathVariable Long folderId,
             @Schema(example = "[1,3,6,7]")
             @RequestBody List<Long> reviewNoteProblemIds) {
-        reviewNoteProblemService.deleteProblemFromFolder(folderId, reviewNoteProblemIds);
-        return ResponseEntity.ok().body(null);
-    }
-
-    @DeleteMapping("/problem")
-    @Operation(summary = "오답 저장소에서 문제 삭제하기")
-    public ResponseEntity<Long> deleteProblemFromStorage(
-            @AuthUser Member member,
-            @Schema(example = "[1,3,6,7]")
-            @RequestBody List<Long> reviewNoteProblemIds) {
-        reviewNoteProblemService.deleteProblemFromStorage(member, reviewNoteProblemIds);
+        reviewNoteFolderService.deleteProblemFromFolder(folderId, reviewNoteProblemIds);
         return ResponseEntity.ok().body(null);
     }
 
@@ -77,7 +54,7 @@ public class ReviewNoteController {
     @Operation(summary = "오답 폴더 삭제하기")
     public ResponseEntity<Long> deleteFolder(
             @PathVariable Long folderId) {
-        reviewNoteProblemService.deleteFolder(folderId);
+        reviewNoteFolderService.deleteFolder(folderId);
         return ResponseEntity.ok().body(null);
     }
 
@@ -87,7 +64,7 @@ public class ReviewNoteController {
             @AuthUser Member member,
             @PathVariable Long reviewNoteFolderId
     ) {
-        return ResponseEntity.ok(reviewNoteProblemService.createReviewNotePDF(member, reviewNoteFolderId));
+        return ResponseEntity.ok(reviewNoteFolderService.createReviewNotePDF(member, reviewNoteFolderId));
     }
 
     @GetMapping("/folder/{folderId}/problem/list")
@@ -96,7 +73,7 @@ public class ReviewNoteController {
             @AuthUser Member member,
             @PathVariable Long folderId
     ) {
-        return ResponseEntity.ok(reviewNoteProblemService.getProblemListInFolder(member, folderId));
+        return ResponseEntity.ok(reviewNoteFolderService.getProblemListInFolder(member, folderId));
     }
 
     @GetMapping("/folder/list")
@@ -104,7 +81,7 @@ public class ReviewNoteController {
     public ResponseEntity<List<ReviewNoteFolderInfo>> getReviewNoteFolderList(
             @AuthUser Member member
     ) {
-        return ResponseEntity.ok(reviewNoteProblemService.getReviewNoteFolderList(member));
+        return ResponseEntity.ok(reviewNoteFolderService.getReviewNoteFolderList(member));
     }
 
     @GetMapping("/pdf/list")
@@ -112,7 +89,7 @@ public class ReviewNoteController {
     public ResponseEntity<List<ReviewNotePDFInfo>> getReviewNotePDFList(
             @AuthUser Member member
     ) {
-        return ResponseEntity.ok(reviewNoteProblemService.getReviewNotePDFList(member));
+        return ResponseEntity.ok(reviewNoteFolderService.getReviewNotePDFList(member));
     }
 
     @GetMapping("/pdf/{reviewNotePDFId}")
@@ -121,7 +98,7 @@ public class ReviewNoteController {
             @AuthUser Member member,
             @PathVariable Long reviewNotePDFId
     ) {
-        return ResponseEntity.ok(reviewNoteProblemService.getReviewNotePDFUrl(member, reviewNotePDFId));
+        return ResponseEntity.ok(reviewNoteFolderService.getReviewNotePDFUrl(member, reviewNotePDFId));
     }
 
 

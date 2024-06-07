@@ -1,6 +1,7 @@
-package Chaeda_spring.domain.review_note.entity;
+package Chaeda_spring.domain.review_note.folder_and_pdf.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
+import Chaeda_spring.domain.review_note.problem.entity.ReviewNoteProblem;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

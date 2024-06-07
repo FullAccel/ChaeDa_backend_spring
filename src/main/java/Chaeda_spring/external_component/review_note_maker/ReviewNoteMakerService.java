@@ -1,7 +1,7 @@
 package Chaeda_spring.external_component.review_note_maker;
 
 import Chaeda_spring.domain.member.entity.Member;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
+import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.external_component.review_note_maker.dto.ReviewNoteMakeRequest;
 import Chaeda_spring.global.constant.UrlConstants;
 import lombok.extern.slf4j.Slf4j;

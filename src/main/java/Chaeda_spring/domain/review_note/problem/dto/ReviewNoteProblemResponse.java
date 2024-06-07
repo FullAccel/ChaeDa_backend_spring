@@ -1,7 +1,7 @@
-package Chaeda_spring.domain.review_note.dto;
+package Chaeda_spring.domain.review_note.problem.dto;
 
 import Chaeda_spring.domain.File.dto.ImageResponse;
-import Chaeda_spring.domain.review_note.entity.ReviewNoteProblem;
+import Chaeda_spring.domain.review_note.problem.entity.ReviewNoteProblem;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

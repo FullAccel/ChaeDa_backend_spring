@@ -1,6 +1,6 @@
-package Chaeda_spring.domain.review_note.dto;
+package Chaeda_spring.domain.review_note.folder_and_pdf.dto;
 
-import Chaeda_spring.domain.review_note.entity.ReviewNoteFolder;
+import Chaeda_spring.domain.review_note.folder_and_pdf.entity.ReviewNoteFolder;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

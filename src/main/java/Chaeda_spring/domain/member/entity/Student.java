@@ -2,8 +2,8 @@ package Chaeda_spring.domain.member.entity;
 
 import Chaeda_spring.deprecated.course.entity.Course;
 import Chaeda_spring.domain.assignment.entity.SelfAssignment;
-import Chaeda_spring.domain.review_note.entity.ReviewNoteFolder;
-import Chaeda_spring.domain.review_note.entity.ReviewNoteProblem;
+import Chaeda_spring.domain.review_note.folder_and_pdf.entity.ReviewNoteFolder;
+import Chaeda_spring.domain.review_note.problem.entity.ReviewNoteProblem;
 import Chaeda_spring.domain.statistics.entity.solvedNum.SolvedNumForDay;
 import Chaeda_spring.domain.submission.homework.entity.homework.SubmissionHomework;
 import Chaeda_spring.global.constant.Grade;

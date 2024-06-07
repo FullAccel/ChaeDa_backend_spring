@@ -1,4 +1,4 @@
-package Chaeda_spring.domain.review_note.entity;
+package Chaeda_spring.domain.review_note.problem.entity;
 
 import Chaeda_spring.domain.member.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;

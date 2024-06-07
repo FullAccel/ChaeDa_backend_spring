@@ -1,8 +1,8 @@
-package Chaeda_spring.domain.review_note.entity;
+package Chaeda_spring.domain.review_note.problem.entity;
 
 import Chaeda_spring.domain.BaseTimeEntity;
 import Chaeda_spring.domain.member.entity.Student;
-import Chaeda_spring.domain.review_note.dto.ReviewNoteProblemInfo;
+import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.global.constant.Chapter;
 import Chaeda_spring.global.constant.FileExtension;
 import Chaeda_spring.global.constant.ImageType;
