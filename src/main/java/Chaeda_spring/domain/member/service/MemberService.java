@@ -59,9 +59,7 @@ public class MemberService {
         return tokenService.createTokenDto(member.getId(), member.getRole());
     }
 
-    public void logout(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.LOGIN_ID_NOT_FOUND));
+    public void logout(Member member) {
 
         if (refreshTokenRepository.existsRefreshTokenByMemberId(member.getId())) {
             log.info("기존의 존재하는 refresh 토큰 삭제");
@@ -171,12 +169,12 @@ public class MemberService {
     /**
      * 해당 회원의 프로필 사진을 수정합니다.
      *
-     * @param memberId
+     * @param member
      * @param request
      */
     @Transactional
-    public void updateMemberProfileImage(Long memberId, UploadImageCompleteRequest request) {
-        Member member = findMemberById(memberId);
+    public void updateMemberProfileImage(Member member, UploadImageCompleteRequest request) {
+
         Image profile = member.getImage();
         profile.updateImageKey(request.imageKey());
 
@@ -186,11 +184,10 @@ public class MemberService {
     /**
      * 해당 회원의 프로필 사진을 삭제합니다.
      *
-     * @param memberId
+     * @param member
      */
     @Transactional
-    public void deleteMemberProfileImage(Long memberId) {
-        Member member = findMemberById(memberId);
+    public void deleteMemberProfileImage(Member member) {
         Image profile = member.getImage();
         imageService.deleteImageInDB(profile);
         imageService.deleteImageInS3(profile);

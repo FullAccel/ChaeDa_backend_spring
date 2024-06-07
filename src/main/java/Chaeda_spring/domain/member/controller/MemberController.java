@@ -2,7 +2,9 @@ package Chaeda_spring.domain.member.controller;
 
 import Chaeda_spring.domain.File.dto.UploadImageCompleteRequest;
 import Chaeda_spring.domain.member.dto.*;
+import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.service.MemberService;
+import Chaeda_spring.global.annotation.AuthUser;
 import Chaeda_spring.global.security.jwt.dto.TokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +40,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(request));
     }
 
-    @PostMapping("/logout/{memberId}")
+    @PostMapping("/logout")
     @Operation(summary = "로그아웃하기")
     public ResponseEntity<Void> logout(
-            @PathVariable Long memberId
+            @AuthUser Member member
     ) {
-        memberService.logout(memberId);
+        memberService.logout(member);
         return ResponseEntity.ok().body(null);
     }
 
@@ -65,19 +67,19 @@ public class MemberController {
     @Operation(summary = "회원 프로필 이미지 수정하기", description = "1~6번 회원의 프로필을 수정하지 말아주세요. (= 더미 데이터는 조회만 하세요)")
 
     public ResponseEntity<Void> updateMemberProfileImage(
-            @PathVariable Long memberId,
+            @AuthUser Member member,
             @RequestBody UploadImageCompleteRequest request
     ) {
-        memberService.updateMemberProfileImage(memberId, request);
+        memberService.updateMemberProfileImage(member, request);
         return ResponseEntity.ok().body(null);
     }
 
     @DeleteMapping("/profile-image/{memberId}")
     @Operation(summary = "회원 프로필 이미지 삭제하기", description = "1~6번 회원의 프로필을 삭제하지 말아주세요. (= 더미 데이터는 조회만 하세요)")
     public ResponseEntity<Void> deleteMemberProfileImage(
-            @PathVariable Long memberId
+            @AuthUser Member member
     ) {
-        memberService.deleteMemberProfileImage(memberId);
+        memberService.deleteMemberProfileImage(member);
         return ResponseEntity.ok().body(null);
     }
 

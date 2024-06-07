@@ -58,11 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         TokenDto tokenDto = jwtTokenService.recreateTokenDto(refreshTokenHeaderValue);
 
                         //Refresh, Access Token을 헤더에 넣어 전송합니다 (GET 요청시에는 body가 없기 때문에)
-                        jwtTokenService.setHeaderAccessToken(response, tokenDto.accessTokenDto());
-                        jwtTokenService.setHeaderRefreshToken(response, tokenDto.refreshTokenDto());
+                        jwtTokenService.setHeaderAccessToken(response, tokenDto.accessToken());
+                        jwtTokenService.setHeaderRefreshToken(response, tokenDto.refreshToken());
 
                         //Refresh Token으로 발급한 AccessToken으로 유저 정보를 저장합니다.
-                        accessTokenDto = jwtTokenService.retrieveAccessToken(tokenDto.accessTokenDto());
+                        accessTokenDto = jwtTokenService.retrieveAccessToken(tokenDto.accessToken());
                         setAuthenticationToContext(accessTokenDto.memberId(), accessTokenDto.role());
                     }
                 }
