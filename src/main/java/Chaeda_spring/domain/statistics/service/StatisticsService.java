@@ -83,6 +83,12 @@ public class StatisticsService {
         return solvedNumMap;
     }
 
+    /**
+     * 주어진 회원의 월별 문제 풀이 횟수를 가져옵니다.
+     *
+     * @param member 해결된 문제 수를 가져올 회원.
+     * @return 월별 해결된 문제 수를 포함하는 Map. 키는 "yyyy-MM" 형식의 월이고, 값은 해결된 문제 수입니다.
+     */
     public Map<String, Integer> getSolvedCountByMonth(Member member) {
         LocalDate today = LocalDate.now();
         LocalDate todayMonth = LocalDate.now().withDayOfMonth(1);
@@ -100,6 +106,13 @@ public class StatisticsService {
         return solvedNumMap;
     }
 
+    /**
+     * 주어진 날짜의 주간에 대한 회원의 상위 10개의 가장 많이 틀린 세부유형 리스트를 가져옵니다.
+     *
+     * @param date   기준 날짜.
+     * @param member 회원.
+     * @return 상위 10개의 가장 많이 틀린 세부유형과 해당 횟수를 포함하는 WrongCountWithSubconceptResponse 객체 목록.
+     */
     public List<WrongCountWithSubconceptResponse> getTop10WrongCountWithConceptForWeek(LocalDate date, Member member) {
         Pageable topTen = PageRequest.of(0, 10);
         LocalDate startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -109,6 +122,13 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 주어진 달에 대한 회원의 상위 10개의 가장 많이 틀린 세부유형 리스트를 가져옵니다.
+     *
+     * @param member      회원.
+     * @param targetMonth 기준 월.
+     * @return 상위 10개의 가장 많이 틀린 세부유형과 해당 횟수를 포함하는 SolvedCountsByMonthResponse 객체 목록.
+     */
     public List<SolvedCountsByMonthResponse> getTop10WrongCountWithConceptForMonth(Member member, LocalDate targetMonth) {
         Pageable topTen = PageRequest.of(0, 10);
         return subconceptStatisticsForMonthRepository.findTop10WrongCountByMonthAndStudent(targetMonth, (Student) member, topTen)
@@ -117,14 +137,33 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 주어진 과목에 대한 단원 목록을 가져옵니다.
+     *
+     * @param subject 과목.
+     * @return 과목에 해당하는 Chapter 객체 목록.
+     */
     public List<Chapter> getChapterListBySubject(Subject subject) {
         return Subject.getChaptersBySubjectName(subject);
     }
 
+    /**
+     * 주어진 단원에 대한 세부유형 목록을 가져옵니다.
+     *
+     * @param chapter 챕터.
+     * @return 단원에 해당하는 SubConcept 객체 목록.
+     */
     public List<SubConcept> getSubconceptListByChapter(Chapter chapter) {
         return Chapter.getSubConceptsByChapterName(chapter);
     }
 
+    /**
+     * 주어진 회원과 세부 유형에 대한 주간 통계를 가져옵니다.
+     *
+     * @param member     회원.
+     * @param subConcept 서브 개념.
+     * @return 서브 개념과 해당 주간 통계를 포함하는 StatisticsBySubconceptResponse 객체.
+     */
     public StatisticsBySubconceptResponse getWeeklyStatisticsBySubConcept(Member member, SubConcept subConcept) {
 
         MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
@@ -137,6 +176,13 @@ public class StatisticsService {
         return StatisticsBySubconceptResponse.from(subConcept, stats);
     }
 
+    /**
+     * 주어진 회원과 세부 유형에 대한 월간 통계를 가져옵니다.
+     *
+     * @param member     회원.
+     * @param subConcept 서브 개념.
+     * @return 세부 유형과 해당 월간 통계를 포함하는 StatisticsBySubconceptResponse 객체.
+     */
     public StatisticsBySubconceptResponse getMonthlyStatisticsBySubConcept(Member member, SubConcept subConcept) {
 
         MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
@@ -147,6 +193,13 @@ public class StatisticsService {
         return StatisticsBySubconceptResponse.from(subConcept, stats);
     }
 
+    /**
+     * 주어진 회원과 세부 유형에 대한 누적 통계를 가져옵니다.
+     *
+     * @param member     회원.
+     * @param subConcept 세부 유형.
+     * @return 세부 유형과 해당 누적 통계를 포함하는 StatisticsBySubconceptResponse 객체.
+     */
     public StatisticsBySubconceptResponse getAccumulatedStatisticsBySubConcept(Member member, SubConcept subConcept) {
 
         MathProblemType type = mathProblemTypeRepository.findBySubConcept(subConcept);
@@ -156,6 +209,13 @@ public class StatisticsService {
         return StatisticsBySubconceptResponse.from(subConcept, stats);
     }
 
+    /**
+     * 주어진 회원과 단원에 대한 세부 유형별 누적 통계를 가져옵니다.
+     *
+     * @param member  회원.
+     * @param chapter 챕터.
+     * @return 세부 유형별 누적 통계를 포함하는 StatisticsBySubconceptResponse 객체 목록.
+     */
     public List<StatisticsBySubconceptResponse> getAccumulatedStatisticsBySubConceptList(Member member, Chapter chapter) {
 
         return mathProblemTypeRepository.findAllByChapter(chapter).stream()

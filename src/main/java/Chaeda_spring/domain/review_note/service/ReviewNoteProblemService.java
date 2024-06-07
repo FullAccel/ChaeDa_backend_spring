@@ -54,8 +54,11 @@ public class ReviewNoteProblemService {
     }
 
     /**
-     * @param member
-     * @return
+     * 주어진 회원의 오답 저장소에 있는 문제 목록을 가져옵니다.
+     *
+     * @param member 문제를 가져올 회원.
+     * @return ReviewNoteProblemResponse 객체 목록으로, 문제와 해당 이미지 URL을 포함합니다.
+     * @throws IllegalArgumentException 주어진 회원이 Student 타입이 아닌 경우 발생합니다.
      */
     public List<ReviewNoteProblemResponse> getProblemsInInCorrectStorage(Member member) {
         List<ReviewNoteProblem> reviewNoteProblemList = reviewNoteProblemRepository.findAllByStudent((Student) member);
@@ -75,6 +78,14 @@ public class ReviewNoteProblemService {
         return response;
     }
 
+    /**
+     * 리뷰 노트 폴더를 생성합니다.
+     *
+     * @param member  리뷰 노트 폴더를 생성할 회원.
+     * @param request 리뷰 노트 폴더 생성에 필요한 요청 데이터.
+     * @return 생성된 리뷰 노트 폴더의 ID.
+     * @throws NotFoundException 주어진 문제 ID에 해당하는 문제가 존재하지 않을 경우 발생합니다.
+     */
     public Long createReviewNoteFolder(Member member, ReviewNoteProblemIdRequest request) {
 
         ReviewNoteFolder folder = ReviewNoteFolder.builder()
@@ -102,7 +113,14 @@ public class ReviewNoteProblemService {
         return saved.getId();
     }
 
-
+    /**
+     * 리뷰 노트 폴더로부터 PDF 파일을 생성합니다.
+     *
+     * @param member             PDF 파일을 생성할 회원.
+     * @param reviewNoteFolderId PDF 파일을 생성할 리뷰 노트 폴더의 ID.
+     * @return 생성된 PDF 파일의 ID.
+     * @throws NotFoundException 주어진 리뷰 노트 폴더 ID에 해당하는 폴더가 존재하지 않을 경우 발생합니다.
+     */
     public Long createReviewNotePDF(Member member, Long reviewNoteFolderId) {
 
         ReviewNoteFolder folder = reviewNoteFolderRepository.findById(reviewNoteFolderId)
@@ -126,6 +144,12 @@ public class ReviewNoteProblemService {
                 .build()).getId();
     }
 
+    /**
+     * 주어진 회원의 리뷰 노트 PDF 목록을 가져옵니다.
+     *
+     * @param member 리뷰 노트 PDF 목록을 가져올 회원.
+     * @return ReviewNotePDFInfo 객체 목록으로, 각 PDF 파일의 정보를 포함합니다.
+     */
     public List<ReviewNotePDFInfo> getReviewNotePDFList(Member member) {
 
         return fileRepository.findAllByMember(member).stream()
@@ -133,6 +157,14 @@ public class ReviewNoteProblemService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 주어진 오답 폴더에 있는 문제 목록을 가져옵니다.
+     *
+     * @param member   문제 목록을 가져올 회원.
+     * @param folderId 문제 목록을 가져올 폴더의 ID.
+     * @return ReviewNoteProblemResponse 객체 목록으로, 각 문제와 해당 이미지 URL을 포함합니다.
+     * @throws NotFoundException 주어진 폴더 ID에 해당하는 폴더가 존재하지 않을 경우 발생합니다.
+     */
     public List<ReviewNoteProblemResponse> getProblemListInFolder(Member member, Long folderId) {
 
         List<ReviewNoteProblem> reviewNoteProblemList = reviewNoteFolderRepository.findById(folderId)
@@ -155,9 +187,14 @@ public class ReviewNoteProblemService {
             response.add(ReviewNoteProblemResponse.of(reviewNoteProblemList.get(i), imageReadUrls.get(i)));
         }
         return response;
-
     }
 
+    /**
+     * 주어진 회원의 리뷰 노트 폴더 목록을 가져옵니다.
+     *
+     * @param member 리뷰 노트 폴더 목록을 가져올 회원.
+     * @return ReviewNoteFolderInfo 객체 목록으로, 각 폴더의 정보를 포함합니다.
+     */
     public List<ReviewNoteFolderInfo> getReviewNoteFolderList(Member member) {
 
         return reviewNoteFolderRepository.findAllByStudent((Student) member).stream()
@@ -181,7 +218,7 @@ public class ReviewNoteProblemService {
     }
 
     /**
-     * 오답 폴더에 문제 추가하기
+     * 주어진 오답 폴더에 문제를 추가합니다.
      *
      * @param folderId
      * @param reviewNoteProblemIds
@@ -237,6 +274,14 @@ public class ReviewNoteProblemService {
         reviewNoteFolderRepository.deleteById(folderId);
     }
 
+    /**
+     * 주어진 회원의 저장소에서 문제를 삭제하고 s3에서도 해당 문제의 이미지를 삭제합니다.
+     *
+     * @param member               문제를 삭제할 회원.
+     * @param reviewNoteProblemIds 삭제할 문제들의 ID 목록.
+     * @throws NotFoundException  주어진 문제 ID에 해당하는 문제가 존재하지 않을 경우 발생하거나, 주어진 이미지 키에 해당하는 이미지가 존재하지 않을 경우 발생합니다.
+     * @throws NotEqualsException 문제의 등록자가 회원과 다를 경우 발생합니다.
+     */
     public void deleteProblemFromStorage(Member member, List<Long> reviewNoteProblemIds) {
         reviewNoteProblemIds.stream()
                 .forEach(id -> {
@@ -255,7 +300,14 @@ public class ReviewNoteProblemService {
                 });
     }
 
-
+    /**
+     * PDF 파일의 파일명을 생성합니다.
+     *
+     * @param member 파일명을 생성할 회원.
+     * @param now    생성 시간.
+     * @param folder 파일명을 생성할 리뷰 노트 폴더.
+     * @return 생성된 파일명 문자열.
+     */
     private String getFilename(Member member, LocalDateTime now, ReviewNoteFolder folder) {
         return "review-note/" + member.getId() + "/" + now + "/" + folder.getTitle() + ".pdf";
     }

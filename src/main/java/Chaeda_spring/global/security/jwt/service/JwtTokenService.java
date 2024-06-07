@@ -47,6 +47,15 @@ public class JwtTokenService {
         return TokenDto.of(accessToken, refreshToken);
     }
 
+    /**
+     * 주어진 액세스 토큰을 검증합니다.
+     *
+     * @param token 검증할 액세스 토큰.
+     * @return 토큰이 유효하면 true, 그렇지 않으면 false.
+     * @throws ExpiredJwtException   액세스 토큰이 만료된 경우 발생합니다.
+     * @throws JwtException          서명이 잘못된 경우, 토큰이 올바르지 않은 경우, 또는 기타 알 수 없는 오류가 발생한 경우 발생합니다.
+     * @throws NumberFormatException 토큰에서 사용자 ID를 파싱하는 데 실패한 경우 발생합니다.
+     */
     public boolean validateAccessToken(String token) {
         try {
             Jws<Claims> claims = jwtUtil.getAccessTokenClaims(token);
@@ -69,6 +78,14 @@ public class JwtTokenService {
         }
     }
 
+    /**
+     * 주어진 리프레시 토큰을 검증합니다.
+     *
+     * @param token 검증할 리프레시 토큰.
+     * @return 토큰이 유효하면 true, 그렇지 않으면 false.
+     * @throws JwtException          리프레시 토큰이 만료된 경우, 서명이 잘못된 경우, 토큰이 올바르지 않은 경우, 또는 기타 알 수 없는 오류가 발생한 경우 발생합니다.
+     * @throws NumberFormatException 토큰에서 사용자 ID를 파싱하는 데 실패한 경우 발생합니다.
+     */
     public boolean validateRefreshToken(String token) {
         try {
             Jws<Claims> claims = jwtUtil.getRefreshTokenClaims(token);
