@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum AuthenticationErrorCode {
     UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "Unknown", "알 수 없는 에러"),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "Expired", "만료된 access Token입니다"),
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Expired", "만료된 refresh Token입니다"),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Expired", "만료된 refresh Token입니다. 재로그인하세요"),
     UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "Unsupported", "토큰 길이 및 형식이 다른 Token입니다"),
     WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "WrongType", "서명이 잘못된 토큰입니다."),
     ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "AccessDenied", "토큰이 없습니다");

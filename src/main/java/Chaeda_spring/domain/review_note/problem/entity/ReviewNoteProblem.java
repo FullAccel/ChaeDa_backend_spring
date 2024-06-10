@@ -42,9 +42,9 @@ public class ReviewNoteProblem extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String problemNum;
+
     @Enumerated(EnumType.STRING)
     private Chapter chapter;
-
 
     @Builder
     public ReviewNoteProblem(Student student, LocalDate incorrectDate, String imageKey, FileExtension fileExtension, String answer, String textbookName, String problemNum, Chapter chapter) {
