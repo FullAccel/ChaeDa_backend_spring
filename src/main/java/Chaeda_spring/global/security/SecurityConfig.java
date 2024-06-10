@@ -30,7 +30,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtTokenService jwtTokenService;
-    String[] allowUrls = {"/", "/swagger-ui/**", "/v3/**", "/docs.html", "/api-docs/**", "/member/login", "/member/teacher/signUp", "/member/student/signUp"};
+    String[] allowUrls = {"/", "/swagger-ui/**", "/v3/**", "/docs.html", "/api-docs/**", "/member/login", "/member/teacher/signUp", "/member/student/signUp", "/Auth/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
