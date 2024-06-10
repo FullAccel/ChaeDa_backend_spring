@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (refreshTokenHeaderValue == null) {
                     //Access Token 만료되고 refresh Token이 헤더에 없는 경우
                     logger.info("refresh Token 비어 있음");
-                    throw new JwtException(AuthenticationErrorCode.EXPIRED_ACCESS_TOKEN.getMessage());
+                    throw new JwtException(AuthenticationErrorCode.AT_EXPIRED_AND_RT_NOT_FOUND.getMessage());
                 } else if (jwtTokenService.validateRefreshToken(refreshTokenHeaderValue) && refreshTokenHeaderValue != null) {
                     // 어세스 토큰이 만료된 상황 && 리프레시 토큰 또한 존재하는 상황
                     boolean isRefreshToken = jwtTokenService.existsRefreshToken(refreshTokenHeaderValue);
