@@ -139,11 +139,11 @@ public class JwtTokenService {
     }
 
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("authorization", "bearer " + accessToken);
+        response.setHeader("authorization", accessToken);
     }
 
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("refreshToken", "bearer " + refreshToken);
+        response.setHeader("refreshToken", refreshToken);
     }
 
 }
