@@ -1,6 +1,8 @@
 package Chaeda_spring.domain.review_note.problem.controller;
 
 import Chaeda_spring.domain.member.entity.Member;
+import Chaeda_spring.domain.review_note.problem.dto.IncorrectProblemForReviewNoteRequest;
+import Chaeda_spring.domain.review_note.problem.dto.IncorrectProblemRecordRequest;
 import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemResponse;
 import Chaeda_spring.domain.review_note.problem.service.ReviewNoteProblemService;
@@ -45,5 +47,13 @@ public class ReviewNoteProblemController {
             @RequestBody List<Long> reviewNoteProblemIds) {
         reviewNoteProblemService.deleteProblemFromStorage(member, reviewNoteProblemIds);
         return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/byDateRange")
+    @Operation(summary = "특정 날짜 범위 내의 틀린 문제 기록 조회")
+    public ResponseEntity<List<IncorrectProblemForReviewNoteRequest>> getWrongProblemsByDateRange(
+            @RequestBody IncorrectProblemRecordRequest request) {
+        List<IncorrectProblemForReviewNoteRequest> response = reviewNoteProblemService.findWrongProblemsByDateRange(request);
+        return ResponseEntity.ok(response);
     }
 }

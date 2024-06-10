@@ -8,10 +8,14 @@ import Chaeda_spring.domain.File.entity.ImageRepository;
 import Chaeda_spring.domain.File.service.ImageService;
 import Chaeda_spring.domain.member.entity.Member;
 import Chaeda_spring.domain.member.entity.Student;
+import Chaeda_spring.domain.review_note.problem.dto.IncorrectProblemForReviewNoteRequest;
+import Chaeda_spring.domain.review_note.problem.dto.IncorrectProblemRecordRequest;
 import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemInfo;
 import Chaeda_spring.domain.review_note.problem.dto.ReviewNoteProblemResponse;
 import Chaeda_spring.domain.review_note.problem.entity.ReviewNoteProblem;
 import Chaeda_spring.domain.review_note.problem.entity.ReviewNoteProblemRepository;
+import Chaeda_spring.domain.submission.assignment.entity.WrongProblemRecord;
+import Chaeda_spring.domain.submission.assignment.entity.WrongProblemRecordRepository;
 import Chaeda_spring.global.exception.ErrorCode;
 import Chaeda_spring.global.exception.NotEqualsException;
 import Chaeda_spring.global.exception.NotFoundException;
@@ -30,7 +34,7 @@ public class ReviewNoteProblemService {
     private final ImageService imageService;
     private final ImageRepository imageRepository;
     private final S3Utils s3Utils;
-
+    private final WrongProblemRecordRepository wrongProblemRecordRepository;
 
     /**
      * 사용자로부터 수신된 정보를 사용하여 ReviewNoteProblem을 생성하고 저장합니다.
@@ -94,5 +98,19 @@ public class ReviewNoteProblemService {
                     imageRepository.deleteById(image.getId());
                     s3Utils.deleteS3Object(image.getFilename());
                 });
+    }
+
+
+    /**
+     * 주어진 날짜 범위 내에서 틀린 문제 기록을 찾습니다.
+     *
+     * @param request 날짜 범위 요청 데이터를 포함하는 WrongProblemRecordRequest 객체.
+     * @return WrongProblemRecordResponse 객체 목록으로, 각 틀린 문제의 기록을 포함합니다.
+     */
+    public List<IncorrectProblemForReviewNoteRequest> findWrongProblemsByDateRange(IncorrectProblemRecordRequest request) {
+        List<WrongProblemRecord> records = wrongProblemRecordRepository.findAllByWrongDateBetween(request.startDate(), request.endDate());
+        return records.stream()
+                .map(record -> IncorrectProblemForReviewNoteRequest.from(record))
+                .collect(Collectors.toList());
     }
 }

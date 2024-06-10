@@ -20,7 +20,7 @@ public class WrongProblemRecord {
     private Long id;
 
     @Temporal(TemporalType.DATE)
-    private LocalDate wrongDate;
+    private LocalDate incorrectDate;
 
     @Enumerated(EnumType.STRING)
     private DifficultyLevel difficulty;
@@ -34,8 +34,8 @@ public class WrongProblemRecord {
     private MathProblem mathProblem;
 
     @Builder
-    public WrongProblemRecord(LocalDate wrongDate, DifficultyLevel difficulty, Student student, MathProblem mathProblem) {
-        this.wrongDate = wrongDate;
+    public WrongProblemRecord(LocalDate incorrectDate, DifficultyLevel difficulty, Student student, MathProblem mathProblem) {
+        this.incorrectDate = incorrectDate;
         this.difficulty = difficulty;
         this.student = student;
         this.mathProblem = mathProblem;

@@ -157,7 +157,7 @@ public class AssignmentSubmissionService {
         DifficultyLevel difficultyLevel = wrongProblemRecordMap.get(mathProblem.getProblemNumber());
 
         WrongProblemRecord record = WrongProblemRecord.builder()
-                .wrongDate(selfAssignment.getTargetDate())
+                .incorrectDate(selfAssignment.getTargetDate())
                 .difficulty(difficultyLevel)
                 .mathProblem(mathProblem)
                 .student(student)
