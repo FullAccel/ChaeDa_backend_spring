@@ -160,10 +160,17 @@ VALUES (1, 'chaeda@konkuk.ac.kr', '$2a$10$ebqrHe.RCMF/eeVLCwjhqeC3ihDblknXX4qJ94
         'chaeda@konkuk.ac.kr', 'MALE', '홍길동', '010-1234-5678', 'Student',
         'STUDENT');
 
+-- CREATE SEQUENCE member_id_seq;
+--
+-- ALTER TABLE member ALTER COLUMN id SET DEFAULT nextval('member_id_seq');
+--
+-- SELECT setval('member_id_seq', COALESCE((SELECT MAX(id) FROM member), 1), false);
 
 INSERT INTO student (id, home_phone_num, parent_phone_num, school_name, notes, grade)
 VALUES (1, '02-5318-6577', '010-5318-6577', '건국고등학교', null, 'HIGH_1')
 ;
+
+SELECT setval('member_id_seq', COALESCE((SELECT MAX(id) FROM member), 1), false);
 
 INSERT INTO math_problem
 (id, problem_number, page_number, solved_students_count, incorrect_students_count, easy_num,
@@ -552,3 +559,13 @@ INSERT INTO accumulated_statistics_for_subconcept (student_id, solved_num, wrong
                                                                                                                                    (1, 23, 4, 11, 7, 4, 50),
                                                                                                                                    (1, 17, 3, 8, 6, 3, 52),
                                                                                                                                    (1, 24, 6, 12, 9, 4, 54);
+SELECT setval('member_id_seq', COALESCE((SELECT MAX(id) FROM member), 1), false);
+SELECT setval('math_problem_id_seq', COALESCE((SELECT MAX(id) FROM math_problem), 1), false);
+SELECT setval('math_problem_type_id_seq', COALESCE((SELECT MAX(id) FROM math_problem_type), 1), false);
+SELECT setval('problem_type_mapping_id_seq', COALESCE((SELECT MAX(id) FROM problem_type_mapping), 1), false);
+SELECT setval('solved_num_for_day_id_seq', COALESCE((SELECT MAX(id) FROM solved_num_for_day), 1), false);
+SELECT setval('solved_num_for_month_id_seq', COALESCE((SELECT MAX(id) FROM solved_num_for_month), 1), false);
+SELECT setval('solved_num_for_week_id_seq', COALESCE((SELECT MAX(id) FROM solved_num_for_week), 1), false);
+SELECT setval('subconcept_statistics_for_week_id_seq', COALESCE((SELECT MAX(id) FROM subconcept_statistics_for_week), 1), false);
+SELECT setval('subconcept_statistics_for_month_id_seq', COALESCE((SELECT MAX(id) FROM subconcept_statistics_for_month), 1), false);
+SELECT setval('accumulated_statistics_for_subconcept_id_seq', COALESCE((SELECT MAX(id) FROM accumulated_statistics_for_subconcept), 1), false);
