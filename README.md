@@ -1,3 +1,5 @@
+<img width="997" alt="image" src="https://github.com/FullAccel/ChaeDa_backend_spring/assets/74056843/29975015-6d4d-43ea-9f12-20b20e5edd57">
+
 ## ✏ 기능
 교제를 등록하고 틀린문제를 입력하면 AI가 학생의 수학 취약점을 날짜별, 유형별로 분석!
 
